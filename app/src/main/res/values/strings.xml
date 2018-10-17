@@ -13,4 +13,10 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="title_activity_post_book">PostBookActivity</string>
+    <string name="title_activity_main_swiping_screen">MainSwipingScreenActivity</string>
+    <string name="title_activity_view_exchange">ViewExchangeActivity</string>
+    <string name="title_activity_view_notifications">ViewNotificationsActivity</string>
+    <string name="title_activity_signup">SignupActivity</string>
+    <string name="title_activity_view_profile">ViewProfileActivity</string>
 </resources>
