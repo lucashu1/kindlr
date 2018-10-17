@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "378619876821",
+    "firebase_url": "https://kindlr-c2d74.firebaseio.com",
+    "project_id": "kindlr-c2d74",
+    "storage_bucket": "kindlr-c2d74.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:378619876821:android:4c48b5f4a13f8a25",
+        "android_client_info": {
+          "package_name": "com.example.team19.kindlr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "378619876821-d1ps358kqkgk2lnb5bflj7a4n79m2a3s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.team19.kindlr",
+            "certificate_hash": "0946b3455d88a614287d63539cb6d036bbcb81fd"
+          }
+        },
+        {
+          "client_id": "378619876821-ksdcmth432l806tbrpa62h8pj86immnr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDy7PtaM-oIDMnZcf03e3AuetxXyOU1HXA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "378619876821-ksdcmth432l806tbrpa62h8pj86immnr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
