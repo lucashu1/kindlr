@@ -18,7 +18,7 @@ public class BookManager {
     private static BookManager bookManagerSingleton;
     public static BookManager getBookManager() {
         if (bookManagerSingleton == null)
-            bookManagerSingleton = new BookManager;
+            bookManagerSingleton = new BookManager();
         return bookManagerSingleton;
     }
 
