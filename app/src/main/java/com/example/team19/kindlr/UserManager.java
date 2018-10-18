@@ -30,6 +30,7 @@ public class UserManager {
         usersRef = ref.child("users");
         usersMap = new HashMap<String, User>();
         bookIDToUsername = new HashMap<Integer, String>();
+        refreshUsers(); // pull from DB
     }
 
     // Save usersMap to Firebase (write to DB)

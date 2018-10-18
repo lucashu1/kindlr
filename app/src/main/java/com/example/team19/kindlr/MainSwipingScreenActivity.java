@@ -20,5 +20,5 @@ public class MainSwipingScreenActivity extends Activity {
             }
         });
     }
-    
+
 }

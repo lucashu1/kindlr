@@ -36,7 +36,8 @@
             android:label="@string/title_activity_view_notifications" />
         <activity
             android:name=".SignupActivity"
-            android:label="@string/title_activity_signup" />
+            android:label="@string/title_activity_signup"
+            android:exported="true"/>
         <activity
             android:name=".ViewProfileActivity"
             android:label="@string/title_activity_view_profile"></activity>
