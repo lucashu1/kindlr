@@ -20,4 +20,8 @@
     <string name="title_activity_view_notifications">ViewNotificationsActivity</string>
     <string name="title_activity_signup">SignupActivity</string>
     <string name="title_activity_view_profile">ViewProfileActivity</string>
+    <string-array name="states">
+        <item>CA</item>
+        <item>MO</item>
+    </string-array>
 </resources>
