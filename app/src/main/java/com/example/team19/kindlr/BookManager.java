@@ -28,6 +28,7 @@ public class BookManager {
         database  = FirebaseDatabase.getInstance();
         ref = database.getReference("books");
         booksRef = ref.child("books");
+        refreshBooks(); // pull from DB
     }
 
     // Get book with given ID
@@ -35,6 +36,11 @@ public class BookManager {
         if (!booksMap.containsKey(bookID))
             return null;
         return booksMap.get(bookID);
+    }
+
+    // Refresh books from DB/Firebase
+    public void refreshBooks() {
+        // TODO: pull from DB
     }
 
     // TODO:
