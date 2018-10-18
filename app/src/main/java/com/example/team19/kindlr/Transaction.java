@@ -10,11 +10,11 @@ public class Transaction {
     private boolean wasAccepted;
     private String username1;
     private String username2;
-    private String book1ID;
-    private String book2ID;
+    private int book1ID;
+    private int book2ID;
     private Date timestamp;
 
-    public Transaction(String username1, String username2, String book1ID, String book2ID, boolean forSaleTransaction, boolean wasAccepted, Date timestamp)
+    public Transaction(String username1, String username2, int book1ID, int book2ID, boolean forSaleTransaction, boolean wasAccepted, Date timestamp)
     {
         transactionManager = TransactionManager.getUserManager();
         um = UserManager.getUserManager();
