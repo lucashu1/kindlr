@@ -23,5 +23,6 @@
     <string-array name="states">
         <item>CA</item>
         <item>MO</item>
+        <item>WA</item>
     </string-array>
 </resources>
