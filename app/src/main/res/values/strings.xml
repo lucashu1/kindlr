@@ -20,4 +20,5 @@
     <string name="title_activity_view_notifications">ViewNotificationsActivity</string>
     <string name="title_activity_signup">SignupActivity</string>
     <string name="title_activity_view_profile">ViewProfileActivity</string>
+
 </resources>
