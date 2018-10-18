@@ -7,10 +7,11 @@ import static org.junit.Assert.*;
 public class UserManagerTest {
     @Test
     public void testUserManager() {
-        UserManager um = new UserManager();
-        User u = new User("user1", "abcdef", "Lucas", "Hu");
+        UserManager um = UserManager.getUserManager();
+        User u = new User("user1", "abcdef", "Lucas", "Hu",
+                "Los Angeles", "California", "111 111 1234", "lucashu@usc.edu");
         um.addUser(u);
         User uAgain = um.getUserByUsername("user1");
-        assertEquals(uAgain.getUsername(), "user1");
+        assertEquals(uAgain.getFirstName(), "Lucas");
     }
 }

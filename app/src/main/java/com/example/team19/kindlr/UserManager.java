@@ -8,10 +8,12 @@ import java.util.Map;
 
 public class UserManager {
 
-    FirebaseDatabase database;
-    DatabaseReference ref;
-    DatabaseReference usersRef;
-    Map<String, User> usersMap;
+    private FirebaseDatabase database;
+    private DatabaseReference ref;
+    private DatabaseReference usersRef;
+    private Map<String, User> usersMap;
+    private Map<Integer, String> bookIDToUsername;
+    private User currentUser;
 
     // Singleton initializer
     private static UserManager userManagerSingleton;
@@ -26,13 +28,24 @@ public class UserManager {
         database  = FirebaseDatabase.getInstance();
         ref = database.getReference("users");
         usersRef = ref.child("users");
-        usersMap = new HashMap<>();
+        usersMap = new HashMap<String, User>();
+        bookIDToUsername = new HashMap<Integer, String>();
+    }
+
+    // Save usersMap to Firebase (write to DB)
+    public void saveToFirebase() {
+        usersRef.setValue(usersMap);
+    }
+
+    // Refresh users (pull from firebase)
+    public void refreshUsers() {
+        // TODO
     }
 
     // Add user to UserManager
     public void addUser(User u) {
         usersMap.put(u.getUsername(), u);
-        usersRef.setValue(usersMap); // update Firebase
+        this.saveToFirebase();
     }
 
     // Return User with given username
@@ -42,4 +55,47 @@ public class UserManager {
         return usersMap.get(username);
     }
 
+    // Get currently logged in user object
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    // Attempt to login and set currentUser. Return true if successful
+    public boolean attemptLogin(String username, String hashedPassword) {
+        if (!usersMap.containsKey(username))
+            return false;
+        User u = usersMap.get(username);
+        if (!u.getHashedPassword().equals(hashedPassword))
+            return false;
+        currentUser = u;
+        return true;
+    }
+
+    // Get User owner for given bookID
+    public User getBookOwner(int bookID) {
+        if (!bookIDToUsername.containsKey(bookID))
+            return null;
+        String username = bookIDToUsername.get(bookID);
+        if (!usersMap.containsKey(username))
+            return null;
+        return usersMap.get(username);
+    }
+
+    // Make user like book, and update DB. Return true if successful
+    public boolean makeUserLikeBook(String username, int bookID) {
+        if (!usersMap.containsKey(username))
+            return false;
+        usersMap.get(username).likeBook(bookID);
+        this.saveToFirebase();
+        return true;
+    }
+
+    // Make user dislike book, and update DB. Return true if successful
+    public boolean makeUserDislikeBook(String username, int bookID) {
+        if (!usersMap.containsKey(username))
+            return false;
+        usersMap.get(username).dislikeBook(bookID);
+        this.saveToFirebase();
+        return true;
+    }
 }
