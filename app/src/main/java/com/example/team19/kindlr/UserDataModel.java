@@ -1,5 +1,7 @@
 package com.example.team19.kindlr;
 
+import java.util.ArrayList;
+
 public class UserDataModel {
     private String username;
     private String hashedPassword;
