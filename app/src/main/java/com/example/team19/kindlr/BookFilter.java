@@ -50,4 +50,27 @@ public class BookFilter {
     {
         tag = t;
     }
+
+    public boolean isMatch(Book book) {
+        if (book.getAuthor().contains(getSearchText())) {
+            return true;
+        }
+        else if (book.getBookName().contains(getSearchText())){
+            return true;
+        }
+        else if (book.getGenre().contains(getSearchText())) {
+            return true;
+        }
+        else if(book.getIsbn().contains(getSearchText())){
+            return true;
+        }
+
+        for(int i =0; i < book.getTags().size();i++){
+            if(book.getTags().get(i).contains(getSearchText())){
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
