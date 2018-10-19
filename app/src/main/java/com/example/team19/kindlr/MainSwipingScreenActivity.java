@@ -10,12 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainSwipingScreenActivity extends Activity {
-
-    private final Book testBook = new Book(0, "Harry Potter", "1234", "JK Rowling", "magic", 500, new ArrayList());
     private Book currentBook;
     private TextView bookTitle;
     private TextView bookAuthor;
+    private BookManager bookMgr = BookManager.getBookManager();
+    private BookFilter bookFilter = new BookFilter();
     List<Book> curBooks = null;
+    private int curIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +27,7 @@ public class MainSwipingScreenActivity extends Activity {
         likeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                incrementIndex();
             }
         });
 
@@ -34,13 +35,21 @@ public class MainSwipingScreenActivity extends Activity {
         dislikeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                incrementIndex();
             }
         });
     }
 
+    private void incrementIndex() {
+        curIndex += 1;
+        if (curIndex >= curBooks.size()) {
+            curIndex = 0;
+        }
+    }
+
     private void refreshBook() {
-        curBooks =
+        curBooks = bookMgr.getFilteredBooks(bookFilter);
+        updateDisplay(curBooks.get(curIndex));
     }
 
     private void updateDisplay(Book book) {
