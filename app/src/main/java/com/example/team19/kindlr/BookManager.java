@@ -54,7 +54,6 @@ public class BookManager {
     public List<Book> getFilteredBooks(String searchString){
         List<Book> filteredBooks = new ArrayList();
 
-
         for (Map.Entry<Integer, Book> entry : booksMap.entrySet()) {
             Integer key = entry.getKey();
             Book book = entry.getValue();
@@ -64,7 +63,6 @@ public class BookManager {
             }
             else if(book.getBookName().equals(searchString)){
                 filteredBooks.add(book);
-
             }
 
             else if(book.getGenre().equals(searchString)){
