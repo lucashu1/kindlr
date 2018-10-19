@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class BookManager {
 
@@ -51,36 +52,15 @@ public class BookManager {
     // refreshBooks() - read from DB
     // see design doc
 
-    public List<Book> getFilteredBooks(String searchString){
+    public List<Book> getFilteredBooks(BookFilter bookFilter){
         List<Book> filteredBooks = new ArrayList();
 
-
         for (Map.Entry<String, Book> entry : booksMap.entrySet()) {
-            String key = entry.getKey();
-            Book book = entry.getValue();
-
-            if(book.getAuthor().equals(searchString)){
-                filteredBooks.add(book);
+            if (bookFilter.isMatch(entry.getValue())) {
+                filteredBooks.add(entry.getValue());
             }
-            else if(book.getBookName().equals(searchString)){
-                filteredBooks.add(book);
-
-            }
-
-            else if(book.getGenre().equals(searchString)){
-                filteredBooks.add(book);
-            }
-            else if(book.getIsbn().equals(searchString)){
-                filteredBooks.add(book);
-            }
-            for(int i =0; i < book.getTags().size();i++){
-                if(book.getTags().get(i).equals(searchString)){
-                    filteredBooks.add(book);
-                    break;
-                }
-            }
-
         }
+
         return filteredBooks;
     }
 
