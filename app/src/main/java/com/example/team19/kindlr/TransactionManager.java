@@ -1,17 +1,22 @@
 package com.example.team19.kindlr;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class TransactionManager {
 
-    private ArrayList<Transaction> transactions;
+    private Map<String, Transaction> transactionsMap;
     FirebaseDatabase database;
-    DatabaseReference ref;
-    DatabaseReference usersRef;
+    DatabaseReference transactionsRef;
 
     private static TransactionManager transactionManagerSingleton;
     public static TransactionManager getUserManager() {
@@ -22,34 +27,69 @@ public class TransactionManager {
 
     public TransactionManager()
     {
-        transactions = new ArrayList<Transaction>();
+        database = FirebaseDatabase.getInstance();
+        transactionsRef = database.getReference("transactions");
+        transactionsMap = new HashMap<String, Transaction>();
+        refresh();
+
+        // On data change, read read usersMap from the database
+        transactionsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                transactionsMap = (HashMap<String, Transaction>) dataSnapshot.getValue(HashMap.class);
+                Log.d("INFO", "Refreshed usersMap");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w("WARN", "Failed to read value.", error.toException());
+            }
+        });
+    }
+
+    // Save usersMap to Firebase (write to DB)
+    public void saveToFirebase() {
+        transactionsRef.setValue(transactionsMap);
     }
 
     //deletes a certain specified transaction. Returns true if it deletes and exists, false if
     //it does not exist
     public boolean deleteTransaction(Transaction t)
     {
-        for(int i = 0; i < transactions.size(); i++)
+        String transactionID = null; // ID of transaction to remove
+        for(Map.Entry<String, Transaction> entry : transactionsMap.entrySet())
         {
-            if(transactions.get(i) == t)
+            Transaction currTransaction = entry.getValue();
+            if(currTransaction == t)
             {
-                transactions.remove(i);
-                return true;
+                transactionID = entry.getKey();
+                break;
             }
         }
+        if (transactionID != null) {
+            transactionsMap.remove(transactionID);
+            saveToFirebase();
+            return true;
+        }
+
         return false;
     }
 
     //adds a transaction to the list of transactions
     public void acceptTransaction(Transaction t)
     {
-        transactions.add(t);
+        String id = transactionsRef.push().getKey();
+        transactionsMap.put(id, t);
+        saveToFirebase();
     }
 
     //gets a list of all transactions of books
-    public List<Transaction> getAllTransactions()
+    public HashMap<String, Transaction> getAllTransactions()
     {
-        return transactions;
+        return (HashMap<String, Transaction>) transactionsMap;
     }
 
     //TODO: refreshes the database
@@ -59,14 +99,15 @@ public class TransactionManager {
     }
 
     //Gets all the transactions, sales or not, for a specified user
-    public List<Transaction> getAllTransactionsForUser(String userName)
+    public ArrayList<Transaction> getAllTransactionsForUser(String userName)
     {
-        List<Transaction> result = new ArrayList<Transaction>();
-        for(int i = 0; i < transactions.size(); i++)
+        ArrayList<Transaction> result = new ArrayList<Transaction>();
+        for(Map.Entry<String, Transaction> entry : transactionsMap.entrySet())
         {
-            if(transactions.get(i).getCurUser().equals(userName) || transactions.get(i).getOtherUser().equals(userName))
+            Transaction transaction = entry.getValue();
+            if(transaction.getCurUser().equals(userName) || transaction.getOtherUser().equals(userName))
             {
-                result.add(transactions.get(i));
+                result.add(transaction);
             }
         }
         return result;
