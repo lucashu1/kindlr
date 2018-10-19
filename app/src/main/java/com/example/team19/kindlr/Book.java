@@ -10,14 +10,18 @@ public class Book {
     private String genre;
     private int pageCount;
     private List<String> tags;
+    private boolean forSale;
+    private String owner;
 
-    public Book(int bookId, String bookName, String isbn, String author, String genre, int pageCount, List<String> tags){
+    public Book(int bookId, String bookName, String isbn, String author, String genre, int pageCount, List<String> tags, boolean forSale, String owner){
         this.author = author;
         this.bookId = bookId;
         this.isbn = isbn;
         this.genre = genre;
         this.pageCount = pageCount;
         this.tags = tags;
+        this.forSale = forSale;
+        this.owner = owner;
     }
 
     public int getBookId(){
@@ -46,5 +50,17 @@ public class Book {
 
     public List<String> getTags(){
         return tags;
+    }
+
+    public boolean getForSale(){
+        return forSale;
+    }
+
+    public void setForSale(sale){
+        forSale = sale;
+    }
+
+    public String getOwner(){
+        return owner;
     }
 }
