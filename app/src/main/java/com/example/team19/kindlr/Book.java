@@ -3,7 +3,7 @@ package com.example.team19.kindlr;
 import java.util.List;
 
 public class Book {
-    private int bookId;
+    private String bookId;
     private String bookName;
     private String isbn;
     private String author;
@@ -13,7 +13,7 @@ public class Book {
     private boolean forSale;
     private String owner;
 
-    public Book(int bookId, String bookName, String isbn, String author, String genre, int pageCount, List<String> tags, boolean forSale, String owner){
+    public Book(String bookId, String bookName, String isbn, String author, String genre, int pageCount, List<String> tags, boolean forSale, String owner){
         this.author = author;
         this.bookId = bookId;
         this.isbn = isbn;
@@ -24,7 +24,7 @@ public class Book {
         this.owner = owner;
     }
 
-    public int getBookId(){
+    public String getBookId(){
         return bookId;
     }
 
@@ -56,7 +56,7 @@ public class Book {
         return forSale;
     }
 
-    public void setForSale(sale){
+    public void setForSale(boolean sale){
         forSale = sale;
     }
 

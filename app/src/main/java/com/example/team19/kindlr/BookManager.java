@@ -14,7 +14,7 @@ public class BookManager {
     public Map<String, Book> booksMap;
     private FirebaseDatabase database;
     private DatabaseReference ref;
-    private DatabaseReference booksRef;
+//    private DatabaseReference booksRef;
 
     // Singleton logic
     private static BookManager bookManagerSingleton;
@@ -26,10 +26,10 @@ public class BookManager {
 
     // BookManager constructor
     public BookManager() {
-        booksMap = new HashMap<Integer, Book>();
+        booksMap = new HashMap<String, Book>();
         database  = FirebaseDatabase.getInstance();
         ref = database.getReference("books");
-        booksRef = ref.child("books");
+//        booksRef = ref.child("books");
         refreshBooks(); // pull from DB
     }
 
@@ -93,14 +93,15 @@ public class BookManager {
 //            }
 //            // ...
 //        }
-        String bookKey = ref.push.getKey();
+
+        String bookKey = ref.push().getKey();
 
         booksMap.put(bookKey, book);
 
         //update the firebase database now
-        Map<String, Book> dataUpdates = new HashMap<>();
+        Map<String, Map<String, Book>> dataUpdates = new HashMap<>();
         dataUpdates.put("books", booksMap);
-        ref.updateChildrenAsync(dataUpdates);
+        ref.setValue(dataUpdates);
 
 
     }
@@ -114,14 +115,18 @@ public class BookManager {
             String bookKey = entry.getKey();
             if(currBook.getBookId().equals(book.getBookId())){
                 currBook.setForSale(true);
-                booksMap.put(bookKey, booksMap);
+                booksMap.put(bookKey, currBook);
                 break;
             }
 
         }
 
         //update the firebase database
-        Map<String, Book> =
+        Map<String, Map<String, Book>>  dataUpdates= new HashMap<>();
+        dataUpdates.put("books", booksMap);
+        ref.setValue(dataUpdates);
+
+
 
 
 
@@ -129,7 +134,7 @@ public class BookManager {
 
     }
 
-    public void createNewBook
+
 
 
 
