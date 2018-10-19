@@ -11,7 +11,7 @@ import java.util.Map;
 public class BookManager {
 
     // Book ID to Book object
-    public Map<Integer, Book> booksMap;
+    public Map<String, Book> booksMap;
     private FirebaseDatabase database;
     private DatabaseReference ref;
     private DatabaseReference booksRef;
@@ -34,7 +34,7 @@ public class BookManager {
     }
 
     // Get book with given ID
-    public Book getBookByID(int bookID) {
+    public Book getBookByID(String bookID) {
         if (!booksMap.containsKey(bookID))
             return null;
         return booksMap.get(bookID);
@@ -55,8 +55,8 @@ public class BookManager {
         List<Book> filteredBooks = new ArrayList();
 
 
-        for (Map.Entry<Integer, Book> entry : booksMap.entrySet()) {
-            Integer key = entry.getKey();
+        for (Map.Entry<String, Book> entry : booksMap.entrySet()) {
+            String key = entry.getKey();
             Book book = entry.getValue();
 
             if(book.getAuthor().equals(searchString)){
@@ -83,6 +83,53 @@ public class BookManager {
         }
         return filteredBooks;
     }
+
+    public void postBookExchange(Book book){
+//        Integer maxKey = 0;
+        //iterate through keys and find max key, that will be key for new book
+//        for (Integer key : booksMap.keySet()) {
+//            if(key > maxKey){
+//                maxKey = key;
+//            }
+//            // ...
+//        }
+        String bookKey = ref.push.getKey();
+
+        booksMap.put(bookKey, book);
+
+        //update the firebase database now
+        Map<String, Book> dataUpdates = new HashMap<>();
+        dataUpdates.put("books", booksMap);
+        ref.updateChildrenAsync(dataUpdates);
+
+
+    }
+
+
+    public void postBookSale(Book book){
+
+        //find the book in the map
+        for (Map.Entry<String, Book> entry : booksMap.entrySet()) {
+            Book currBook = entry.getValue();
+            String bookKey = entry.getKey();
+            if(currBook.getBookId().equals(book.getBookId())){
+                currBook.setForSale(true);
+                booksMap.put(bookKey, booksMap);
+                break;
+            }
+
+        }
+
+        //update the firebase database
+        Map<String, Book> =
+
+
+
+
+
+    }
+
+    public void createNewBook
 
 
 
