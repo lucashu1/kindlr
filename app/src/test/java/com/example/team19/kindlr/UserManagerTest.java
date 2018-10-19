@@ -1,10 +1,14 @@
 package com.example.team19.kindlr;
 
+import com.google.firebase.FirebaseApp;
+
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
 
 public class UserManagerTest {
+
     @Test
     public void testUserManager() {
         UserManager um = UserManager.getUserManager();

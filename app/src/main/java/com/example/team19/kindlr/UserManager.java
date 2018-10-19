@@ -1,5 +1,6 @@
 package com.example.team19.kindlr;
 
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -25,9 +26,9 @@ public class UserManager {
 
     // Constructor
     public UserManager() {
-        database  = FirebaseDatabase.getInstance();
-        ref = database.getReference("users");
-        usersRef = ref.child("users");
+        database = FirebaseDatabase.getInstance();
+        usersRef = database.getReference("users");
+//        usersRef = ref.child("users");
         usersMap = new HashMap<String, User>();
         bookIDToUsername = new HashMap<Integer, String>();
         refreshUsers(); // pull from DB
