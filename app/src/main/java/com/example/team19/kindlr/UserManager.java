@@ -1,8 +1,12 @@
 package com.example.team19.kindlr;
 
-import com.google.firebase.FirebaseApp;
+import android.util.Log;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +14,6 @@ import java.util.Map;
 public class UserManager {
 
     private FirebaseDatabase database;
-    private DatabaseReference ref;
     private DatabaseReference usersRef;
     private Map<String, User> usersMap;
     private Map<Integer, String> bookIDToUsername;
@@ -28,10 +31,26 @@ public class UserManager {
     public UserManager() {
         database = FirebaseDatabase.getInstance();
         usersRef = database.getReference("users");
-//        usersRef = ref.child("users");
         usersMap = new HashMap<String, User>();
         bookIDToUsername = new HashMap<Integer, String>();
         refreshUsers(); // pull from DB
+
+        // On data change, read read usersMap from the database
+        usersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                usersMap = (HashMap<String, User>) dataSnapshot.getValue(HashMap.class);
+                Log.d("INFO", "Refreshed usersMap");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w("WARN", "Failed to read value.", error.toException());
+            }
+        });
     }
 
     // Save usersMap to Firebase (write to DB)
@@ -44,10 +63,19 @@ public class UserManager {
         // TODO
     }
 
-    // Add user to UserManager
-    public void addUser(User u) {
+    // Return true if given usename is taken
+    public boolean usernameTaken(String username) {
+        return usersMap.containsKey(username);
+    }
+
+    // Add user to UserManager; return true if successful
+    public boolean addUser(User u) {
+        if (usernameTaken(u.getUsername()) {
+            return false;
+        }
         usersMap.put(u.getUsername(), u);
         this.saveToFirebase();
+        return true;
     }
 
     // Return User with given username
