@@ -3,7 +3,9 @@ package com.example.team19.kindlr;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class BookManager {
@@ -48,5 +50,40 @@ public class BookManager {
     // Searching for books given a certain BookFilter - getFilteredBooks()
     // refreshBooks() - read from DB
     // see design doc
+
+    public List<Book> getFilteredBooks(String searchString){
+        List<Book> filteredBooks = new ArrayList();
+
+
+        for (Map.Entry<Integer, Book> entry : booksMap.entrySet()) {
+            Integer key = entry.getKey();
+            Book book = entry.getValue();
+
+            if(book.getAuthor().equals(searchString)){
+                filteredBooks.add(book);
+            }
+            else if(book.getBookName().equals(searchString)){
+                filteredBooks.add(book);
+
+            }
+
+            else if(book.getGenre().equals(searchString)){
+                filteredBooks.add(book);
+            }
+            else if(book.getIsbn().equals(searchString)){
+                filteredBooks.add(book);
+            }
+            for(int i =0; i < book.getTags().size();i++){
+                if(book.getTags().get(i).equals(searchString)){
+                    filteredBooks.add(book);
+                    break;
+                }
+            }
+
+        }
+        return filteredBooks;
+    }
+
+
 
 }
