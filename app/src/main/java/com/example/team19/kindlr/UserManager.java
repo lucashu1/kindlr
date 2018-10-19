@@ -16,7 +16,7 @@ public class UserManager {
     private FirebaseDatabase database;
     private DatabaseReference usersRef;
     private Map<String, User> usersMap;
-    private Map<Integer, String> bookIDToUsername;
+//    private Map<Integer, String> bookIDToUsername;
     private User currentUser;
 
     // Singleton initializer
@@ -32,7 +32,7 @@ public class UserManager {
         database = FirebaseDatabase.getInstance();
         usersRef = database.getReference("users");
         usersMap = new HashMap<String, User>();
-        bookIDToUsername = new HashMap<Integer, String>();
+//        bookIDToUsername = new HashMap<Integer, String>();
         refreshUsers(); // pull from DB
 
         // On data change, read read usersMap from the database
@@ -68,13 +68,18 @@ public class UserManager {
         return usersMap.containsKey(username);
     }
 
-    // Add user to UserManager; return true if successful
-    public boolean addUser(User u) {
-        if (usernameTaken(u.getUsername()) {
+    // Add user to UserManager (using inputted fields); return true if successful
+    public boolean addUser(String username, String hashedPassword, String firstName, String lastName,
+                           String city, String state, String phoneNum, String email) {
+        // Check if username is taken
+        if (usernameTaken(username))
             return false;
-        }
-        usersMap.put(u.getUsername(), u);
-        this.saveToFirebase();
+
+        // Create new user, add to firebase
+        User u = new User(username, hashedPassword, firstName, lastName, city, state, phoneNum, email);
+        usersMap.put(username, u);
+        saveToFirebase();
+
         return true;
     }
 
@@ -101,15 +106,16 @@ public class UserManager {
         return true;
     }
 
+    // TODO: MOVE THIS TO BookManager
     // Get User owner for given bookID
-    public User getBookOwner(int bookID) {
-        if (!bookIDToUsername.containsKey(bookID))
-            return null;
-        String username = bookIDToUsername.get(bookID);
-        if (!usersMap.containsKey(username))
-            return null;
-        return usersMap.get(username);
-    }
+//    public User getBookOwner(int bookID) {
+//        if (!bookIDToUsername.containsKey(bookID))
+//            return null;
+//        String username = bookIDToUsername.get(bookID);
+//        if (!usersMap.containsKey(username))
+//            return null;
+//        return usersMap.get(username);
+//    }
 
     // Make user like book, and update DB. Return true if successful
     public boolean makeUserLikeBook(String username, int bookID) {

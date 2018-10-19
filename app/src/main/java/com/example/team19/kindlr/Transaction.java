@@ -3,22 +3,27 @@ import java.util.Date;
 import java.util.List;
 
 public class Transaction {
-    private TransactionManager transactionManager;
+    private String transactionID;
     private UserManager um;
     private BookManager bm;
     private boolean forSaleTransaction;
     private boolean wasAccepted;
     private String username1;
     private String username2;
-    private int book1ID;
-    private int book2ID;
+    private String book1ID;
+    private String book2ID;
     private Date timestamp;
 
-    public Transaction(String username1, String username2, int book1ID, int book2ID, boolean forSaleTransaction, boolean wasAccepted, Date timestamp)
+    public Transaction(String transactionID, String username1, String username2, String book1ID, String book2ID, boolean forSaleTransaction, boolean wasAccepted, Date timestamp)
     {
-        transactionManager = TransactionManager.getUserManager();
-        um = UserManager.getUserManager();
-        bm = BookManager.getBookManager();
+        this.transactionID = transactionID;
+        this.username1 = username1;
+        this.username2 = username2;
+        this.book1ID = book1ID;
+        this.book2ID = book2ID;
+        this.forSaleTransaction = forSaleTransaction;
+        this.wasAccepted = wasAccepted;
+        this.timestamp = timestamp;
     }
 
     //gets the other user in the transaction

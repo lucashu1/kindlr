@@ -3,6 +3,7 @@ package com.example.team19.kindlr;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,6 +56,16 @@ public class TransactionManager {
         transactionsRef.setValue(transactionsMap);
     }
 
+    // Add new transaction using given fields
+    public void addNewTransaction(String username1, String username2,
+                                     String book1ID, String book2ID,
+                                     boolean forSaleTransaction, boolean wasAccepted, Date timestamp) {
+        String transactionID = transactionsRef.push().getKey();
+        Transaction t = new Transaction(transactionID, username1, username2, book1ID, book2ID, forSaleTransaction, wasAccepted, timestamp);
+        transactionsMap.put(transactionID, t);
+        saveToFirebase();
+    }
+
     //deletes a certain specified transaction. Returns true if it deletes and exists, false if
     //it does not exist
     public boolean deleteTransaction(Transaction t)
@@ -76,14 +87,6 @@ public class TransactionManager {
         }
 
         return false;
-    }
-
-    //adds a transaction to the list of transactions
-    public void acceptTransaction(Transaction t)
-    {
-        String id = transactionsRef.push().getKey();
-        transactionsMap.put(id, t);
-        saveToFirebase();
     }
 
     //gets a list of all transactions of books
