@@ -14,7 +14,7 @@ public class BookManager {
     // Book ID to Book object
     public Map<String, Book> booksMap;
     private FirebaseDatabase database;
-    private DatabaseReference ref;
+    private DatabaseReference booksRef;
 //    private DatabaseReference booksRef;
 
     // Singleton logic
@@ -29,9 +29,14 @@ public class BookManager {
     public BookManager() {
         booksMap = new HashMap<String, Book>();
         database  = FirebaseDatabase.getInstance();
-        ref = database.getReference("books");
+        booksRef = database.getReference("books");
 //        booksRef = ref.child("books");
         refreshBooks(); // pull from DB
+    }
+
+    // Save usersMap to Firebase (write to DB)
+    public void saveToFirebase() {
+        booksRef.setValue(booksMap);
     }
 
     // Get book with given ID
@@ -47,8 +52,6 @@ public class BookManager {
     }
 
     // TODO:
-    // Logic for adding books (how to generate bookID?) - postBookExchange/Sale()
-    // Searching for books given a certain BookFilter - getFilteredBooks()
     // refreshBooks() - read from DB
     // see design doc
 
@@ -64,7 +67,7 @@ public class BookManager {
         return filteredBooks;
     }
 
-    public void postBookExchange(Book book){
+    public void postBookForExchange(String bookName, String isbn, String author, String genre, int pageCount, List<String> tags, String owner){
 //        Integer maxKey = 0;
         //iterate through keys and find max key, that will be key for new book
 //        for (Integer key : booksMap.keySet()) {
@@ -74,44 +77,35 @@ public class BookManager {
 //            // ...
 //        }
 
-        String bookKey = ref.push().getKey();
+        String bookKey = booksRef.push().getKey();
+        Book book = new Book(bookKey, bookName, isbn, author, genre, pageCount, tags, false, owner);
 
+        // Add book to map, save to firebase
         booksMap.put(bookKey, book);
-
-        //update the firebase database now
-        Map<String, Map<String, Book>> dataUpdates = new HashMap<>();
-        dataUpdates.put("books", booksMap);
-        ref.setValue(dataUpdates);
-
-
+        saveToFirebase();
     }
 
 
-    public void postBookSale(Book book){
+    public void postBookForSale(String bookName, String isbn, String author, String genre, int pageCount, List<String> tags, String owner){
 
-        //find the book in the map
-        for (Map.Entry<String, Book> entry : booksMap.entrySet()) {
-            Book currBook = entry.getValue();
-            String bookKey = entry.getKey();
-            if(currBook.getBookId().equals(book.getBookId())){
-                currBook.setForSale(true);
-                booksMap.put(bookKey, currBook);
-                break;
-            }
+//        //find the book in the map
+//        for (Map.Entry<String, Book> entry : booksMap.entrySet()) {
+//            Book currBook = entry.getValue();
+//            String bookKey = entry.getKey();
+//            if(currBook.getBookId().equals(book.getBookId())){
+//                currBook.setForSale(true);
+//                booksMap.put(bookKey, currBook);
+//                break;
+//            }
+//
+//        }
 
-        }
+        String bookKey = booksRef.push().getKey();
+        Book book = new Book(bookKey, bookName, isbn, author, genre, pageCount, tags, true, owner);
 
-        //update the firebase database
-        Map<String, Map<String, Book>>  dataUpdates= new HashMap<>();
-        dataUpdates.put("books", booksMap);
-        ref.setValue(dataUpdates);
-
-
-
-
-
-
-
+        // Add book, update the firebase database
+        booksMap.put(bookKey, book);
+        saveToFirebase();
     }
 
 
