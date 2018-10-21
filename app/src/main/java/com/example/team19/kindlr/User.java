@@ -13,8 +13,8 @@ public class User {
     private String email;
     private int totalRating;
     private int numRatingsReceived;
-    private ArrayList<Integer> likedBookIDs; // array of bookIDs
-    private ArrayList<Integer> dislikedBookIDs; // array of bookIDs
+    private ArrayList<String> likedBookIDs; // array of bookIDs
+    private ArrayList<String> dislikedBookIDs; // array of bookIDs
 
     public User(String username, String hashedPassword, String firstName, String lastName,
                 String city, String state, String phoneNum, String email) {
@@ -30,8 +30,8 @@ public class User {
         totalRating = 0;
         numRatingsReceived = 0;
 
-        likedBookIDs = new ArrayList<Integer>();
-        dislikedBookIDs = new ArrayList<Integer>();
+        likedBookIDs = new ArrayList<String>();
+        dislikedBookIDs = new ArrayList<String>();
     }
 
     public String getFirstName() {
@@ -66,11 +66,11 @@ public class User {
         return ((double)totalRating)/numRatingsReceived;
     }
 
-    public ArrayList<Integer> getLikedBooks() {
+    public ArrayList<String> getLikedBooks() {
         return likedBookIDs;
     }
 
-    public ArrayList<Integer> getDislikedBooks() {
+    public ArrayList<String> getDislikedBooks() {
         return dislikedBookIDs;
     }
 
@@ -82,11 +82,11 @@ public class User {
         return hashedPassword;
     }
 
-    public void likeBook(int bookID) {
+    public void likeBook(String bookID) {
         likedBookIDs.add(bookID);
     }
 
-    public void dislikeBook(int bookID) {
+    public void dislikeBook(String bookID) {
         dislikedBookIDs.add(bookID);
     }
 }

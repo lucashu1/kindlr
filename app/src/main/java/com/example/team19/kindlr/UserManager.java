@@ -106,20 +106,11 @@ public class UserManager {
         return true;
     }
 
-    // TODO: MOVE THIS TO BookManager
-    // Get User owner for given bookID
-//    public User getBookOwner(int bookID) {
-//        if (!bookIDToUsername.containsKey(bookID))
-//            return null;
-//        String username = bookIDToUsername.get(bookID);
-//        if (!usersMap.containsKey(username))
-//            return null;
-//        return usersMap.get(username);
-//    }
-
     // Make user like book, and update DB. Return true if successful
-    public boolean makeUserLikeBook(String username, int bookID) {
+    public boolean makeUserLikeBook(String username, String bookID) {
         if (!usersMap.containsKey(username))
+            return false;
+        if (!BookManager.getBookManager().bookExists(bookID))
             return false;
         usersMap.get(username).likeBook(bookID);
         this.saveToFirebase();
@@ -127,8 +118,10 @@ public class UserManager {
     }
 
     // Make user dislike book, and update DB. Return true if successful
-    public boolean makeUserDislikeBook(String username, int bookID) {
+    public boolean makeUserDislikeBook(String username, String bookID) {
         if (!usersMap.containsKey(username))
+            return false;
+        if (!BookManager.getBookManager().bookExists(bookID))
             return false;
         usersMap.get(username).dislikeBook(bookID);
         this.saveToFirebase();

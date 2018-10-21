@@ -46,6 +46,33 @@ public class BookManager {
         return booksMap.get(bookID);
     }
 
+    // Return true if a given bookID exists
+    public boolean bookExists(String bookID) {
+        return (getBookByID(bookID) != null);
+    }
+
+    // Remove a book from booksMap (e.g. after transaction done)
+        // Return true if successful
+    public boolean removeBook(String bookID) {
+        if (!booksMap.containsKey(bookID))
+            return false;
+        booksMap.remove(bookID);
+        saveToFirebase();
+        return true;
+    }
+
+    // Return username of book owner for a given bookID. Return null if book not found
+    public String getBookOwner(String bookID) {
+        Book b;
+        for (Map.Entry<String, Book> entry : booksMap.entrySet()) {
+            b = entry.getValue();
+            if (b.getBookID().equals(bookID)) {
+                return b.getOwner();
+            }
+        }
+        return null;
+    }
+
     // Refresh books from DB/Firebase
     public void refreshBooks() {
         // TODO: pull from DB
@@ -58,8 +85,13 @@ public class BookManager {
     public List<Book> getFilteredBooks(BookFilter bookFilter){
         List<Book> filteredBooks = new ArrayList();
 
+        // Filter out current user's already liked/disliked books
+        List<String> currentUserDislikedBooks = UserManager.getUserManager().getCurrentUser().getDislikedBooks();
+        List<String> currentUserLikedBooks = UserManager.getUserManager().getCurrentUser().getLikedBooks();
+
         for (Map.Entry<String, Book> entry : booksMap.entrySet()) {
-            if (bookFilter.isMatch(entry.getValue())) {
+            String bookID = entry.getValue().getBookID();
+            if (bookFilter.isMatch(entry.getValue()) && !currentUserDislikedBooks.contains(bookID) && !currentUserLikedBooks.contains(bookID)) {
                 filteredBooks.add(entry.getValue());
             }
         }
