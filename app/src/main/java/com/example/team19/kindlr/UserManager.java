@@ -33,7 +33,7 @@ public class UserManager {
         usersRef = database.getReference("users");
         usersMap = new HashMap<String, User>();
 //        bookIDToUsername = new HashMap<Integer, String>();
-        refreshUsers(); // pull from DB
+//        refreshUsers(); // pull from DB
 
         // On data change, read read usersMap from the database
         usersRef.addValueEventListener(new ValueEventListener() {
@@ -59,9 +59,12 @@ public class UserManager {
         usersRef.setValue(usersMap);
     }
 
-    // Refresh users (pull from firebase)
-    public void refreshUsers() {
-        // TODO
+//    // Refresh users (pull from firebase)
+//    public void refreshUsers() {
+//    }
+
+    public HashMap<String, User> getAllUsers() {
+        return (HashMap<String, User>) usersMap;
     }
 
     // Return true if given usename is taken

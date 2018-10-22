@@ -12,6 +12,7 @@ public class Book {
     private List<String> tags;
     private boolean forSale;
     private String owner;
+    private boolean isVisible; // if a book is a part of a current transaction, make it invisible
 
     public Book(String bookID, String bookName, String isbn, String author, String genre, int pageCount, List<String> tags, boolean forSale, String owner){
         this.author = author;
@@ -22,6 +23,7 @@ public class Book {
         this.tags = tags;
         this.forSale = forSale;
         this.owner = owner;
+        isVisible = true;
     }
 
     public String getBookID(){
@@ -62,5 +64,17 @@ public class Book {
 
     public String getOwner(){
         return owner;
+    }
+
+    public void makeInvisible() {
+        isVisible = false;
+    }
+
+    public void makeVisible() {
+        isVisible = true;
+    }
+
+    public boolean isVisible() {
+        return isVisible;
     }
 }

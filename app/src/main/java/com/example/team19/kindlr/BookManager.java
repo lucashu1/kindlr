@@ -1,7 +1,12 @@
 package com.example.team19.kindlr;
 
+import android.util.Log;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,7 +36,28 @@ public class BookManager {
         database  = FirebaseDatabase.getInstance();
         booksRef = database.getReference("books");
 //        booksRef = ref.child("books");
-        refreshBooks(); // pull from DB
+//        refreshBooks(); // pull from DB
+
+        // On data change, re-read booksMap from the database
+        booksRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                booksMap = (HashMap<String, Book>) dataSnapshot.getValue();
+                Log.d("INFO", "Refreshed booksMap");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w("WARN", "Failed to read value.", error.toException());
+            }
+        });
+    }
+
+    public HashMap<String, Book> getAllBooks() {
+        return (HashMap<String, Book>) booksMap;
     }
 
     // Save usersMap to Firebase (write to DB)
@@ -73,14 +99,10 @@ public class BookManager {
         return null;
     }
 
-    // Refresh books from DB/Firebase
-    public void refreshBooks() {
-        // TODO: pull from DB
-    }
-
-    // TODO:
-    // refreshBooks() - read from DB
-    // see design doc
+//    // Refresh books from DB/Firebase
+//    public void refreshBooks() {
+//        // TODO: pull from DB
+//    }
 
     public List<Book> getFilteredBooks(BookFilter bookFilter){
         List<Book> filteredBooks = new ArrayList();
@@ -90,8 +112,14 @@ public class BookManager {
         List<String> currentUserLikedBooks = UserManager.getUserManager().getCurrentUser().getLikedBooks();
 
         for (Map.Entry<String, Book> entry : booksMap.entrySet()) {
-            String bookID = entry.getValue().getBookID();
-            if (bookFilter.isMatch(entry.getValue()) && !currentUserDislikedBooks.contains(bookID) && !currentUserLikedBooks.contains(bookID)) {
+            Book b = entry.getValue();
+            String bookID = b.getBookID();
+            // Get books that match the filter, have not already been liked/disliked, do not belong to current user, and are not invisible
+            if (bookFilter.isMatch(entry.getValue())
+                    && !currentUserDislikedBooks.contains(bookID)
+                    && !currentUserLikedBooks.contains(bookID)
+                    && !b.getOwner().equals(UserManager.getUserManager().getCurrentUser().getUsername())
+                    && b.isVisible()) {
                 filteredBooks.add(entry.getValue());
             }
         }
