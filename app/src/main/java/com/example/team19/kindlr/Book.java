@@ -16,6 +16,7 @@ public class Book {
 
     public Book(String bookID, String bookName, String isbn, String author, String genre, int pageCount, List<String> tags, boolean forSale, String owner){
         this.author = author;
+        this.bookName = bookName;
         this.bookID = bookID;
         this.isbn = isbn;
         this.genre = genre;
