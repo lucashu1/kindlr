@@ -32,11 +32,12 @@ public class BookManager {
 
     // BookManager constructor
     public BookManager() {
-        booksMap = new HashMap<String, Book>();
+
+    }
+
+    public void initialize() {
         database  = FirebaseDatabase.getInstance();
         booksRef = database.getReference("books");
-//        booksRef = ref.child("books");
-//        refreshBooks(); // pull from DB
 
         // On data change, re-read booksMap from the database
         booksRef.addValueEventListener(new ValueEventListener() {
@@ -44,8 +45,14 @@ public class BookManager {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                booksMap = (HashMap<String, Book>) dataSnapshot.getValue();
-                Log.d("INFO", "Refreshed booksMap");
+                Log.d("TESTINFO", "Books being updated");
+                booksMap = new HashMap<String, Book>();
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Book book = snapshot.getValue(Book.class);
+                    booksMap.put(snapshot.getKey(), book);
+                }
+                Log.d("TESTINFO", "Refreshed booksMap to be " + booksMap.toString());
             }
 
             @Override
@@ -127,8 +134,7 @@ public class BookManager {
         return filteredBooks;
     }
 
-    public void postBookForExchange(String bookName, String isbn, String author, String genre, int pageCount, List<String> tags, String owner){
-
+    public void postBookForExchange(String bookName, String isbn, String author, String genre, int pageCount, List<String> tags, String owner) {
         String bookKey = booksRef.push().getKey();
         Book book = new Book(bookKey, bookName, isbn, author, genre, pageCount, tags, false, owner);
 

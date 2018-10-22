@@ -50,7 +50,7 @@ public class UserManager {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                Log.d("TESTINFO", "Got response");
+                Log.d("TESTINFO", "Users being updated");
                 usersMap = new HashMap<String, User>();
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {

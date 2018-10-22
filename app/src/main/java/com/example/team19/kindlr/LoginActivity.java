@@ -54,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         UserManager.getUserManager().initialize();
+        BookManager.getBookManager().initialize();
 
         mUsernameView = (EditText)findViewById(R.id.username);
         mPasswordView = (EditText) findViewById(R.id.password);
