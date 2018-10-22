@@ -35,7 +35,7 @@ public class SignupActivity extends Activity {
         phone = (EditText)findViewById(R.id.phone);
         email = (EditText)findViewById(R.id.email);
 
-        Button backBtn = (Button) findViewById(R.id.sign_up_button);
+        Button backBtn = (Button) findViewById(R.id.back);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
