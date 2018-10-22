@@ -89,6 +89,8 @@ public class UserManager {
         usersMap.put(username, u);
         saveToFirebase();
 
+        currentUser = u;
+
         return true;
     }
 

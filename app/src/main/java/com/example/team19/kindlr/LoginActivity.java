@@ -92,7 +92,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void toSignup() {
-
+        Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
+        startActivity(intent);
     }
 
     /**

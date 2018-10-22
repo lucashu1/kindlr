@@ -16,7 +16,7 @@
             android:orientation="vertical" >
 
         <EditText
-                android:id="@+id/editText2"
+                android:id="@+id/first_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="26dp"
@@ -29,7 +29,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-                android:id="@+id/editText3"
+                android:id="@+id/last_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="26dp"
@@ -42,7 +42,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/editText2" />
 
             <EditText
-                android:id="@+id/editText4"
+                android:id="@+id/username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -55,7 +55,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/editText3" />
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/password"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -68,7 +68,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/editText4" />
 
             <EditText
-                android:id="@+id/editText7"
+                android:id="@+id/city"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -79,7 +79,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/editText" />
 
             <Spinner
-                android:id="@+id/spinner"
+                android:id="@+id/state"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -89,7 +89,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/editText7" />
 
             <EditText
-                android:id="@+id/editText6"
+                android:id="@+id/phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -101,7 +101,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/spinner" />
 
             <EditText
-                android:id="@+id/editText8"
+                android:id="@+id/email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -113,7 +113,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/editText6" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/create_profile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -123,14 +123,13 @@
                 app:layout_constraintTop_toBottomOf="@+id/editText8" />
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="15dp"
                 android:text="Back"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/button" />
+                app:layout_constraintStart_toStartOf="parent" />
 
         </LinearLayout>
     </ScrollView>
