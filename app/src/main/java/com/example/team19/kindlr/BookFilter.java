@@ -74,6 +74,6 @@ public class BookFilter {
             }
         }
 
-        return false;
+        return true;
     }
 }
