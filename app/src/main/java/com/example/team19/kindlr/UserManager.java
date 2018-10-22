@@ -29,6 +29,15 @@ public class UserManager {
 
     // Constructor
     public UserManager() {
+
+    }
+
+    // Save usersMap to Firebase (write to DB)
+    public void saveToFirebase() {
+        usersRef.setValue(usersMap);
+    }
+
+    public void initialize() {
         database = FirebaseDatabase.getInstance();
         usersRef = database.getReference("users");
         usersMap = new HashMap<String, User>();
@@ -42,8 +51,13 @@ public class UserManager {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 Log.d("TESTINFO", "Got response");
-                usersMap = (HashMap<String, User>) dataSnapshot.getValue();
-                Log.d("INFO", "Refreshed usersMap");
+                usersMap = new HashMap<String, User>();
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    User user = snapshot.getValue(User.class);
+                    usersMap.put(snapshot.getKey(), user);
+                }
+                Log.d("TESTINFO", "Refreshed usersMap to be " + usersMap.toString());
             }
 
             @Override
@@ -53,15 +67,6 @@ public class UserManager {
             }
         });
     }
-
-    // Save usersMap to Firebase (write to DB)
-    public void saveToFirebase() {
-        usersRef.setValue(usersMap);
-    }
-
-//    // Refresh users (pull from firebase)
-//    public void refreshUsers() {
-//    }
 
     public HashMap<String, User> getAllUsers() {
         return (HashMap<String, User>) usersMap;

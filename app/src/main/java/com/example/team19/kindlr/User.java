@@ -16,6 +16,10 @@ public class User {
     private ArrayList<String> likedBookIDs; // array of bookIDs
     private ArrayList<String> dislikedBookIDs; // array of bookIDs
 
+    public User() {
+
+    }
+
     public User(String username, String hashedPassword, String firstName, String lastName,
                 String city, String state, String phoneNum, String email) {
         this.username = username;
