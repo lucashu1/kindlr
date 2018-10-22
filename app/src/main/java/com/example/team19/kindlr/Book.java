@@ -29,7 +29,7 @@ public class Book {
     }
 
     public Book() {
-        this("", "", -1, "", "", -1, new ArrayList<String>(), false, "");
+        this("", "", "", "", "", -1, new ArrayList<String>(), false, "");
     }
 
     public String getBookID(){
