@@ -6,8 +6,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
-
+import java.util.ArrayList;
 
 
 public class PostBookActivity extends AppCompatActivity {
@@ -16,8 +17,9 @@ public class PostBookActivity extends AppCompatActivity {
     private EditText isbn;
     private EditText author;
     private EditText genre;
-    private EditText number;
     private EditText pagecount;
+    private boolean isForSale;
+    private TextView errorView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +31,22 @@ public class PostBookActivity extends AppCompatActivity {
         author = (EditText) findViewById(R.id.author);
         genre = (EditText) findViewById(R.id.genre);
         pagecount = (EditText) findViewById(R.id.pagecount);
+        errorView = (TextView)findViewById(R.id.error_msg);
+
+
+        isForSale = getIntent().getBooleanExtra("isForSale", false);
 
         Button postBtn = (Button) findViewById(R.id.post);
         postBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                boolean success = postBook();
+                if (success) {
+                    navigateBack();
+                }
+                else {
+                    displayError("Invalid input");
+                }
             }
         });
 
@@ -42,12 +54,49 @@ public class PostBookActivity extends AppCompatActivity {
         backBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                navigateBack();
             }
         });
-
     }
 
+    private void displayError(String txt) {
+        errorView.setVisibility(View.VISIBLE);
+    }
+
+    private boolean postBook() {
+        String titleStr = title.getText().toString();
+        String isbnStr = isbn.getText().toString();
+        String authorStr = author.getText().toString();
+        String genreStr = genre.getText().toString();
+
+        int pageCountInt = 0;
+        try {
+            pageCountInt = Integer.parseInt(pagecount.getText().toString());
+        } catch (NumberFormatException e) {
+            pageCountInt = -1;
+        }
+
+        if (pageCountInt < 0) {
+            return false;
+        }
+
+        User currentUser = UserManager.getUserManager().getCurrentUser();
+
+        if (!isForSale) {
+            BookManager.getBookManager().postBookForExchange(titleStr, isbnStr, authorStr, genreStr,
+                    pageCountInt, new ArrayList<String>(), currentUser.getUsername());
+        }
+        else {
+            BookManager.getBookManager().postBookForSale(titleStr, isbnStr, authorStr, genreStr,
+                    pageCountInt, new ArrayList<String>(), currentUser.getUsername());
+        }
+
+        return true;
+    }
+
+    private void navigateBack() {
+        this.finish();
+    }
 
 
 

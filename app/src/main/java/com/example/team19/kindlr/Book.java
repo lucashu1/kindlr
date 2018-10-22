@@ -26,6 +26,10 @@ public class Book {
         isVisible = true;
     }
 
+    public Book() {
+
+    }
+
     public String getBookID(){
         return bookID;
     }

@@ -54,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         UserManager.getUserManager().initialize();
+        BookManager.getBookManager().initialize();
 
         mUsernameView = (EditText)findViewById(R.id.username);
         mPasswordView = (EditText) findViewById(R.id.password);
@@ -91,7 +92,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void toSignup() {
-
+        Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
+        startActivity(intent);
     }
 
     /**

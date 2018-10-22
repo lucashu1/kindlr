@@ -1,5 +1,6 @@
 package com.example.team19.kindlr;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
@@ -23,6 +24,9 @@ public class MainSwipingScreenActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_swiping_screen);
 
+        bookTitle = (TextView)findViewById(R.id.title_text);
+        bookAuthor = (TextView)findViewById(R.id.author_text);
+
         Button likeBtn = (Button) findViewById(R.id.like_button);
         likeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,7 +43,21 @@ public class MainSwipingScreenActivity extends Activity {
             }
         });
 
+        Button profileBtn = (Button)findViewById(R.id.profile_button);
+        profileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navigateToProfile();
+            }
+        });
+
         refreshBook();
+    }
+
+    private void navigateToProfile() {
+        Intent intent = new Intent(MainSwipingScreenActivity.this, ViewProfileActivity.class);
+        intent.putExtra("DISPLAY_USER", UserManager.getUserManager().getCurrentUser());
+        startActivity(intent);
     }
 
     private void incrementIndex() {
@@ -67,8 +85,14 @@ public class MainSwipingScreenActivity extends Activity {
 
     private void updateDisplay() {
         Book book = getCurrentBook();
-        bookTitle.setText(book.getBookName());
-        bookAuthor.setText(book.getAuthor());
+        if (book == null) {
+            bookTitle.setText("No books!");
+            bookAuthor.setText("Surprising!");
+        }
+        else {
+            bookTitle.setText(book.getBookName());
+            bookAuthor.setText(book.getAuthor());
+        }
     }
 
 }

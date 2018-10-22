@@ -1,23 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:gravity="center"
     tools:context=".MainSwipingScreenActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
+        <Button
+            android:id="@+id/profile_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Profile"
+            tools:layout_editor_absoluteX="280dp"
+            tools:layout_editor_absoluteY="447dp" />
+    </LinearLayout>
     <LinearLayout
         android:id="@+id/book_content"
-        android:layout_width="272dp"
+        android:layout_width="match_parent"
         android:layout_height="278dp"
-        android:layout_marginStart="56dp"
         android:layout_weight="0.7"
         android:gravity="center"
         android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="116dp">
-
+        app:layout_constraintStart_toStartOf="parent">
         <TextView
             android:id="@+id/title_text"
             android:layout_width="match_parent"
@@ -35,21 +45,26 @@
             android:text="Author" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/like_button"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/like_book_button"
-        tools:layout_editor_absoluteX="280dp"
-        tools:layout_editor_absoluteY="447dp" />
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/dislike_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/dislike_book_button"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="447dp" />
+        <Button
+            android:id="@+id/like_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/like_book_button"
+            tools:layout_editor_absoluteX="280dp"
+            tools:layout_editor_absoluteY="447dp" />
 
+        <Button
+            android:id="@+id/dislike_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dislike_book_button"
+            android:layout_alignParentBottom="true" />
 
-</android.support.constraint.ConstraintLayout>
+    </LinearLayout>
+
+</LinearLayout>
