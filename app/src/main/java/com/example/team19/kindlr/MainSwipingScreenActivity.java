@@ -34,8 +34,8 @@ public class MainSwipingScreenActivity extends Activity {
         likeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                incrementIndex();
                 likeBook();
+                incrementIndex();
             }
         });
 
@@ -43,8 +43,8 @@ public class MainSwipingScreenActivity extends Activity {
         dislikeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                incrementIndex();
                 dislikeBook();
+                incrementIndex();
             }
         });
 
@@ -86,10 +86,14 @@ public class MainSwipingScreenActivity extends Activity {
     }
 
     private void incrementIndex() {
+        this.curBooks.remove(curIndex);
+
         curIndex += 1;
         if (curIndex >= curBooks.size()) {
             curIndex = 0;
         }
+
+        updateDisplay();
     }
 
     private void refreshBook() {
