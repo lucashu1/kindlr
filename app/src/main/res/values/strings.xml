@@ -22,6 +22,9 @@
     <string name="title_activity_view_profile">ViewProfileActivity</string>
     <string name="like_book_button">Like</string>
     <string name="dislike_book_button">Dislike</string>
+
+    <!-- Strings related to posting a book -->
+    <string name="prompt_title">Title</string>
     <string-array name="states">
         <item>CA</item>
         <item>MO</item>
