@@ -1,5 +1,6 @@
 package com.example.team19.kindlr;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Book {
@@ -28,7 +29,7 @@ public class Book {
     }
 
     public Book() {
-
+        this("", "", -1, "", "", -1, new ArrayList<String>(), false, "");
     }
 
     public String getBookID(){
