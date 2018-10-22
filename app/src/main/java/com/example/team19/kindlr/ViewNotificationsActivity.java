@@ -8,7 +8,9 @@ import android.widget.TextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.view.ViewGroup.LayoutParams;
+import android.view.View;
 import com.squareup.picasso.Picasso;
+import android.content.Intent;
 
 public class ViewNotificationsActivity extends Activity {
 
@@ -16,8 +18,6 @@ public class ViewNotificationsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_notifications);
-
-        User u; //TODO: set equal to current user and pass into displayNotifications()
         displayNotifications();
     }
 
@@ -25,47 +25,55 @@ public class ViewNotificationsActivity extends Activity {
     Displays all notification blocks for this user
      */
     public void displayNotifications() {
-        int num_matches = 4; //TODO: set equal to this user's number of matches
+        int num_matches = 4; //TODO: set equal to current user's number of matches
         for (int i = 0; i < num_matches; i++) {
             TableLayout table = (TableLayout)findViewById(R.id.notifications_table_layout);
             TableRow row = new TableRow(this);
 
             ImageView img = new ImageView(this);
-            String imageURL = "https://images-na.ssl-images-amazon.com/images/I/815egbJMs1L._AC_UL320_SR256,320_.jpg";
+            final String imageURL = "https://images-na.ssl-images-amazon.com/images/I/815egbJMs1L._AC_UL320_SR256,320_.jpg";
             //TODO: Set imageURL to the image needed (Picasso also allows you to load image files instead of use URL's)
             Picasso.get().load(imageURL).into(img);
 
 
             TextView t = new TextView(this);
-            String name = "Ben";
-            String username="bhahn";
-            String rating = "4";
-            String title = "Software Engineering";
-            String author = "I forget";
-            String genre = "Computer Science";
-            String tags = "long, boring, expensive";
-            String price = "";
+            final String name = "Ben" + i;
+            final String rating = "4";
+            final String title = "Software Engineering";
+            final String author = "Ian Sommerville";
+            final String genre = "Computer Science";
+            final String tags = "long, boring, expensive";
+            final String username = "bhahn16";
 
             String textToDisplay =  "Name: " + name + "\n" +
-                                    "Username: " + username + "\n" +
-                                    "Rating: " + rating + "\n" +
                                     "Title: " + title + "\n" +
                                     "Author: " + author + "\n" +
                                     "Genre: " + genre + "\n" +
                                     "Tags: " + tags + "\n" +
-                                    "Price: " + price;
+                                    "Rating: " + rating + "/5\n";
             t.setText(textToDisplay);
-            t.setWidth(360);
+            t.setWidth(500);
 
-            Button confirm = new Button(this);
-            Button deny = new Button(this);
-            confirm.setText("CONFIRM");
-            deny.setText("DENY");
+            Button view = new Button(this);
+            view.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), ViewExchangeActivity.class);
+                    intent.putExtra("Name", name);
+                    intent.putExtra("Title", title);
+                    intent.putExtra("Author", author);
+                    intent.putExtra("Genre", genre);
+                    intent.putExtra("Tags", tags);
+                    intent.putExtra("Rating", rating);
+                    intent.putExtra("Image", imageURL);
+                    intent.putExtra("Username", username);
+                    startActivity(intent);
+                }
+            });
+            view.setText("VIEW");
 
             row.addView(img);
             row.addView(t);
-            row.addView(confirm);
-            row.addView(deny);
+            row.addView(view);
 
             table.addView(row, new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
         }
