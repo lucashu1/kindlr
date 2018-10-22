@@ -41,7 +41,8 @@ public class UserManager {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                usersMap = (HashMap<String, User>) dataSnapshot.getValue(HashMap.class);
+                Log.d("TESTINFO", "Got response");
+                usersMap = (HashMap<String, User>) dataSnapshot.getValue();
                 Log.d("INFO", "Refreshed usersMap");
             }
 
@@ -97,11 +98,21 @@ public class UserManager {
 
     // Attempt to login and set currentUser. Return true if successful
     public boolean attemptLogin(String username, String hashedPassword) {
-        if (!usersMap.containsKey(username))
+        Log.i("TESTLOG", "Attempting to log user in");
+        Log.i("TESTLOG", "User map " + usersMap.toString());
+        if (!usersMap.containsKey(username)) {
+            Log.i("TESTLOG", "User " + username + " does not exist");
             return false;
+        }
+
+        Log.i("TESTLOG","Fetching user");
         User u = usersMap.get(username);
+        Log.i("TESTLOG", "Real password is " + u.getHashedPassword());
+
         if (!u.getHashedPassword().equals(hashedPassword))
             return false;
+
+        Log.i("TESTLOG", "Assigning current user");
         currentUser = u;
         return true;
     }

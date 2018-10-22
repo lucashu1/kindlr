@@ -2,6 +2,7 @@ package com.example.team19.kindlr;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -10,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainSwipingScreenActivity extends Activity {
-    private Book currentBook;
     private TextView bookTitle;
     private TextView bookAuthor;
     private BookManager bookMgr = BookManager.getBookManager();
@@ -38,6 +38,8 @@ public class MainSwipingScreenActivity extends Activity {
                 incrementIndex();
             }
         });
+
+        refreshBook();
     }
 
     private void incrementIndex() {
@@ -49,10 +51,22 @@ public class MainSwipingScreenActivity extends Activity {
 
     private void refreshBook() {
         curBooks = bookMgr.getFilteredBooks(bookFilter);
-        updateDisplay(curBooks.get(curIndex));
+        Log.i("InfoMsg", "" + curBooks.size());
+
+        if (curIndex > curBooks.size()) {
+            curIndex = 0;
+        }
+        updateDisplay();
     }
 
-    private void updateDisplay(Book book) {
+    private Book getCurrentBook() {
+        if (curBooks.size() == 0)
+            return null;
+        return curBooks.get(curIndex);
+    }
+
+    private void updateDisplay() {
+        Book book = getCurrentBook();
         bookTitle.setText(book.getBookName());
         bookAuthor.setText(book.getAuthor());
     }

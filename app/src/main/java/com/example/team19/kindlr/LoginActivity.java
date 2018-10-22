@@ -126,6 +126,7 @@ public class LoginActivity extends AppCompatActivity {
             cancel = true;
         }
 
+
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -193,24 +194,11 @@ public class LoginActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
+            if (!UserManager.getUserManager().attemptLogin(mUsername, mPassword)) {
                 return false;
             }
 
-            boolean valid = false;
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mUsername) && pieces[1].equals(mPassword)) {
-                    // Account exists, return true if the password matches.
-                    valid = true;
-                    break;
-                }
-            }
-
-            return valid;
+            return true;
         }
 
         @Override
