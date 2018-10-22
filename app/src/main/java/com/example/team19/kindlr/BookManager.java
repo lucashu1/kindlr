@@ -111,13 +111,13 @@ public class BookManager {
 //        // TODO: pull from DB
 //    }
 
-    public List<Book> getFilteredBooks(BookFilter bookFilter) {
+    public List<Book> getFilteredBooks(BookFilter bookFilter, User forUser) {
         Log.i("TESTINFO", "Getting filtered books");
         List<Book> filteredBooks = new ArrayList();
 
         // Filter out current user's already liked/disliked books
-        List<String> currentUserDislikedBooks = UserManager.getUserManager().getCurrentUser().getDislikedBooks();
-        List<String> currentUserLikedBooks = UserManager.getUserManager().getCurrentUser().getLikedBooks();
+        List<String> currentUserDislikedBooks = forUser.getDislikedBooks();
+        List<String> currentUserLikedBooks = forUser.getLikedBooks();
 
         for (Map.Entry<String, Book> entry : booksMap.entrySet()) {
             Book b = entry.getValue();
@@ -126,13 +126,11 @@ public class BookManager {
             boolean matchesFilter = bookFilter.isMatch(entry.getValue());
             boolean isNotDisliked = !currentUserDislikedBooks.contains(bookID);
             boolean isNotLiked = !currentUserLikedBooks.contains(bookID);
-            boolean doesNotOwn = !b.getOwner().equals(UserManager.getUserManager().getCurrentUser().getUsername());
+            boolean doesNotOwn = !b.getOwner().equals(forUser.getUsername());
             boolean isVisible = b.isVisible();
 
             Log.i("TESTINFO", "Truth values: " + matchesFilter + ", " + isNotDisliked +
                     ", " + isNotLiked + ", " + doesNotOwn + ", " + isVisible);
-
-            Log.i("TESTINFO", "Book is visible " + b.isVisible());
 
             // Get books that match the filter, have not already been liked/disliked, do not belong to current user, and are not invisible
             if (matchesFilter && isNotDisliked && isNotLiked && doesNotOwn && isVisible) {

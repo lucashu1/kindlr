@@ -58,19 +58,7 @@ public class SignupActivity extends Activity {
     }
 
     public void displayError(String msg) {
-        AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
 
-        dlgAlert.setMessage(msg);
-        dlgAlert.setTitle("Invalid");
-        dlgAlert.setPositiveButton("OK", null);
-        dlgAlert.setCancelable(true);
-        dlgAlert.create().show();
-
-        dlgAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
     }
 
     public void createAccount() {
@@ -87,7 +75,7 @@ public class SignupActivity extends Activity {
                 cityStr, stateStr, phoneStr, emailStr);
 
         if (!success) {
-            displayError("Invalid details");
+            ErrorHelper.displayError("Invalid", "Invalid details", this);
         }
         else {
             Intent intent = new Intent(SignupActivity.this, MainSwipingScreenActivity.class);

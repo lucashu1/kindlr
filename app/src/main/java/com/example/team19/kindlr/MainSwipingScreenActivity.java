@@ -18,6 +18,7 @@ public class MainSwipingScreenActivity extends Activity {
     private BookFilter bookFilter = new BookFilter();
     List<Book> curBooks = null;
     private int curIndex = 0;
+    private User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,11 +28,14 @@ public class MainSwipingScreenActivity extends Activity {
         bookTitle = (TextView)findViewById(R.id.title_text);
         bookAuthor = (TextView)findViewById(R.id.author_text);
 
+        this.currentUser = UserManager.getUserManager().getCurrentUser();
+
         Button likeBtn = (Button) findViewById(R.id.like_button);
         likeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 incrementIndex();
+                likeBook();
             }
         });
 
@@ -40,6 +44,7 @@ public class MainSwipingScreenActivity extends Activity {
             @Override
             public void onClick(View view) {
                 incrementIndex();
+                dislikeBook();
             }
         });
 
@@ -52,6 +57,26 @@ public class MainSwipingScreenActivity extends Activity {
         });
 
         refreshBook();
+    }
+
+    private void dislikeBook() {
+        Book book = this.getCurrentBook();
+        if (book == null) {
+            ErrorHelper.displayError("Invalid", "No book to dislike!", this);
+        }
+        else {
+            UserManager.getUserManager().makeUserDislikeBook(this.currentUser.getUsername(), book.getBookID());
+        }
+    }
+
+    private void likeBook() {
+        Book book = this.getCurrentBook();
+        if (book == null) {
+            ErrorHelper.displayError("Invalid", "No book to like!", this);
+        }
+        else {
+            UserManager.getUserManager().makeUserLikeBook(this.currentUser.getUsername(), book.getBookID());
+        }
     }
 
     private void navigateToProfile() {
@@ -68,7 +93,7 @@ public class MainSwipingScreenActivity extends Activity {
     }
 
     private void refreshBook() {
-        curBooks = bookMgr.getFilteredBooks(bookFilter);
+        curBooks = bookMgr.getFilteredBooks(bookFilter, currentUser);
         Log.i("InfoMsg", "" + curBooks.size());
 
         if (curIndex > curBooks.size()) {
