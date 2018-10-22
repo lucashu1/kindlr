@@ -128,14 +128,6 @@ public class BookManager {
     }
 
     public void postBookForExchange(String bookName, String isbn, String author, String genre, int pageCount, List<String> tags, String owner){
-//        Integer maxKey = 0;
-        //iterate through keys and find max key, that will be key for new book
-//        for (Integer key : booksMap.keySet()) {
-//            if(key > maxKey){
-//                maxKey = key;
-//            }
-//            // ...
-//        }
 
         String bookKey = booksRef.push().getKey();
         Book book = new Book(bookKey, bookName, isbn, author, genre, pageCount, tags, false, owner);
@@ -147,19 +139,6 @@ public class BookManager {
 
 
     public void postBookForSale(String bookName, String isbn, String author, String genre, int pageCount, List<String> tags, String owner){
-
-//        //find the book in the map
-//        for (Map.Entry<String, Book> entry : booksMap.entrySet()) {
-//            Book currBook = entry.getValue();
-//            String bookKey = entry.getKey();
-//            if(currBook.getBookId().equals(book.getBookId())){
-//                currBook.setForSale(true);
-//                booksMap.put(bookKey, currBook);
-//                break;
-//            }
-//
-//        }
-
         String bookKey = booksRef.push().getKey();
         Book book = new Book(bookKey, bookName, isbn, author, genre, pageCount, tags, true, owner);
 

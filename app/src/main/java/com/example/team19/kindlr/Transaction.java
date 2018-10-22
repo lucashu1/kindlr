@@ -48,18 +48,6 @@ public abstract class Transaction {
         return user2LikedBookID;
     }
 
-//    //gets the other user's book
-//    public Book getTheirBook()
-//    {
-//        return BookManager.getBookManager().getBookByID(book2ID);
-//    }
-//
-//    //gets your book in the transaction
-//    public Book getYourBook()
-//    {
-//        return BookManager.getBookManager().getBookByID(book1ID);
-//    }
-
     //checks if transaction is a sale or an exchange
     public boolean isSale()
     {
@@ -82,6 +70,7 @@ public abstract class Transaction {
         return timestamp;
     }
 
+    public abstract boolean isMatched();
     public abstract void acceptTransaction();
     public abstract void rejectTransaction();
 

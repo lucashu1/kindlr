@@ -152,7 +152,7 @@ public class TransactionManager {
     }
 
     //gets a list of all transactions of books
-    public HashMap<String, Transaction> getAllTransactions()
+    public HashMap<String, Transaction> getTransactionsMap()
     {
         return (HashMap<String, Transaction>) transactionsMap;
     }
@@ -163,13 +163,13 @@ public class TransactionManager {
 //    }
 
     //Gets all the transactions, sales or not, for a specified user
-    public ArrayList<Transaction> getAllTransactionsForUser(String userName)
+    public ArrayList<Transaction> getAllMatchedTransactionsForUser(String userName)
     {
         ArrayList<Transaction> result = new ArrayList<Transaction>();
         for(Map.Entry<String, Transaction> entry : transactionsMap.entrySet())
         {
             Transaction transaction = entry.getValue();
-            if(transaction.getUsername1().equals(userName) || transaction.getUsername2().equals(userName))
+            if((transaction.getUsername1().equals(userName) || transaction.getUsername2().equals(userName)) && transaction.isMatched())
             {
                 result.add(transaction);
             }

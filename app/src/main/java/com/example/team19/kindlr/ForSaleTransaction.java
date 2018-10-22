@@ -36,4 +36,8 @@ public class ForSaleTransaction extends Transaction {
         wasRejected = true;
     }
 
+    public boolean isMatched() {
+        return true; // for sale transactions are automatically matched (1-sided!)
+    }
+
 }

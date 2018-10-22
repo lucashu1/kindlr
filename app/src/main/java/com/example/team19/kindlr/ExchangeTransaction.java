@@ -55,4 +55,16 @@ public class ExchangeTransaction extends Transaction {
             bm.getBookByID(user2LikedBookID).makeVisible();
         wasRejected = true;
     }
+
+//    // gets other user's (non current user's) book in the transaction
+//    public Book getTheirBook()
+//    {
+//        return BookManager.getBookManager().getBookByID(book2ID);
+//    }
+//
+//    //gets your (current user's) book in the transaction
+//    public Book getYourBook()
+//    {
+//        return BookManager.getBookManager().getBookByID(book1ID);
+//    }
 }
