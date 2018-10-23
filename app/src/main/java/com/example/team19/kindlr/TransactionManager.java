@@ -40,8 +40,17 @@ public class TransactionManager {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                transactionsMap = (HashMap<String, Transaction>) dataSnapshot.getValue();
-                Log.d("INFO", "Refreshed usersMap");
+                Log.d("TESTINFO", "Transactions being updated");
+                transactionsMap = new HashMap<String, Transaction>();
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Transaction t = snapshot.getValue(Transaction.class);
+                    if (t.isSale())
+                        transactionsMap.put(snapshot.getKey(), (ForSaleTransaction) t);
+                    else
+                        transactionsMap.put(snapshot.getKey(), (ExchangeTransaction) t);
+                }
+                Log.d("TESTINFO", "Refreshed transactionsMap to be " + transactionsMap.toString());
             }
 
             @Override

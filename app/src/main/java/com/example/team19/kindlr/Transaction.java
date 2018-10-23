@@ -1,8 +1,9 @@
 package com.example.team19.kindlr;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public abstract class Transaction {
+public abstract class Transaction implements Serializable {
     // TRANSACTION FLOW
         // Exchange: User likes book --> Create new unmatched transaction --> Other book's owner likes one of User 1's books --> match! --> accept transaction
         // Sale: User likes a forSale book --> Create a matched forSale transaction immediately
