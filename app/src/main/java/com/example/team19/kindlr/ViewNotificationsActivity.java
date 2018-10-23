@@ -20,7 +20,7 @@ public class ViewNotificationsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_notifications);
-        displayNotifications();
+        //displayNotifications();
     }
 
     /*

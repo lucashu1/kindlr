@@ -73,7 +73,7 @@ public class MainSwipingScreenActivity extends Activity {
             ErrorHelper.displayError("Invalid", "No book to dislike!", this);
         }
         else {
-            TransactionManager.getTransactionManager().makeUserDislikeBook(this.currentUser.getUsername(), book.getBookID());
+            UserManager.getUserManager().makeUserDislikeBook(this.currentUser.getUsername(), book.getBookID());
         }
     }
 
@@ -83,7 +83,7 @@ public class MainSwipingScreenActivity extends Activity {
             ErrorHelper.displayError("Invalid", "No book to like!", this);
         }
         else {
-            TransactionManager.getTransactionManager().makeUserLikeBook(this.currentUser.getUsername(), book.getBookID());
+            UserManager.getUserManager().makeUserLikeBook(this.currentUser.getUsername(), book.getBookID());
         }
     }
 
