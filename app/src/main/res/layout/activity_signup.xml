@@ -39,7 +39,7 @@
                 android:inputType="textPersonName"
                 android:visibility="visible"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editText2" />
+                app:layout_constraintTop_toBottomOf="@+id/first_name" />
 
             <EditText
                 android:id="@+id/username"
@@ -52,7 +52,7 @@
                 android:inputType="textPersonName"
                 android:visibility="visible"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editText3" />
+                app:layout_constraintTop_toBottomOf="@+id/last_name" />
 
             <EditText
                 android:id="@+id/password"
@@ -65,7 +65,7 @@
                 android:inputType="textPersonName"
                 android:visibility="visible"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editText4" />
+                app:layout_constraintTop_toBottomOf="@+id/username" />
 
             <EditText
                 android:id="@+id/city"
@@ -76,7 +76,7 @@
                 android:ems="10"
                 android:hint="City"
                 android:inputType="textPersonName"
-                app:layout_constraintTop_toBottomOf="@+id/editText" />
+                app:layout_constraintTop_toBottomOf="@+id/password" />
 
             <Spinner
                 android:id="@+id/state"
@@ -86,7 +86,7 @@
                 android:layout_marginTop="30dp"
                 android:entries="@array/states"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editText7" />
+                app:layout_constraintTop_toBottomOf="@+id/city" />
 
             <EditText
                 android:id="@+id/phone"
@@ -98,7 +98,7 @@
                 android:hint="Phone xxx-xxx-xxxx"
                 android:inputType="textPersonName"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinner" />
+                app:layout_constraintTop_toBottomOf="@+id/state" />
 
             <EditText
                 android:id="@+id/email"
@@ -110,7 +110,8 @@
                 android:hint="Email"
                 android:inputType="textPersonName"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editText6" />
+                app:layout_constraintTop_toBottomOf="@+id/phone" />
+
 
             <Button
                 android:id="@+id/create_profile"
@@ -120,7 +121,7 @@
                 android:layout_marginTop="30dp"
                 android:text="Create Profile"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editText8" />
+                app:layout_constraintTop_toBottomOf="@+id/email" />
 
             <Button
                 android:id="@+id/back"

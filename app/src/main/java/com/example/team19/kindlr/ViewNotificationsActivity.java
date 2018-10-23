@@ -30,11 +30,9 @@ public class ViewNotificationsActivity extends Activity {
         UserManager um = UserManager.getUserManager();
         TransactionManager tm = TransactionManager.getTransactionManager();
         User currentUser = um.getCurrentUser();
-        if (currentUser == null)
-            Log.d("user", "isnull");
-
 
         ArrayList<Transaction> matches = tm.getAllMatchedTransactionsForUser(currentUser.getUsername());
+
 
         for (int i = 0; i < matches.size(); i++) {
             Transaction tx = matches.get(i);

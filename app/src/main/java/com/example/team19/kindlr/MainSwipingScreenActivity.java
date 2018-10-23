@@ -56,6 +56,14 @@ public class MainSwipingScreenActivity extends Activity {
             }
         });
 
+        Button notificationsBtn = (Button) findViewById(R.id.notifications);
+        notificationsBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ViewNotificationsActivity.class);
+                startActivity(intent);
+            }
+        });
+
         refreshBook();
     }
 
@@ -65,7 +73,7 @@ public class MainSwipingScreenActivity extends Activity {
             ErrorHelper.displayError("Invalid", "No book to dislike!", this);
         }
         else {
-            UserManager.getUserManager().makeUserDislikeBook(this.currentUser.getUsername(), book.getBookID());
+            TransactionManager.getTransactionManager().makeUserDislikeBook(this.currentUser.getUsername(), book.getBookID());
         }
     }
 
@@ -75,7 +83,7 @@ public class MainSwipingScreenActivity extends Activity {
             ErrorHelper.displayError("Invalid", "No book to like!", this);
         }
         else {
-            UserManager.getUserManager().makeUserLikeBook(this.currentUser.getUsername(), book.getBookID());
+            TransactionManager.getTransactionManager().makeUserLikeBook(this.currentUser.getUsername(), book.getBookID());
         }
     }
 

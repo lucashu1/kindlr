@@ -68,8 +68,9 @@ public class TransactionManager {
 
     public boolean makeUserLikeBook(String username, String bookID) {
         boolean success = UserManager.getUserManager().makeUserLikeBook(username, bookID);
-        if (!success)
+        if (!success) {
             return false;
+        }
         processLikedBook(username, bookID);
         return true;
     }
@@ -120,7 +121,6 @@ public class TransactionManager {
         }
 
         saveToFirebase();
-
     }
 
     // Add new partial exchange transaction using given fields (mo match found yet)
@@ -185,6 +185,7 @@ public class TransactionManager {
             if((transaction.getUsername1().equals(userName) || transaction.getUsername2().equals(userName)) && transaction.isMatched())
             {
                 result.add(transaction);
+
             }
         }
         return result;

@@ -19,6 +19,13 @@
             android:text="Profile"
             tools:layout_editor_absoluteX="280dp"
             tools:layout_editor_absoluteY="447dp" />
+
+        <Button
+            android:id="@+id/notifications"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="View Notifications" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/book_content"

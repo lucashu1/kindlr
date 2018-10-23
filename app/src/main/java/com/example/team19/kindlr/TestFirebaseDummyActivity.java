@@ -3,6 +3,7 @@ package com.example.team19.kindlr;
 import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import java.util.ArrayList;
 
 public class TestFirebaseDummyActivity extends Activity {
 

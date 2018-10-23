@@ -38,6 +38,14 @@ public class ViewProfileActivity extends Activity {
             }
         });
 
+        Button signoutBtn = (Button) findViewById(R.id.signout);
+        signoutBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
         if (!isCurrentUser) {
             postBookBtn.setVisibility(View.GONE);
         }
