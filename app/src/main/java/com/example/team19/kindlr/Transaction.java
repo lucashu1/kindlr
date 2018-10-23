@@ -102,6 +102,8 @@ public abstract class Transaction {
         return timestamp;
     }
 
+    public String getTransactionID() { return transactionID; }
+
     public abstract boolean isMatched();
     public abstract void acceptTransaction();
     public abstract void rejectTransaction();

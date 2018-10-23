@@ -11,6 +11,8 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.View;
 import com.squareup.picasso.Picasso;
 import android.content.Intent;
+import java.util.ArrayList;
+import android.util.Log;
 
 public class ViewNotificationsActivity extends Activity {
 
@@ -25,25 +27,43 @@ public class ViewNotificationsActivity extends Activity {
     Displays all notification blocks for this user
      */
     public void displayNotifications() {
-        int num_matches = 4; //TODO: set equal to current user's number of matches
-        for (int i = 0; i < num_matches; i++) {
+        UserManager um = UserManager.getUserManager();
+        TransactionManager tm = TransactionManager.getTransactionManager();
+        User currentUser = um.getCurrentUser();
+        if (currentUser == null)
+            Log.d("user", "isnull");
+
+
+        ArrayList<Transaction> matches = tm.getAllMatchedTransactionsForUser(currentUser.getUsername());
+
+        for (int i = 0; i < matches.size(); i++) {
+            Transaction tx = matches.get(i);
+            Book otherUsersBook = tx.getOtherUsersBook();
+            User otherUser = tx.getOtherUsernameInTransaction();
+
             TableLayout table = (TableLayout)findViewById(R.id.notifications_table_layout);
             TableRow row = new TableRow(this);
 
             ImageView img = new ImageView(this);
-            final String imageURL = "https://images-na.ssl-images-amazon.com/images/I/815egbJMs1L._AC_UL320_SR256,320_.jpg";
-            //TODO: Set imageURL to the image needed (Picasso also allows you to load image files instead of use URL's)
+            final String imageURL = "https://png.pngtree.com/element_pic/17/07/27/bd157c7c747dc708790aa64b43c3da35.jpg";
             Picasso.get().load(imageURL).into(img);
 
 
             TextView t = new TextView(this);
-            final String name = "Ben" + i;
-            final String rating = "4";
-            final String title = "Software Engineering";
-            final String author = "Ian Sommerville";
-            final String genre = "Computer Science";
-            final String tags = "long, boring, expensive";
-            final String username = "bhahn16";
+            final String name = otherUser.getFirstName() + " " + otherUser.getLastName();
+            final String rating = Double.toString(otherUser.getRating());
+            final String title = otherUsersBook.getBookName();
+            final String author = otherUsersBook.getAuthor();
+            final String genre = otherUsersBook.getGenre();
+            final String username = otherUser.getUsername();
+            String tagsTemp = "";
+            ArrayList<String> tagsList = (ArrayList<String>) otherUsersBook.getTags();
+            for (int j = 0; j < tagsList.size(); j++) {
+                tagsTemp += tagsList.get(j) + " ";
+            }
+            final String tags = tagsTemp.trim();
+            final String transactionKey = tx.getTransactionID();
+
 
             String textToDisplay =  "Name: " + name + "\n" +
                                     "Title: " + title + "\n" +
@@ -66,6 +86,7 @@ public class ViewNotificationsActivity extends Activity {
                     intent.putExtra("Rating", rating);
                     intent.putExtra("Image", imageURL);
                     intent.putExtra("Username", username);
+                    intent.putExtra("TransactionKey", transactionKey);
                     startActivity(intent);
                 }
             });
