@@ -5,6 +5,17 @@ import java.util.Date;
 
 public class ExchangeTransaction extends Transaction implements Serializable {
 
+    public ExchangeTransaction() {
+        wasAccepted = false;
+        wasRejected = false;
+        username1 = null;
+        username2 = null;
+        user1LikedBookID = null;
+        user2LikedBookID = null;
+        timestamp = new Date();
+        isMatched = false;
+    }
+
     public ExchangeTransaction(String transactionID, String username1, String user1LikedBookID) {
         super(transactionID);
         this.username1 = username1;

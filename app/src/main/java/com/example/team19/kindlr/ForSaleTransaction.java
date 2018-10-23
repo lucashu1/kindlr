@@ -5,6 +5,17 @@ import java.util.Date;
 
 public class ForSaleTransaction extends Transaction implements Serializable {
 
+    public ForSaleTransaction() {
+        wasAccepted = false;
+        wasRejected = false;
+        username1 = null;
+        username2 = null;
+        user1LikedBookID = null;
+        user2LikedBookID = null;
+        timestamp = new Date();
+        isMatched = false;
+    }
+
     // FORSALE TRANSACTION CONSTRUCTOR: User 1 likes User 2's forSale book
     public ForSaleTransaction(String transactionID, String userThatLikedBook, String likedForSaleBookID, String bookOwner) {
         super(transactionID);

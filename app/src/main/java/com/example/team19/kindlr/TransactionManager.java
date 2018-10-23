@@ -16,9 +16,11 @@ import com.google.firebase.database.ValueEventListener;
 
 public class TransactionManager {
 
-    private Map<String, Transaction> transactionsMap;
+    private Map<String, ExchangeTransaction> exchangeTransactionsMap;
+    private Map<String, ForSaleTransaction> forSaleTransactionsMap;
     FirebaseDatabase database;
-    DatabaseReference transactionsRef;
+    DatabaseReference exchangeTransactionsRef;
+    DatabaseReference forSaleTransactionsRef;
 
     private static TransactionManager transactionManagerSingleton;
     public static TransactionManager getTransactionManager() {
@@ -30,29 +32,49 @@ public class TransactionManager {
     public TransactionManager()
     {
         database = FirebaseDatabase.getInstance();
-        transactionsRef = database.getReference("transactions");
-        transactionsMap = new HashMap<String, Transaction>();
-//        refresh();
+        exchangeTransactionsRef = database.getReference("exchangeTransactions");
+        forSaleTransactionsRef = database.getReference("forSaleTransactions");
+
+        exchangeTransactionsMap = new HashMap<String, ExchangeTransaction>();
+        forSaleTransactionsMap = new HashMap<String, ForSaleTransaction>();
 
         // On data change, re-read usersMap from the database
-        transactionsRef.addValueEventListener(new ValueEventListener() {
+        exchangeTransactionsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                Log.d("TESTINFO", "Transactions being updated");
-                transactionsMap = new HashMap<String, Transaction>();
+                Log.d("TESTINFO", "exchangeTransactions being updated");
+                exchangeTransactionsMap = new HashMap<String, ExchangeTransaction>();
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Transaction t = snapshot.getValue(Transaction.class);
-                    if (t.isSale())
-                        transactionsMap.put(snapshot.getKey(), (ForSaleTransaction) t);
-                    else
-                        transactionsMap.put(snapshot.getKey(), (ExchangeTransaction) t);
+                    ExchangeTransaction t = snapshot.getValue(ExchangeTransaction.class);
+                    exchangeTransactionsMap.put(snapshot.getKey(), t);
                 }
-                Log.d("TESTINFO", "Refreshed transactionsMap to be " + transactionsMap.toString());
+                Log.d("TESTINFO", "Refreshed exchangeTransactionsMap to be " + exchangeTransactionsMap.toString());
             }
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w("WARN", "Failed to read value.", error.toException());
+            }
+        });
 
+        // On data change, re-read usersMap from the database
+        forSaleTransactionsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                Log.d("TESTINFO", "forSaleTransactions being updated");
+                forSaleTransactionsMap = new HashMap<String, ForSaleTransaction>();
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    ForSaleTransaction t = snapshot.getValue(ForSaleTransaction.class);
+                    forSaleTransactionsMap.put(snapshot.getKey(), t);
+                }
+                Log.d("TESTINFO", "Refreshed forSaleTransactionsMap to be " + forSaleTransactionsMap.toString());
+            }
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
@@ -63,7 +85,8 @@ public class TransactionManager {
 
     // Save usersMap to Firebase (write to DB)
     public void saveToFirebase() {
-        transactionsRef.setValue(transactionsMap);
+        exchangeTransactionsRef.setValue(exchangeTransactionsMap);
+        forSaleTransactionsRef.setValue(forSaleTransactionsMap);
     }
 
     public boolean makeUserLikeBook(String username, String bookID) {
@@ -96,15 +119,15 @@ public class TransactionManager {
         // Case 2: Liked book is for exchange
         else {
             // See if this 'like' could complete a 'match' with any existing transactions
-            for (Map.Entry<String, Transaction> entry : transactionsMap.entrySet()) {
+            for (Map.Entry<String, ExchangeTransaction> entry : exchangeTransactionsMap.entrySet()) {
 
                 // If this current transaction is a forSale transaction, or has already been matched, then skip
-                if (entry.getValue().forSaleTransaction || ((ExchangeTransaction) entry.getValue()).isMatched()) {
+                if (entry.getValue().isMatched()) {
                     continue;
                 }
 
                 // Get info of other (unmatched, forExchange) transaction
-                ExchangeTransaction existingUnmatchedTransaction = (ExchangeTransaction) entry.getValue();
+                ExchangeTransaction existingUnmatchedTransaction = entry.getValue();
                 String otherUser = existingUnmatchedTransaction.getUsername1();
                 String otherLikedBook = existingUnmatchedTransaction.getUser1LikedBookID();
                 String otherLikedBookOwner = BookManager.getBookManager().getBookOwner(otherLikedBook);
@@ -125,49 +148,49 @@ public class TransactionManager {
 
     // Add new partial exchange transaction using given fields (mo match found yet)
     public void addNewUnmatchedExchangedTransaction(String username1, String user1LikedBookID) {
-        String transactionID = transactionsRef.push().getKey();
-        Transaction t = new ExchangeTransaction(transactionID, username1, user1LikedBookID); // create new exchange transaction
-        transactionsMap.put(transactionID, t);
+        String transactionID = exchangeTransactionsRef.push().getKey();
+        ExchangeTransaction t = new ExchangeTransaction(transactionID, username1, user1LikedBookID); // create new exchange transaction
+        exchangeTransactionsMap.put(transactionID, t);
         Log.d("INFO", "Created new unmatched exchange transaction");
         saveToFirebase();
     }
 
     // Add new forSale transaction using given fields
     public void addNewForSaleTransaction(String userThatLikedBook, String forSaleBookID, String forSaleBookOwner) {
-        String transactionID = transactionsRef.push().getKey();
-        Transaction t = new ForSaleTransaction(transactionID, userThatLikedBook, forSaleBookID, forSaleBookOwner); // create new forSale transaction
-        transactionsMap.put(transactionID, t);
+        String transactionID = forSaleTransactionsRef.push().getKey();
+        ForSaleTransaction t = new ForSaleTransaction(transactionID, userThatLikedBook, forSaleBookID, forSaleBookOwner); // create new forSale transaction
+        forSaleTransactionsMap.put(transactionID, t);
         Log.d("INFO", "Created new forSale transaction");
         saveToFirebase();
     }
 
     //deletes a certain specified transaction. Returns true if it deletes and exists, false if
     //it does not exist
-    public boolean deleteTransaction(Transaction t)
-    {
-        String transactionID = null; // ID of transaction to remove
-        for(Map.Entry<String, Transaction> entry : transactionsMap.entrySet())
-        {
-            Transaction currTransaction = entry.getValue();
-            if(currTransaction == t)
-            {
-                transactionID = entry.getKey();
-                break;
-            }
-        }
-        if (transactionID != null) {
-            transactionsMap.remove(transactionID);
-            saveToFirebase();
-            return true;
-        }
+//    public boolean deleteTransaction(Transaction t)
+//    {
+//        String transactionID = null; // ID of transaction to remove
+//        for(Map.Entry<String, Transaction> entry : transactionsMap.entrySet())
+//        {
+//            Transaction currTransaction = entry.getValue();
+//            if(currTransaction == t)
+//            {
+//                transactionID = entry.getKey();
+//                break;
+//            }
+//        }
+//        if (transactionID != null) {
+//            transactionsMap.remove(transactionID);
+//            saveToFirebase();
+//            return true;
+//        }
+//
+//        return false;
+//    }
 
-        return false;
-    }
-
-    //gets a list of all transactions of books
-    public HashMap<String, Transaction> getTransactionsMap()
+    //gets a list of all exchangeTransactions of books
+    public HashMap<String, ExchangeTransaction> getExchangeTransactionsMap()
     {
-        return (HashMap<String, Transaction>) transactionsMap;
+        return (HashMap<String, ExchangeTransaction>) exchangeTransactionsMap;
     }
 
 //    public void refresh()
@@ -179,7 +202,20 @@ public class TransactionManager {
     public ArrayList<Transaction> getAllMatchedTransactionsForUser(String userName)
     {
         ArrayList<Transaction> result = new ArrayList<Transaction>();
-        for(Map.Entry<String, Transaction> entry : transactionsMap.entrySet())
+
+        // exchange transactions
+        for(Map.Entry<String, ExchangeTransaction> entry : exchangeTransactionsMap.entrySet())
+        {
+            Transaction transaction = entry.getValue();
+            if((transaction.getUsername1().equals(userName) || transaction.getUsername2().equals(userName)) && transaction.isMatched())
+            {
+                result.add(transaction);
+
+            }
+        }
+
+        // sale transactions
+        for(Map.Entry<String, ForSaleTransaction> entry : forSaleTransactionsMap.entrySet())
         {
             Transaction transaction = entry.getValue();
             if((transaction.getUsername1().equals(userName) || transaction.getUsername2().equals(userName)) && transaction.isMatched())

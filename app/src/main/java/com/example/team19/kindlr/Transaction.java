@@ -19,6 +19,17 @@ public class Transaction implements Serializable {
     protected Date timestamp;
     protected boolean isMatched;
 
+    public Transaction() {
+        wasAccepted = false;
+        wasRejected = false;
+        username1 = null;
+        username2 = null;
+        user1LikedBookID = null;
+        user2LikedBookID = null;
+        timestamp = new Date();
+        isMatched = false;
+    }
+
     // Default constructor
     public Transaction(String transactionID) {
         this.transactionID = transactionID;
