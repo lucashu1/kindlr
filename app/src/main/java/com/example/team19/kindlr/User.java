@@ -18,7 +18,11 @@ public class User implements Serializable {
     private ArrayList<String> dislikedBookIDs; // array of bookIDs
 
     public User() {
+        totalRating = 0;
+        numRatingsReceived = 0;
 
+        likedBookIDs = new ArrayList<String>();
+        dislikedBookIDs = new ArrayList<String>();
     }
 
     public User(String username, String hashedPassword, String firstName, String lastName,

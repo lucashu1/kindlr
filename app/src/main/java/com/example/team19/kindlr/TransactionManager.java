@@ -110,6 +110,8 @@ public class TransactionManager {
             addNewUnmatchedExchangedTransaction(username, bookID);
         }
 
+        saveToFirebase();
+
     }
 
     // Add new partial exchange transaction using given fields (mo match found yet)
@@ -117,6 +119,7 @@ public class TransactionManager {
         String transactionID = transactionsRef.push().getKey();
         Transaction t = new ExchangeTransaction(transactionID, username1, user1LikedBookID); // create new exchange transaction
         transactionsMap.put(transactionID, t);
+        Log.d("INFO", "Created new unmatched exchange transaction");
         saveToFirebase();
     }
 
@@ -125,6 +128,7 @@ public class TransactionManager {
         String transactionID = transactionsRef.push().getKey();
         Transaction t = new ForSaleTransaction(transactionID, userThatLikedBook, forSaleBookID, forSaleBookOwner); // create new forSale transaction
         transactionsMap.put(transactionID, t);
+        Log.d("INFO", "Created new forSale transaction");
         saveToFirebase();
     }
 

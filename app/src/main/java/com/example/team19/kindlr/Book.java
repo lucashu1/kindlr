@@ -1,5 +1,6 @@
 package com.example.team19.kindlr;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Book {
@@ -12,10 +13,11 @@ public class Book {
     private List<String> tags;
     private boolean forSale;
     private String owner;
-    private boolean isVisible; // if a book is a part of a current transaction, make it invisible
+    private boolean visible; // if a book is a part of a current transaction, make it invisible
 
     public Book(String bookID, String bookName, String isbn, String author, String genre, int pageCount, List<String> tags, boolean forSale, String owner){
         this.author = author;
+        this.bookName = bookName;
         this.bookID = bookID;
         this.isbn = isbn;
         this.genre = genre;
@@ -23,11 +25,11 @@ public class Book {
         this.tags = tags;
         this.forSale = forSale;
         this.owner = owner;
-        isVisible = true;
+        this.visible = true;
     }
 
     public Book() {
-
+        this("", "", "", "", "", -1, new ArrayList<String>(), false, "");
     }
 
     public String getBookID(){
@@ -71,14 +73,14 @@ public class Book {
     }
 
     public void makeInvisible() {
-        isVisible = false;
+        visible = false;
     }
 
     public void makeVisible() {
-        isVisible = true;
+        visible = true;
     }
 
     public boolean isVisible() {
-        return isVisible;
+        return visible;
     }
 }
