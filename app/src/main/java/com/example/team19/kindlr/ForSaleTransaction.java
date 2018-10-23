@@ -13,6 +13,7 @@ public class ForSaleTransaction extends Transaction {
         this.user2LikedBookID = null; // forSale transaction: only 1 book involved
         this.forSaleTransaction = true;
         this.wasAccepted = false;
+        this.isMatched = true; // forSaleTransactions are matched automatically
 
         // Make book invisible temporarily
         BookManager.getBookManager().getBookByID(user1LikedBookID).makeInvisible();

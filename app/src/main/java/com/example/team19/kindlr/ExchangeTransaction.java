@@ -3,14 +3,13 @@ package com.example.team19.kindlr;
 import java.util.Date;
 
 public class ExchangeTransaction extends Transaction {
-    private boolean isMatched;
 
     public ExchangeTransaction(String transactionID, String username1, String user1LikedBookID) {
         super(transactionID);
         this.username1 = username1;
         this.user1LikedBookID = user1LikedBookID;
         this.forSaleTransaction = false;
-        isMatched = false;
+        this.isMatched = false;
     }
 
     public void matchExchangeTransaction(String username2, String user2LikedBookID) {

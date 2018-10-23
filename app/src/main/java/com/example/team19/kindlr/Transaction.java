@@ -17,6 +17,7 @@ public abstract class Transaction implements Serializable {
     protected String user1LikedBookID; // The book that User 1 liked (should be owned by User 2)
     protected String user2LikedBookID; // The book that User 2 liked (should be owned by User 1) - OR empty if this is a forSale Transaction
     protected Date timestamp;
+    protected boolean isMatched;
 
     // Default constructor
     public Transaction(String transactionID) {
