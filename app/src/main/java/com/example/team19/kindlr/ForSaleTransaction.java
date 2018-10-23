@@ -26,9 +26,9 @@ public class ForSaleTransaction extends Transaction implements Serializable {
     @Override
     public void acceptTransaction() {
         this.wasAccepted = true;
-        // Remove books from circulation
-        if (user1LikedBookID != null && user1LikedBookID.length() > 0)
-            BookManager.getBookManager().removeBook(user1LikedBookID);
+        // Remove books from circulation - SIKE, use makeInvisible() instead
+//        if (user1LikedBookID != null && user1LikedBookID.length() > 0)
+//            BookManager.getBookManager().removeBook(user1LikedBookID);
     }
 
     // Reject transaction --> make books visible again

@@ -41,11 +41,11 @@ public class ExchangeTransaction extends Transaction implements Serializable {
     @Override
     public void acceptTransaction() {
         this.wasAccepted = true;
-        // Remove books from circulation
-        if (user1LikedBookID != null && user1LikedBookID.length() > 0)
-            BookManager.getBookManager().removeBook(user1LikedBookID);
-        if (user2LikedBookID != null && user2LikedBookID.length() > 0)
-            BookManager.getBookManager().removeBook(user2LikedBookID);
+        // Remove books from circulation - sike, don't do this. use makeInvisible() instead
+//        if (user1LikedBookID != null && user1LikedBookID.length() > 0)
+//            BookManager.getBookManager().removeBook(user1LikedBookID);
+//        if (user2LikedBookID != null && user2LikedBookID.length() > 0)
+//            BookManager.getBookManager().removeBook(user2LikedBookID);
     }
 
     // Reject transaction --> make books visible again
