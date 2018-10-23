@@ -1,8 +1,9 @@
 package com.example.team19.kindlr;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class ForSaleTransaction extends Transaction {
+public class ForSaleTransaction extends Transaction implements Serializable {
 
     // FORSALE TRANSACTION CONSTRUCTOR: User 1 likes User 2's forSale book
     public ForSaleTransaction(String transactionID, String userThatLikedBook, String likedForSaleBookID, String bookOwner) {

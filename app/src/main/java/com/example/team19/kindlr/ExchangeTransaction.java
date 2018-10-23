@@ -1,8 +1,9 @@
 package com.example.team19.kindlr;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class ExchangeTransaction extends Transaction {
+public class ExchangeTransaction extends Transaction implements Serializable {
 
     public ExchangeTransaction(String transactionID, String username1, String user1LikedBookID) {
         super(transactionID);
