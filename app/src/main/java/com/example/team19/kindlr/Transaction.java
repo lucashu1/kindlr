@@ -3,7 +3,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public abstract class Transaction implements Serializable {
+public class Transaction implements Serializable {
     // TRANSACTION FLOW
         // Exchange: User likes book --> Create new unmatched transaction --> Other book's owner likes one of User 1's books --> match! --> accept transaction
         // Sale: User likes a forSale book --> Create a matched forSale transaction immediately
@@ -107,9 +107,13 @@ public abstract class Transaction implements Serializable {
 
     public String getTransactionID() { return transactionID; }
 
-    public abstract boolean isMatched();
-    public abstract void acceptTransaction();
-    public abstract void rejectTransaction();
+    public boolean isMatched() {
+        return isMatched;
+    }
+
+    public void acceptTransaction() { } // TO OVERRIDE
+
+    public void rejectTransaction() { } // TO OVERRIDE
 
 
 }

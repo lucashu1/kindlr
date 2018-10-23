@@ -31,11 +31,13 @@ public class ExchangeTransaction extends Transaction {
         // notify both users involved?
     }
 
+    @Override
     public boolean isMatched() {
         return isMatched;
     }
 
     // Accept transaction: remove book(s) from circulation
+    @Override
     public void acceptTransaction() {
         this.wasAccepted = true;
         // Remove books from circulation
@@ -46,6 +48,7 @@ public class ExchangeTransaction extends Transaction {
     }
 
     // Reject transaction --> make books visible again
+    @Override
     public void rejectTransaction() {
         BookManager bm = BookManager.getBookManager();
         if (user1LikedBookID != null && user1LikedBookID.length() > 0)

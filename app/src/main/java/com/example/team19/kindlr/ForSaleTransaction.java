@@ -22,6 +22,7 @@ public class ForSaleTransaction extends Transaction {
     }
 
     // Accept transaction: remove book(s) from circulation
+    @Override
     public void acceptTransaction() {
         this.wasAccepted = true;
         // Remove books from circulation
@@ -30,6 +31,7 @@ public class ForSaleTransaction extends Transaction {
     }
 
     // Reject transaction --> make books visible again
+    @Override
     public void rejectTransaction() {
         BookManager bm = BookManager.getBookManager();
         if (user1LikedBookID != null && user1LikedBookID.length() > 0)
@@ -37,6 +39,7 @@ public class ForSaleTransaction extends Transaction {
         wasRejected = true;
     }
 
+    @Override
     public boolean isMatched() {
         return true; // for sale transactions are automatically matched (1-sided!)
     }
