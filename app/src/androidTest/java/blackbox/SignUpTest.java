@@ -7,11 +7,11 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.example.team19.kindlr.LoginActivity;
 import com.example.team19.kindlr.R;
-import com.example.team19.kindlr.SignupActivity;
 import com.example.team19.kindlr.UserManager;
 
 import junit.framework.AssertionFailedError;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -51,6 +51,14 @@ public class SignUpTest {
         testUsername = "test_user";
     }
 
+    @Before
+    @After
+    public void clearTestUser() {
+        if (UserManager.getUserManager().doesUserExist(testUsername)) {
+            UserManager.getUserManager().deleteUser(testUsername);
+        }
+    }
+
     private void testFill(String firstNameStr, String lastNameStr, String usernameStr,
                           String passwordStr, String cityStr, String stateStr, String phoneStr,
                           String emailStr) {
@@ -79,21 +87,20 @@ public class SignUpTest {
                 .perform(click());
     }
 
-    private boolean assertMainSwipingExists() {
+    private boolean checkMainSwipingExists() {
         try {
             onView(withId(R.id.like_button)).check(matches(isDisplayed()));
-            return true;
-        } catch (NoMatchingViewException e) {
+        } catch (AssertionFailedError e) {
             return false;
         }
+        catch (NoMatchingViewException e) {
+            return false;
+        }
+        return true;
     }
 
     @Test
     public void testCorrectCreateUser() {
-        if (UserManager.getUserManager().doesUserExist(testUsername)) {
-            UserManager.getUserManager().deleteUser(testUsername);
-        }
-
         toSignUp();
         testFill("TestUserFirst", "TestUserLast",
                 testUsername, "thisisapassword", "Redmond",
@@ -101,7 +108,7 @@ public class SignUpTest {
 
         assertTrue(UserManager.getUserManager().doesUserExist(testUsername));
 
-        assertTrue(assertMainSwipingExists());
+        assertTrue(checkMainSwipingExists());
 
         UserManager.getUserManager().deleteUser(testUsername);
     }
@@ -117,7 +124,17 @@ public class SignUpTest {
                 testUsername, "thisisapassword", "Redmond",
                 "WA", "4254639202", "szot@usc.edu");
 
-        assertFalse(assertMainSwipingExists());
+        assertFalse(checkMainSwipingExists());
         UserManager.getUserManager().deleteUser(testUsername);
+    }
+
+    @Test
+    public void testCreatePartiallyFilledOut() {
+        toSignUp();
+        testFill("TestUserFirst", "TestUserLast",
+                testUsername, "", "Redmond",
+                "WA", "4254639202", "szot@usc.edu");
+
+        assertFalse(checkMainSwipingExists());
     }
 }
