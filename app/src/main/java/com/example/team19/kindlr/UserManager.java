@@ -29,7 +29,7 @@ public class UserManager {
 
     // Constructor
     public UserManager() {
-
+        usersMap = new HashMap<String, User>();
     }
 
     // Save usersMap to Firebase (write to DB)
@@ -40,7 +40,6 @@ public class UserManager {
     public void initialize() {
         database = FirebaseDatabase.getInstance();
         usersRef = database.getReference("users");
-        usersMap = new HashMap<String, User>();
 //        bookIDToUsername = new HashMap<Integer, String>();
 //        refreshUsers(); // pull from DB
 
@@ -92,6 +91,19 @@ public class UserManager {
         currentUser = u;
 
         return true;
+    }
+
+    public boolean doesUserExist(String username) {
+        return (usersMap.containsKey(username));
+    }
+
+    public void deleteUser(String username) {
+        if (!doesUserExist(username))
+            return;
+
+        usersMap.remove(username);
+        DatabaseReference userRef = usersRef.child(username);
+        userRef.removeValue();
     }
 
     // Return User with given username
@@ -151,7 +163,8 @@ public class UserManager {
 
     // Clear all users from Firebase. Can't undo!
     public void clearAllUsers() {
-        usersMap = new HashMap<String, User>();
-        usersRef.setValue(usersMap);
+//        usersMap = new HashMap<String, User>();
+//        usersRef.setValue(usersMap);
+        usersRef.removeValue();
     }
 }

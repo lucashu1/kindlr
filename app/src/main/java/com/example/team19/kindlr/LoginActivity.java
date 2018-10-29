@@ -55,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
 
         UserManager.getUserManager().initialize();
         BookManager.getBookManager().initialize();
+        TransactionManager.getTransactionManager().initialize();
 
         mUsernameView = (EditText)findViewById(R.id.username);
         mPasswordView = (EditText) findViewById(R.id.password);

@@ -18,9 +18,9 @@ public class TransactionManager {
 
     private Map<String, ExchangeTransaction> exchangeTransactionsMap;
     private Map<String, ForSaleTransaction> forSaleTransactionsMap;
-    FirebaseDatabase database;
-    DatabaseReference exchangeTransactionsRef;
-    DatabaseReference forSaleTransactionsRef;
+    private FirebaseDatabase database;
+    private DatabaseReference exchangeTransactionsRef;
+    private DatabaseReference forSaleTransactionsRef;
 
     private static TransactionManager transactionManagerSingleton;
     public static TransactionManager getTransactionManager() {
@@ -29,7 +29,12 @@ public class TransactionManager {
         return transactionManagerSingleton;
     }
 
-    public TransactionManager()
+    public TransactionManager() {
+        exchangeTransactionsMap = new HashMap<String, ExchangeTransaction>();
+        forSaleTransactionsMap = new HashMap<String, ForSaleTransaction>();
+    }
+
+    public void initialize()
     {
         database = FirebaseDatabase.getInstance();
         exchangeTransactionsRef = database.getReference("exchangeTransactions");
@@ -229,9 +234,11 @@ public class TransactionManager {
 
     // Clear all transactions from Firebase. Can't undo!
     public void clearAllTransactions() {
-        exchangeTransactionsMap = new HashMap<String, ExchangeTransaction>();
-        forSaleTransactionsMap = new HashMap<String, ForSaleTransaction>();
-        exchangeTransactionsRef.setValue(exchangeTransactionsMap);
-        forSaleTransactionsRef.setValue(forSaleTransactionsMap);
+//        exchangeTransactionsMap = new HashMap<String, ExchangeTransaction>();
+//        forSaleTransactionsMap = new HashMap<String, ForSaleTransaction>();
+//        exchangeTransactionsRef.setValue(exchangeTransactionsMap);
+//        forSaleTransactionsRef.setValue(forSaleTransactionsMap);
+        exchangeTransactionsRef.removeValue();
+        forSaleTransactionsRef.removeValue();
     }
 }

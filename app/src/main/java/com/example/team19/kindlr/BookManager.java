@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class BookManager {
 
     // Book ID to Book object
-    public Map<String, Book> booksMap;
+    private Map<String, Book> booksMap;
     private FirebaseDatabase database;
     private DatabaseReference booksRef;
 //    private DatabaseReference booksRef;
@@ -32,7 +32,7 @@ public class BookManager {
 
     // BookManager constructor
     public BookManager() {
-
+        booksMap = new HashMap<String, Book>();
     }
 
     public void initialize() {
@@ -70,6 +70,19 @@ public class BookManager {
     // Save usersMap to Firebase (write to DB)
     public void saveToFirebase() {
         booksRef.setValue(booksMap);
+    }
+
+    public boolean doesBookExist(String bookID) {
+        return (booksMap.containsKey(bookID));
+    }
+
+    public void deleteBook(String bookID) {
+        if (!doesBookExist(bookID))
+            return;
+
+        booksMap.remove(bookID);
+        DatabaseReference bookRef = booksRef.child(bookID);
+        bookRef.removeValue();
     }
 
     // Get book with given ID
@@ -143,29 +156,32 @@ public class BookManager {
         return filteredBooks;
     }
 
-    public void postBookForExchange(String bookName, String isbn, String author, String genre, int pageCount, List<String> tags, String owner) {
+    public String postBookForExchange(String bookName, String isbn, String author, String genre, int pageCount, List<String> tags, String owner) {
         String bookKey = booksRef.push().getKey();
         Book book = new Book(bookKey, bookName, isbn, author, genre, pageCount, tags, false, owner);
 
         // Add book to map, save to firebase
         booksMap.put(bookKey, book);
         saveToFirebase();
+        return bookKey;
     }
 
 
-    public void postBookForSale(String bookName, String isbn, String author, String genre, int pageCount, List<String> tags, String owner){
+    public String postBookForSale(String bookName, String isbn, String author, String genre, int pageCount, List<String> tags, String owner){
         String bookKey = booksRef.push().getKey();
         Book book = new Book(bookKey, bookName, isbn, author, genre, pageCount, tags, true, owner);
 
         // Add book, update the firebase database
         booksMap.put(bookKey, book);
         saveToFirebase();
+        return bookKey;
     }
 
     // Clear all books from Firebase. Can't undo!
     public void clearAllBooks() {
-        booksMap = new HashMap<String, Book>();
-        booksRef.setValue(booksMap);
+//        booksMap = new HashMap<String, Book>();
+//        booksRef.setValue(booksMap);
+        booksRef.removeValue();
     }
 
 
