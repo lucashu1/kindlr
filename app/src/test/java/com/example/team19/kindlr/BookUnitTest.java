@@ -25,4 +25,5 @@ public class BookUnitTest {
         assertEquals(testBook.getPageCount(),100);
         assertEquals(testBook.getForSale(),true);
     }
+
 }
