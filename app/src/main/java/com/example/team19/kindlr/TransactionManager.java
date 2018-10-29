@@ -94,15 +94,16 @@ public class TransactionManager {
         forSaleTransactionsRef.setValue(forSaleTransactionsMap);
     }
 
-    public boolean makeUserLikeBook(String username, String bookID) {
+    // Make user like book, and return the String of the resulting transactionID
+    public String makeUserLikeBook(String username, String bookID) {
         boolean success = UserManager.getUserManager().makeUserLikeBook(username, bookID);
         if (!success) {
-            return false;
+            return null;
         }
-        processLikedBook(username, bookID);
-        return true;
+        return processLikedBook(username, bookID);
     }
 
+    // Make user dislike book, return true if successful
     public boolean makeUserDislikeBook(String username, String bookID) {
         boolean success = UserManager.getUserManager().makeUserDislikeBook(username, bookID);
         if (!success)
@@ -110,15 +111,18 @@ public class TransactionManager {
         return true;
     }
 
-    public void processLikedBook(String username, String bookID) {
+    // Process liked book, return corresponding transactionID
+    public String processLikedBook(String username, String bookID) {
         // If this is a forSale book and has not been completed, then create a new transaction
         // Otherwise (book is for exchange -- not for sale), Look at all other existing partial transactions:
             // If this could complete a transaction, then make it do so, and notify both participants
             // Otherwise, call addNewUnMatchedTransaction so future 'likes' can potentially make a 'match'
 
+        String transactionID;
+
         // Case 1: Liked book is for sale
         if (BookManager.getBookManager().getBookByID(bookID).getForSale()) {
-            addNewForSaleTransaction(BookManager.getBookManager().getBookByID(bookID).getOwner(), bookID,username);
+            transactionID = addNewForSaleTransaction(BookManager.getBookManager().getBookByID(bookID).getOwner(), bookID,username);
         }
 
         // Case 2: Liked book is for exchange
@@ -140,33 +144,36 @@ public class TransactionManager {
                 // Other book's owner has liked a book that is owned by current user --> match!
                 if (otherLikedBookOwner.equals(username) && !username.equals(otherUser)) {
                     existingUnmatchedTransaction.matchExchangeTransaction(username, bookID);
-                    return;
+                    return existingUnmatchedTransaction.getTransactionID();
                 }
             }
 
             // If this can't complete any existing partial transaction, call addNewPotentialTransaction
-            addNewUnmatchedExchangedTransaction(username, bookID);
+            transactionID = addNewUnmatchedExchangedTransaction(username, bookID);
         }
 
         saveToFirebase();
+        return transactionID;
     }
 
     // Add new partial exchange transaction using given fields (mo match found yet)
-    public void addNewUnmatchedExchangedTransaction(String username1, String user1LikedBookID) {
+    public String addNewUnmatchedExchangedTransaction(String username1, String user1LikedBookID) {
         String transactionID = exchangeTransactionsRef.push().getKey();
         ExchangeTransaction t = new ExchangeTransaction(transactionID, username1, user1LikedBookID); // create new exchange transaction
         exchangeTransactionsMap.put(transactionID, t);
         Log.d("INFO", "Created new unmatched exchange transaction");
         saveToFirebase();
+        return transactionID;
     }
 
     // Add new forSale transaction using given fields
-    public void addNewForSaleTransaction(String userThatLikedBook, String forSaleBookID, String forSaleBookOwner) {
+    public String addNewForSaleTransaction(String userThatLikedBook, String forSaleBookID, String forSaleBookOwner) {
         String transactionID = forSaleTransactionsRef.push().getKey();
         ForSaleTransaction t = new ForSaleTransaction(transactionID, userThatLikedBook, forSaleBookID, forSaleBookOwner); // create new forSale transaction
         forSaleTransactionsMap.put(transactionID, t);
         Log.d("INFO", "Created new forSale transaction");
         saveToFirebase();
+        return transactionID;
     }
 
     //deletes a certain specified transaction. Returns true if it deletes and exists, false if
