@@ -156,6 +156,46 @@ public class TransactionManager {
         return transactionID;
     }
 
+    public boolean forSaleTransactionExists(String transactionID) {
+        return forSaleTransactionsMap.containsKey(transactionID);
+    }
+
+    public boolean exchangeTransactionExists(String transactionID) {
+        return exchangeTransactionsMap.containsKey(transactionID);
+    }
+
+    public ForSaleTransaction getForSaleTransactionByID(String transactionID) {
+        if (!forSaleTransactionExists(transactionID))
+            return null;
+
+        return forSaleTransactionsMap.get(transactionID);
+    }
+
+    public ExchangeTransaction getExchangeTransactionByID(String transactionID) {
+        if (!exchangeTransactionExists(transactionID))
+            return null;
+
+        return exchangeTransactionsMap.get(transactionID);
+    }
+
+    public void deleteForSaleTransaction(String transactionID) {
+        if (!forSaleTransactionExists(transactionID))
+            return;
+
+        forSaleTransactionsMap.remove(transactionID);
+        DatabaseReference transactionRef = forSaleTransactionsRef.child(transactionID);
+        transactionRef.removeValue();
+    }
+
+    public void deleteExchangeTransaction(String transactionID) {
+        if (!exchangeTransactionExists(transactionID))
+            return;
+
+        exchangeTransactionsMap.remove(transactionID);
+        DatabaseReference transactionRef = exchangeTransactionsRef.child(transactionID);
+        transactionRef.removeValue();
+    }
+
     // Add new partial exchange transaction using given fields (mo match found yet)
     public String addNewUnmatchedExchangedTransaction(String username1, String user1LikedBookID) {
         String transactionID = exchangeTransactionsRef.push().getKey();
