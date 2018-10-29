@@ -93,6 +93,19 @@ public class UserManager {
         return true;
     }
 
+    public boolean doesUserExist(String username) {
+        return (usersMap.containsKey(username));
+    }
+
+    public void deleteUser(String username) {
+        if (!doesUserExist(username))
+            return;
+
+        usersMap.remove(username);
+        DatabaseReference userRef = usersRef.child(username);
+        userRef.removeValue();
+    }
+
     // Return User with given username
     public User getUserByUsername(String username) {
         if (!usersMap.containsKey(username))

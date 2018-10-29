@@ -72,6 +72,19 @@ public class BookManager {
         booksRef.setValue(booksMap);
     }
 
+    public boolean doesBookExist(String bookID) {
+        return (booksMap.containsKey(bookID));
+    }
+
+    public void deleteBook(String bookID) {
+        if (!doesBookExist(bookID))
+            return;
+
+        booksMap.remove(bookID);
+        DatabaseReference bookRef = booksRef.child(bookID);
+        bookRef.removeValue();
+    }
+
     // Get book with given ID
     public Book getBookByID(String bookID) {
         if (!booksMap.containsKey(bookID))
