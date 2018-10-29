@@ -38,9 +38,6 @@ public class LoginTest {
         // Specify a valid string.
         loginInput = "asdf";
         loginPassword = "asdf";
-
-
-
     }
 
     @Test
