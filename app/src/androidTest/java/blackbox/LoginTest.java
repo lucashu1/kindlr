@@ -49,9 +49,6 @@ public class LoginTest {
         badLoginPassword = "bogus";
         wrongPassLoginInput = "andy";
         wrongPassword = "1234";
-
-
-
     }
 
     @Test
