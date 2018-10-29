@@ -57,10 +57,6 @@ public class SignupActivity extends Activity {
         this.finish();
     }
 
-    public void displayError(String msg) {
-
-    }
-
     public void createAccount() {
         String firstNameStr = firstName.getText().toString();
         String lastNameStr = lastName.getText().toString();
@@ -70,6 +66,13 @@ public class SignupActivity extends Activity {
         String stateStr = "WA";
         String phoneStr = phone.getText().toString();
         String emailStr = email.getText().toString();
+
+        if (firstNameStr.isEmpty() || lastNameStr.isEmpty() || usernameStr.isEmpty() ||
+                passwordStr.isEmpty() || cityStr.isEmpty() || stateStr.isEmpty() ||
+                phoneStr.isEmpty() || emailStr.isEmpty()) {
+            ErrorHelper.displayError("Invalid", "Incomplete details", this);
+            return;
+        }
 
         boolean success = UserManager.getUserManager().addUser(usernameStr, passwordStr, firstNameStr, lastNameStr,
                 cityStr, stateStr, phoneStr, emailStr);
