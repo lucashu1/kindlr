@@ -1,5 +1,7 @@
-package com.example.team19.kindlr;
+package whitebox;
 
+
+import com.example.team19.kindlr.Book;
 
 import org.junit.Test;
 
