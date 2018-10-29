@@ -42,6 +42,11 @@ public class LoginTest {
 
     @Before
     public void initValidString() {
+
+        UserManager.getUserManager().addUser("andy","asdf","andrew","szot","la","ca","77777777","u@me.com");
+
+
+
         // Specify a valid string.
         loginInput = "andy";
         loginPassword = "asdf";
@@ -50,6 +55,8 @@ public class LoginTest {
         wrongPassLoginInput = "andy";
         wrongPassword = "1234";
     }
+
+
 
     @Test
     public void testValidLogin(){
