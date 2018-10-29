@@ -148,4 +148,10 @@ public class UserManager {
         this.saveToFirebase();
         return true;
     }
+
+    // Clear all users from Firebase. Can't undo!
+    public void clearAllUsers() {
+        usersMap = new HashMap<String, User>();
+        usersRef.setValue(usersMap);
+    }
 }

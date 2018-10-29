@@ -226,4 +226,12 @@ public class TransactionManager {
         }
         return result;
     }
+
+    // Clear all transactions from Firebase. Can't undo!
+    public void clearAllTransactions() {
+        exchangeTransactionsMap = new HashMap<String, ExchangeTransaction>();
+        forSaleTransactionsMap = new HashMap<String, ForSaleTransaction>();
+        exchangeTransactionsRef.setValue(exchangeTransactionsMap);
+        forSaleTransactionsRef.setValue(forSaleTransactionsMap);
+    }
 }

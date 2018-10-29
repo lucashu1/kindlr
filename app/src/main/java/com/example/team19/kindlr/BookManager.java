@@ -162,6 +162,12 @@ public class BookManager {
         saveToFirebase();
     }
 
+    // Clear all books from Firebase. Can't undo!
+    public void clearAllBooks() {
+        booksMap = new HashMap<String, Book>();
+        booksRef.setValue(booksMap);
+    }
+
 
 
 
