@@ -44,7 +44,7 @@
         <activity
             android:name=".ViewProfileActivity"
             android:label="@string/title_activity_view_profile" />
-        <activity android:name=".TestFirebaseDummyActivity" android:label="TestFirebaseDummyActivity">
+        <activity android:name=".InitFirebaseDummyActivity" android:label="TestFirebaseDummyActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER"/>
