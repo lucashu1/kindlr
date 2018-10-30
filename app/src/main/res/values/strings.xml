@@ -30,4 +30,8 @@
         <item>MO</item>
         <item>WA</item>
     </string-array>
+
+    <item type="id" name="view_notification_1"/>
+    <item type="id" name="view_notification_2"/>
+    <item type="id" name="view_notification_3"/>
 </resources>
