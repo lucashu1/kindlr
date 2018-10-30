@@ -94,7 +94,7 @@ public class BookManager {
 
     // Return true if a given bookID exists
     public boolean bookExists(String bookID) {
-        return (getBookByID(bookID) != null);
+        return doesBookExist(bookID);
     }
 
     // Remove a book from booksMap (e.g. after transaction done)
@@ -109,7 +109,7 @@ public class BookManager {
 
     // Return username of book owner for a given bookID. Return null if book not found
     public String getBookOwner(String bookID) {
-        if (!booksMap.containsKey(bookID)) {
+        if (!bookExists(bookID)) {
             Log.d("WARN", "called getBookOwner() on a bookID that wasn't found: " + bookID);
             return null;
         }

@@ -119,7 +119,7 @@ public class TransactionManager {
             // If this could complete a transaction, then make it do so, and notify both participants
             // Otherwise, call addNewUnMatchedTransaction so future 'likes' can potentially make a 'match'
 
-        String transactionID;
+        String transactionID = null;
 
         // Case 1: Liked book is for sale
         if (BookManager.getBookManager().getBookByID(bookID).getForSale()) {
@@ -128,6 +128,7 @@ public class TransactionManager {
 
         // Case 2: Liked book is for exchange
         else {
+            boolean foundMatch = false;
             // See if this 'like' could complete a 'match' with any existing transactions
             for (Map.Entry<String, ExchangeTransaction> entry : exchangeTransactionsMap.entrySet()) {
 
@@ -147,11 +148,15 @@ public class TransactionManager {
                 if (otherLikedBookOwner.equals(username) && !username.equals(otherUser)) {
                     existingUnmatchedTransaction.matchExchangeTransaction(username, bookID);
                     transactionID = existingUnmatchedTransaction.getTransactionID();
+                    foundMatch = true;
+                    break;
                 }
             }
 
             // If this can't complete any existing partial transaction, call addNewPotentialTransaction
-            transactionID = addNewUnmatchedExchangeTransaction(username, bookID);
+            if (!foundMatch) {
+                transactionID = addNewUnmatchedExchangeTransaction(username, bookID);
+            }
         }
 
         saveToFirebase();
