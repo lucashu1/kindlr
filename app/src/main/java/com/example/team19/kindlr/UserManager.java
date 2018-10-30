@@ -44,7 +44,7 @@ public class UserManager {
 //        refreshUsers(); // pull from DB
 
         // On data change, read read usersMap from the database
-        usersRef.addValueEventListener(new ValueEventListener() {
+        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again

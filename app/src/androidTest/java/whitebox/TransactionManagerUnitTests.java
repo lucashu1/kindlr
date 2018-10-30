@@ -13,7 +13,9 @@ import android.util.Log;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,7 @@ import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TransactionManagerUnitTests {
 
     @BeforeClass
@@ -76,13 +79,9 @@ public class TransactionManagerUnitTests {
     public void testForSaleTransactionExists()
     {
         // testUser1 posts "testBook1"
-        String saleBookID = BookManager.getBookManager().postBookForSale("testBook1", "978-3-16-148410-2", "author2", "TestGenre", 20, null, "testUser1");
-
-//        try {
-//            Thread.sleep(1000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+        String saleBookID = BookManager.getBookManager().postBookForSale("testBook1",
+                "978-3-16-148410-2", "author2", "TestGenre", 20,
+                null, "testUser1");
 
         String transactionId = TransactionManager.getTransactionManager().addNewForSaleTransaction("testUser2", saleBookID, "testUser1");
         boolean forSaleExists = TransactionManager.getTransactionManager().forSaleTransactionExists(transactionId);
@@ -115,14 +114,14 @@ public class TransactionManagerUnitTests {
     public void testMatchExchangeTransaction()
     {
         // testUser1 and testUser2 post books for exchange
-        String book1ID = BookManager.getBookManager().postBookForExchange("testBook1", "978-3-16-148410-2", "author2", "TestGenre", 20, null, "testUser1");
-        String book2ID = BookManager.getBookManager().postBookForExchange("testBook2", "978-3-16-148410-2", "author2", "TestGenre", 20, null, "testUser2");
+        String book1ID = BookManager.getBookManager().postBookForExchange("testBook1",
+                "978-3-16-148410-2", "author2", "TestGenre", 20,
+                null, "testUser1");
 
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        String book2ID = BookManager.getBookManager().postBookForExchange("testBook2",
+                "978-3-16-148410-2", "author2", "TestGenre", 20,
+                null, "testUser2");
+
 
         String transactionID = TransactionManager.getTransactionManager().addNewUnmatchedExchangeTransaction("testUser1", book2ID);
         ExchangeTransaction t = TransactionManager.getTransactionManager().getExchangeTransactionByID(transactionID);
@@ -141,12 +140,6 @@ public class TransactionManagerUnitTests {
     {
         // testUser2 posts "testBook2" for sale
         String saleBookID = BookManager.getBookManager().postBookForSale("testBook2", "978-3-16-148410-2", "author2", "TestGenre", 20, null, "testUser2");
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         Log.d("TESTEXCHANGE", "TRYING testUserLikeSaleBook()");
         Log.d("TESTEXCHANGE", "forSaleBookID: " + saleBookID);
@@ -169,8 +162,14 @@ public class TransactionManagerUnitTests {
     public void testUserLikeExchangeBook()
     {
         // testUser1 and testUser2 post books for exchange
-        String book1ID = BookManager.getBookManager().postBookForExchange("testBook1", "978-3-16-148410-2", "author2", "TestGenre", 20, null, "testUser1");
-        String book2ID = BookManager.getBookManager().postBookForExchange("testBook2", "1234567890", "author2", "Comedy", 100, null, "testUser2");
+        String book1ID = BookManager.getBookManager().postBookForExchange("testBook1",
+                "978-3-16-148410-2", "author2", "TestGenre",
+                20, null, "testUser1");
+        String book2ID = BookManager.getBookManager().postBookForExchange("testBook2",
+                "1234567890", "author2", "Comedy", 100, null,
+                "testUser2");
+
+        Log.d("TESTINFO", "Book 1 ID " + book1ID + " book 2 ID " + book2ID);
 
         // testUser1 likes testBook2 --> unmatched
         String transactionID = TransactionManager.getTransactionManager().makeUserLikeBook("testUser1", book2ID);

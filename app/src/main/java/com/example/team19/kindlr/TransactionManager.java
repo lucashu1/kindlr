@@ -141,7 +141,7 @@ public class TransactionManager {
                 ExchangeTransaction existingUnmatchedTransaction = entry.getValue();
                 String otherUser = existingUnmatchedTransaction.getUsername1();
                 String otherLikedBook = existingUnmatchedTransaction.getUser1LikedBookID();
-                Log.d("INFO","Iterating over unmatched transactions. otherLikedBook: " + otherLikedBook);
+                Log.d("TESTINFO","Iterating over unmatched transactions. otherLikedBook: " + otherLikedBook);
                 String otherLikedBookOwner = BookManager.getBookManager().getBookOwner(otherLikedBook);
 
                 // Other book's owner has liked a book that is owned by current user --> match!
