@@ -23,6 +23,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static com.example.team19.kindlr.R.id.username;
 
 @RunWith(AndroidJUnit4.class)
@@ -60,8 +61,25 @@ public class LikeBookTest {
                 .perform(typeText(loginInput));
         onView(withId(R.id.password)).perform(typeText(loginPassword));
         onView(withId(R.id.sign_in_button)).perform(click());
+        onView(withId(R.id.like_button)).perform(closeSoftKeyboard());
 
         onView(withId(R.id.like_button)).perform(click());
+
+
+
+    }
+
+    @Test
+    public void testDislikeBook(){
+        onView(withId(username))
+                .perform(typeText(loginInput));
+        onView(withId(R.id.password)).perform(typeText(loginPassword));
+        onView(withId(R.id.sign_in_button)).perform(click());
+
+        onView(withId(R.id.dislike_button)).perform(closeSoftKeyboard());
+        onView(withId(R.id.dislike_button)).perform(click());
+
+
 
 
 
