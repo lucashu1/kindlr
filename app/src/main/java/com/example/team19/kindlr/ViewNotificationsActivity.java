@@ -20,7 +20,7 @@ public class ViewNotificationsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_notifications);
-        //displayNotifications();
+        displayNotifications();
     }
 
     /*
@@ -33,6 +33,7 @@ public class ViewNotificationsActivity extends Activity {
 
         ArrayList<Transaction> matches = tm.getAllMatchedTransactionsForUser(currentUser.getUsername());
 
+        Log.d("TESTINFO", "The matches are " + matches.toString());
 
         for (int i = 0; i < matches.size(); i++) {
             Transaction tx = matches.get(i);
