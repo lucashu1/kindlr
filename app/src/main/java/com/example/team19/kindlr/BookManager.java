@@ -40,7 +40,7 @@ public class BookManager {
         booksRef = database.getReference("books");
 
         // On data change, re-read booksMap from the database
-        booksRef.addValueEventListener(new ValueEventListener() {
+        booksRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again

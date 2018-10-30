@@ -14,11 +14,12 @@ import junit.framework.AssertionFailedError;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -27,18 +28,11 @@ import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.example.team19.kindlr.R.id.username;
 
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class PostBookTest {
+public class SellBookTest {
 
     private String loginInput;
     private String loginPassword;
@@ -47,6 +41,8 @@ public class PostBookTest {
     private String testAuthor;
     private String testGenre;
     private String testPageCount;
+
+
 
     @Rule
     public ActivityTestRule<LoginActivity> mActivityRule
@@ -66,14 +62,53 @@ public class PostBookTest {
         testPageCount = "500";
     }
 
-//    @After
-//    public void detroyUser(){
-//
-//    }
+    @Test
+    public void testSellBook(){
+        onView(withId(username))
+                .perform(typeText(loginInput));
+        onView(withId(R.id.password)).perform(typeText(loginPassword));
+        onView(withId(R.id.sign_in_button)).perform(click());
 
-    private boolean checkErrorDisplayed() {
+        onView(withId(R.id.profile_button)).perform(click());
+
+        onView(withId(R.id.sell_book_button)).perform(click());
+
+        onView(withId(R.id.title)).perform(typeText(testTitle));
+
+        onView(withId(R.id.isbn)).perform(typeText(testIsbn));
+        onView(withId(R.id.author)).perform(typeText(testAuthor));
+        onView(withId(R.id.genre)).perform(typeText(testGenre));
+        onView(withId(R.id.pagecount)).perform(typeText(testPageCount));
+
+        onView(withId(R.id.post)).perform(scrollTo(), click());
+        assertTrue(checkSellButtonExists());
+    }
+
+    @Test
+    public void testInvalidSellBook()
+    {
+        onView(withId(username))
+                .perform(typeText(loginInput));
+        onView(withId(R.id.password)).perform(typeText(loginPassword));
+        onView(withId(R.id.sign_in_button)).perform(click());
+
+        onView(withId(R.id.profile_button)).perform(click());
+
+        onView(withId(R.id.sell_book_button)).perform(click());
+
+        onView(withId(R.id.title)).perform(typeText(testTitle));
+
+        onView(withId(R.id.isbn)).perform(typeText(testIsbn));
+        onView(withId(R.id.pagecount)).perform(typeText(testPageCount));
+
+//        onView(withId(R.id.post)).perform(click());
+        onView(withId(R.id.post)).perform(scrollTo(), click());
+        assertFalse(checkSellButtonExists());
+    }
+
+    private boolean checkSellButtonExists() {
         try {
-            onView(withText("Error")).check(matches(isDisplayed()));
+            onView(withId(R.id.sell_book_button)).check(matches(isDisplayed()));
         } catch (AssertionFailedError e) {
             return false;
         }
@@ -83,66 +118,11 @@ public class PostBookTest {
         return true;
     }
 
-    private boolean checkCurrentViewChanged() {
-        try {
-            onView(withId(R.id.author)).check(matches(isDisplayed()));
-        } catch (AssertionFailedError e) {
-            return true;
-        }
-        catch (NoMatchingViewException e) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public void login() {
-        onView(withId(username))
-                .perform(typeText(loginInput));
-        onView(withId(R.id.password)).perform(typeText(loginPassword));
-        onView(withId(R.id.sign_in_button)).perform(click());
-
-        onView(withId(R.id.profile_button)).perform(click());
-
-        onView(withId(R.id.post_book_button)).perform(click());
-    }
-
-    @Test
-    public void testPostBook() {
-        login();
-        onView(withId(R.id.title)).perform(typeText(testTitle));
-
-        onView(withId(R.id.isbn)).perform(typeText(testIsbn));
-        onView(withId(R.id.author)).perform(typeText(testAuthor));
-        onView(withId(R.id.genre)).perform(typeText(testGenre));
-        onView(withId(R.id.pagecount)).perform(typeText(testPageCount));
-
-        onView(withId(R.id.post)).perform(scrollTo(), click());
-
-        assertTrue(checkCurrentViewChanged());
-    }
-
-    @Test
-    public void testInvalidPostBook() {
-        login();
-        onView(withId(R.id.title)).perform(typeText(""));
-
-        onView(withId(R.id.isbn)).perform(typeText(testIsbn));
-        onView(withId(R.id.author)).perform(typeText(testAuthor));
-        onView(withId(R.id.genre)).perform(typeText(testGenre));
-        onView(withId(R.id.pagecount)).perform(typeText(testPageCount));
-
-        onView(withId(R.id.post)).perform(scrollTo(), click());
-
-        assertTrue(checkErrorDisplayed());
-    }
-
     @After
-    public void cleanup(){
-        UserManager.getUserManager().deleteUser(loginInput);
+    public void cleanUp()
+    {
+        UserManager.getUserManager().deleteUser("andy");
     }
-
-
 
 
 

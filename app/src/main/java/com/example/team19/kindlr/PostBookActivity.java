@@ -45,7 +45,7 @@ public class PostBookActivity extends AppCompatActivity {
                     navigateBack();
                 }
                 else {
-                    displayError("Invalid input");
+                    ErrorHelper.displayError("Error", "Invalid input", PostBookActivity.this);
                 }
             }
         });
@@ -57,10 +57,6 @@ public class PostBookActivity extends AppCompatActivity {
                 navigateBack();
             }
         });
-    }
-
-    private void displayError(String txt) {
-        errorView.setVisibility(View.VISIBLE);
     }
 
     private boolean postBook() {
@@ -77,6 +73,10 @@ public class PostBookActivity extends AppCompatActivity {
         }
 
         if (pageCountInt < 0) {
+            return false;
+        }
+
+        if (titleStr.isEmpty() || isbnStr.isEmpty() || authorStr.isEmpty() || genreStr.isEmpty()) {
             return false;
         }
 
