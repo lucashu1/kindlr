@@ -49,7 +49,6 @@ public class ViewNotificationsActivityTest {
         txId1 = tm.makeUserLikeBook("bhahntest", bookId2);
         txId2 = tm.makeUserLikeBook("shahntest", bookId1);
         matches = tm.getAllMatchedTransactionsForUser("bhahntest");
-
     }
 
     @Test

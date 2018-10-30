@@ -90,6 +90,11 @@ public class ViewNotificationsActivity extends Activity {
             });
             view.setText("VIEW");
 
+            //TODO: Generalize
+            if (i == 0) view.setId(R.id.view_notification_1);
+            else if (i == 1) view.setId(R.id.view_notification_2);
+            else if (i == 2) view.setId(R.id.view_notification_3);
+
             row.addView(img);
             row.addView(t);
             row.addView(view);
