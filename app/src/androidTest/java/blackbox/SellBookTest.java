@@ -9,6 +9,7 @@ import com.example.team19.kindlr.LoginActivity;
 import com.example.team19.kindlr.R;
 import com.example.team19.kindlr.UserManager;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -82,6 +83,11 @@ public class SellBookTest {
 
     }
 
+    @After
+    public void cleanUp()
+    {
+        UserManager.getUserManager().deleteUser("andy");
+    }
 
 
 
