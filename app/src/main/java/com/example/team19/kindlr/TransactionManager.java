@@ -42,7 +42,7 @@ public class TransactionManager {
 //        forSaleTransactionsMap = new HashMap<String, ForSaleTransaction>();
 
         // On data change, re-read usersMap from the database
-        exchangeTransactionsRef.addValueEventListener(new ValueEventListener() {
+        exchangeTransactionsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
@@ -65,7 +65,7 @@ public class TransactionManager {
         });
 
         // On data change, re-read usersMap from the database
-        forSaleTransactionsRef.addValueEventListener(new ValueEventListener() {
+        forSaleTransactionsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
@@ -167,8 +167,15 @@ public class TransactionManager {
     }
 
     public ForSaleTransaction getForSaleTransactionByID(String transactionID) {
-        if (!forSaleTransactionExists(transactionID))
+        Log.i("TESTINFO", "For sale transaction map when getting by sale transaction id " +
+                forSaleTransactionsMap.toString());
+
+        Log.i("TESTINFO", "When getting tid of " + transactionID);
+
+        if (!forSaleTransactionExists(transactionID)) {
+            Log.i("TESTINFO", "TID does not exist");
             return null;
+        }
 
         return forSaleTransactionsMap.get(transactionID);
     }
@@ -213,7 +220,7 @@ public class TransactionManager {
         String transactionID = forSaleTransactionsRef.push().getKey();
         ForSaleTransaction t = new ForSaleTransaction(transactionID, userThatLikedBook, forSaleBookID, forSaleBookOwner); // create new forSale transaction
         forSaleTransactionsMap.put(transactionID, t);
-        Log.d("INFO", "Created new forSale transaction");
+        Log.d("TESTINFO", "Created new forSale transaction with ID " + transactionID);
         saveToFirebase();
         return transactionID;
     }
