@@ -3,9 +3,7 @@ package com.example.team19.kindlr;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.google.firebase.database.DataSnapshot;
@@ -40,8 +38,8 @@ public class TransactionManager {
         exchangeTransactionsRef = database.getReference("exchangeTransactions");
         forSaleTransactionsRef = database.getReference("forSaleTransactions");
 
-        exchangeTransactionsMap = new HashMap<String, ExchangeTransaction>();
-        forSaleTransactionsMap = new HashMap<String, ForSaleTransaction>();
+//        exchangeTransactionsMap = new HashMap<String, ExchangeTransaction>();
+//        forSaleTransactionsMap = new HashMap<String, ForSaleTransaction>();
 
         // On data change, re-read usersMap from the database
         exchangeTransactionsRef.addValueEventListener(new ValueEventListener() {
@@ -57,6 +55,7 @@ public class TransactionManager {
                     exchangeTransactionsMap.put(snapshot.getKey(), t);
                 }
                 Log.d("TESTINFO", "Refreshed exchangeTransactionsMap to be " + exchangeTransactionsMap.toString());
+                Log.d("TESTINFO", "Length of exchangeTransactionsMap: " + exchangeTransactionsMap.size());
             }
             @Override
             public void onCancelled(DatabaseError error) {
@@ -79,6 +78,7 @@ public class TransactionManager {
                     forSaleTransactionsMap.put(snapshot.getKey(), t);
                 }
                 Log.d("TESTINFO", "Refreshed forSaleTransactionsMap to be " + forSaleTransactionsMap.toString());
+                Log.d("TESTINFO", "Length of forSaleTransactionsMap: " + forSaleTransactionsMap.size());
             }
             @Override
             public void onCancelled(DatabaseError error) {
@@ -122,7 +122,7 @@ public class TransactionManager {
 
         // Case 1: Liked book is for sale
         if (BookManager.getBookManager().getBookByID(bookID).getForSale()) {
-            transactionID = addNewForSaleTransaction(BookManager.getBookManager().getBookByID(bookID).getOwner(), bookID,username);
+            transactionID = addNewForSaleTransaction(username, bookID, BookManager.getBookManager().getBookByID(bookID).getOwner());
         }
 
         // Case 2: Liked book is for exchange
@@ -144,12 +144,12 @@ public class TransactionManager {
                 // Other book's owner has liked a book that is owned by current user --> match!
                 if (otherLikedBookOwner.equals(username) && !username.equals(otherUser)) {
                     existingUnmatchedTransaction.matchExchangeTransaction(username, bookID);
-                    return existingUnmatchedTransaction.getTransactionID();
+                    transactionID = existingUnmatchedTransaction.getTransactionID();
                 }
             }
 
             // If this can't complete any existing partial transaction, call addNewPotentialTransaction
-            transactionID = addNewUnmatchedExchangedTransaction(username, bookID);
+            transactionID = addNewUnmatchedExchangeTransaction(username, bookID);
         }
 
         saveToFirebase();
@@ -197,7 +197,7 @@ public class TransactionManager {
     }
 
     // Add new partial exchange transaction using given fields (mo match found yet)
-    public String addNewUnmatchedExchangedTransaction(String username1, String user1LikedBookID) {
+    public String addNewUnmatchedExchangeTransaction(String username1, String user1LikedBookID) {
         String transactionID = exchangeTransactionsRef.push().getKey();
         ExchangeTransaction t = new ExchangeTransaction(transactionID, username1, user1LikedBookID); // create new exchange transaction
         exchangeTransactionsMap.put(transactionID, t);

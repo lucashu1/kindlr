@@ -24,16 +24,18 @@ public class ExchangeTransaction extends Transaction implements Serializable {
         this.isMatched = false;
     }
 
-    public void matchExchangeTransaction(String username2, String user2LikedBookID) {
+    public String matchExchangeTransaction(String username2, String user2LikedBookID) {
         // If this transaction is not already full, then fill it
         if (isMatched) {
             System.out.println("WARNING: attemped to match an already matched transaction!");
-            return;
+            return this.transactionID;
         }
 
         this.username2 = username2;
         this.user2LikedBookID = user2LikedBookID;
         isMatched = true;
+
+        TransactionManager.getTransactionManager().saveToFirebase();
 
         // mark books involved as 'invisible' so they don't show up
         BookManager.getBookManager().getBookByID(user1LikedBookID).makeInvisible();
@@ -41,6 +43,8 @@ public class ExchangeTransaction extends Transaction implements Serializable {
 
         // TODO:
         // notify both users involved?
+
+        return this.transactionID;
     }
 
     @Override
