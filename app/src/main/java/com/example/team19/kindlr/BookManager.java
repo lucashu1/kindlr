@@ -99,30 +99,23 @@ public class BookManager {
 
     // Remove a book from booksMap (e.g. after transaction done)
         // Return true if successful
-    public boolean removeBook(String bookID) {
-        if (!booksMap.containsKey(bookID))
-            return false;
-        booksMap.remove(bookID);
-        saveToFirebase();
-        return true;
-    }
+//    public boolean removeBook(String bookID) {
+//        if (!booksMap.containsKey(bookID))
+//            return false;
+//        booksMap.remove(bookID);
+//        saveToFirebase();
+//        return true;
+//    }
 
     // Return username of book owner for a given bookID. Return null if book not found
     public String getBookOwner(String bookID) {
-        Book b;
-        for (Map.Entry<String, Book> entry : booksMap.entrySet()) {
-            b = entry.getValue();
-            if (b.getBookID().equals(bookID)) {
-                return b.getOwner();
-            }
+        if (!booksMap.containsKey(bookID)) {
+            Log.d("WARN", "called getBookOwner() on a bookID that wasn't found: " + bookID);
+            return null;
         }
-        return null;
-    }
 
-//    // Refresh books from DB/Firebase
-//    public void refreshBooks() {
-//        // TODO: pull from DB
-//    }
+        return getBookByID(bookID).getOwner();
+    }
 
     public List<Book> getFilteredBooks(BookFilter bookFilter, User forUser) {
         Log.i("TESTINFO", "Getting filtered books");

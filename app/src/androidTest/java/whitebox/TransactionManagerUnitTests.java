@@ -155,7 +155,7 @@ public class TransactionManagerUnitTests {
     {
         // testUser1 and testUser2 post books for exchange
         String book1ID = BookManager.getBookManager().postBookForExchange("testBook1", "978-3-16-148410-2", "author2", "TestGenre", 20, null, "testUser1");
-        String book2ID = BookManager.getBookManager().postBookForExchange("testBook2", "978-3-16-148410-2", "author2", "TestGenre", 20, null, "testUser2");
+        String book2ID = BookManager.getBookManager().postBookForExchange("testBook2", "1234567890", "author2", "Comedy", 100, null, "testUser2");
 
         try {
             Thread.sleep(1000);
@@ -167,6 +167,12 @@ public class TransactionManagerUnitTests {
         String transactionID = TransactionManager.getTransactionManager().makeUserLikeBook("testUser1", book2ID);
         ExchangeTransaction t = TransactionManager.getTransactionManager().getExchangeTransactionByID(transactionID);
         assertTrue(!t.isMatched());
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         // testUser2 likes testBook1 --> matched
         transactionID = TransactionManager.getTransactionManager().makeUserLikeBook("testUser2", book1ID);

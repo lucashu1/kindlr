@@ -98,6 +98,7 @@ public class TransactionManager {
     public String makeUserLikeBook(String username, String bookID) {
         boolean success = UserManager.getUserManager().makeUserLikeBook(username, bookID);
         if (!success) {
+            Log.d("WARN","Unsuccessful makeUserLIkeBook! username: " + username + "; bookID: " + bookID);
             return null;
         }
         return processLikedBook(username, bookID);
@@ -139,6 +140,7 @@ public class TransactionManager {
                 ExchangeTransaction existingUnmatchedTransaction = entry.getValue();
                 String otherUser = existingUnmatchedTransaction.getUsername1();
                 String otherLikedBook = existingUnmatchedTransaction.getUser1LikedBookID();
+                Log.d("INFO","Iterating over unmatched transactions. otherLikedBook: " + otherLikedBook);
                 String otherLikedBookOwner = BookManager.getBookManager().getBookOwner(otherLikedBook);
 
                 // Other book's owner has liked a book that is owned by current user --> match!
