@@ -1,6 +1,7 @@
 package blackbox;
 
 
+import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -9,19 +10,32 @@ import com.example.team19.kindlr.LoginActivity;
 import com.example.team19.kindlr.R;
 import com.example.team19.kindlr.UserManager;
 
+import junit.framework.AssertionFailedError;
+
 import org.junit.After;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.typeText;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.example.team19.kindlr.R.id.username;
 
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class PostBookTest {
@@ -33,8 +47,6 @@ public class PostBookTest {
     private String testAuthor;
     private String testGenre;
     private String testPageCount;
-
-
 
     @Rule
     public ActivityTestRule<LoginActivity> mActivityRule
@@ -59,9 +71,32 @@ public class PostBookTest {
 //
 //    }
 
+    private boolean checkErrorDisplayed() {
+        try {
+            onView(withText("Error")).check(matches(isDisplayed()));
+        } catch (AssertionFailedError e) {
+            return false;
+        }
+        catch (NoMatchingViewException e) {
+            return false;
+        }
+        return true;
+    }
 
-    @Test
-    public void testPostBook(){
+    private boolean checkCurrentViewChanged() {
+        try {
+            onView(withId(R.id.author)).check(matches(isDisplayed()));
+        } catch (AssertionFailedError e) {
+            return true;
+        }
+        catch (NoMatchingViewException e) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public void login() {
         onView(withId(username))
                 .perform(typeText(loginInput));
         onView(withId(R.id.password)).perform(typeText(loginPassword));
@@ -70,7 +105,11 @@ public class PostBookTest {
         onView(withId(R.id.profile_button)).perform(click());
 
         onView(withId(R.id.post_book_button)).perform(click());
+    }
 
+    @Test
+    public void testPostBook() {
+        login();
         onView(withId(R.id.title)).perform(typeText(testTitle));
 
         onView(withId(R.id.isbn)).perform(typeText(testIsbn));
@@ -78,10 +117,25 @@ public class PostBookTest {
         onView(withId(R.id.genre)).perform(typeText(testGenre));
         onView(withId(R.id.pagecount)).perform(typeText(testPageCount));
 
-//        onView(withId(R.id.post)).perform(click());
         onView(withId(R.id.post)).perform(scrollTo(), click());
 
-        }
+        assertTrue(checkCurrentViewChanged());
+    }
+
+    @Test
+    public void testInvalidPostBook() {
+        login();
+        onView(withId(R.id.title)).perform(typeText(""));
+
+        onView(withId(R.id.isbn)).perform(typeText(testIsbn));
+        onView(withId(R.id.author)).perform(typeText(testAuthor));
+        onView(withId(R.id.genre)).perform(typeText(testGenre));
+        onView(withId(R.id.pagecount)).perform(typeText(testPageCount));
+
+        onView(withId(R.id.post)).perform(scrollTo(), click());
+
+        assertTrue(checkErrorDisplayed());
+    }
 
     @After
     public void cleanup(){
