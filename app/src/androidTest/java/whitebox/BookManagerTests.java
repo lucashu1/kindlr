@@ -1,5 +1,9 @@
 package whitebox;
 
+import android.util.Log;
+
+import com.example.team19.kindlr.Book;
+import com.example.team19.kindlr.BookFilter;
 import com.example.team19.kindlr.BookManager;
 import com.example.team19.kindlr.UserManager;
 
@@ -28,6 +32,7 @@ public class BookManagerTests {
     @Before
     public void createTestUser() {
         UserManager.getUserManager().addUser(username, password, "Andrew", "Szot", "Los Angeles", "California", "123-456-7890", email);
+        UserManager.getUserManager().addUser("testUser2", password, "Test", "User", "Los Angeles", "California", "123-456-7890", email);
     }
 
     @Test
@@ -57,12 +62,30 @@ public class BookManagerTests {
 
     @Test
     public void testBookFiltering() {
-        // TODO (Lucas)
+        BookManager bm = BookManager.getBookManager();
+        ArrayList<String> chaoWangTags = new ArrayList<String>();
+        chaoWangTags.add("Professorial");
+        String book1ID = bm.postBookForExchange("Hello World", "12345", "Chao Wang", "Knowledge", 999, chaoWangTags, username);
+        ArrayList<String> halfondTags = new ArrayList<String>();
+        halfondTags.add("Sabbatical");
+        String book2ID = bm.postBookForExchange("I Am Legend", "54321", "William Halfond", "Wisdom", 999, halfondTags, username);
+        BookFilter bf = new BookFilter("Hello World");
+        bf.setAuthor("Chao Wang");
+        ArrayList<Book> filteredBooks = new ArrayList<Book>(bm.getFilteredBooks(bf, UserManager.getUserManager().getUserByUsername("testUser2")));
+        Log.d("BOOKFILTERTEST", "Length of filteredBooks: " + filteredBooks.size());
+        for (int i = 0; i < filteredBooks.size(); i++) {
+            Log.d("BOOKFILTERTEST", "Filtered book name: " + filteredBooks.get(i).getBookName());
+        }
+        assertEquals(filteredBooks.size(), 1);
+        assertEquals(filteredBooks.get(0).getBookName(), "Hello World");
+        bm.deleteBook(book1ID);
+        bm.deleteBook(book2ID);
     }
 
     @After
-    public void deleteTestUser() {
+    public void deleteTestUsers() {
         UserManager.getUserManager().deleteUser(username);
+        UserManager.getUserManager().deleteUser("testUser2");
     }
 
 }
