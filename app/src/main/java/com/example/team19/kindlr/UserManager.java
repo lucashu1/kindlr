@@ -18,6 +18,7 @@ public class UserManager {
     private Map<String, User> usersMap;
 //    private Map<Integer, String> bookIDToUsername;
     private User currentUser;
+    private boolean initialized;
 
     // Singleton initializer
     private static UserManager userManagerSingleton;
@@ -30,14 +31,18 @@ public class UserManager {
     // Constructor
     public UserManager() {
         usersMap = new HashMap<String, User>();
+        initialized = false;
     }
 
     // Save usersMap to Firebase (write to DB)
-    public void saveToFirebase() {
+    public synchronized void saveToFirebase() {
         usersRef.setValue(usersMap);
     }
 
     public void initialize() {
+        if (initialized)
+            return;
+
         database = FirebaseDatabase.getInstance();
         usersRef = database.getReference("users");
 //        bookIDToUsername = new HashMap<Integer, String>();
@@ -65,6 +70,8 @@ public class UserManager {
                 Log.w("WARN", "Failed to read value.", error.toException());
             }
         });
+
+        initialized = true;
     }
 
     public HashMap<String, User> getAllUsers() {
@@ -119,7 +126,7 @@ public class UserManager {
     }
 
     // Attempt to login and set currentUser. Return true if successful
-    public boolean attemptLogin(String username, String hashedPassword) {
+    public synchronized boolean attemptLogin(String username, String hashedPassword) {
         Log.i("TESTLOG", "Attempting to log user in");
         Log.i("TESTLOG", "User map " + usersMap.toString());
         if (!usersMap.containsKey(username)) {

@@ -19,6 +19,7 @@ public class TransactionManager {
     private FirebaseDatabase database;
     private DatabaseReference exchangeTransactionsRef;
     private DatabaseReference forSaleTransactionsRef;
+    private boolean initialized;
 
     private static TransactionManager transactionManagerSingleton;
     public synchronized static TransactionManager getTransactionManager() {
@@ -30,10 +31,14 @@ public class TransactionManager {
     public TransactionManager() {
         exchangeTransactionsMap = new HashMap<String, ExchangeTransaction>();
         forSaleTransactionsMap = new HashMap<String, ForSaleTransaction>();
+        initialized = false;
     }
 
     public void initialize()
     {
+        if (initialized)
+            return;
+
         database = FirebaseDatabase.getInstance();
         exchangeTransactionsRef = database.getReference("exchangeTransactions");
         forSaleTransactionsRef = database.getReference("forSaleTransactions");
@@ -86,16 +91,18 @@ public class TransactionManager {
                 Log.w("WARN", "Failed to read value.", error.toException());
             }
         });
+
+        initialized = true;
     }
 
     // Save usersMap to Firebase (write to DB)
-    public void saveToFirebase() {
+    public synchronized void saveToFirebase() {
         exchangeTransactionsRef.setValue(exchangeTransactionsMap);
         forSaleTransactionsRef.setValue(forSaleTransactionsMap);
     }
 
     // Make user like book, and return the String of the resulting transactionID
-    public String makeUserLikeBook(String username, String bookID) {
+    public synchronized String makeUserLikeBook(String username, String bookID) {
         boolean success = UserManager.getUserManager().makeUserLikeBook(username, bookID);
         if (!success) {
             Log.d("WARN","Unsuccessful makeUserLIkeBook! username: " + username + "; bookID: " + bookID);
@@ -105,7 +112,7 @@ public class TransactionManager {
     }
 
     // Make user dislike book, return true if successful
-    public boolean makeUserDislikeBook(String username, String bookID) {
+    public synchronized boolean makeUserDislikeBook(String username, String bookID) {
         boolean success = UserManager.getUserManager().makeUserDislikeBook(username, bookID);
         if (!success)
             return false;
@@ -113,7 +120,7 @@ public class TransactionManager {
     }
 
     // Process liked book, return corresponding transactionID
-    public String processLikedBook(String username, String bookID) {
+    public synchronized String processLikedBook(String username, String bookID) {
         // If this is a forSale book and has not been completed, then create a new transaction
         // Otherwise (book is for exchange -- not for sale), Look at all other existing partial transactions:
             // If this could complete a transaction, then make it do so, and notify both participants
@@ -211,7 +218,7 @@ public class TransactionManager {
     }
 
     // Add new partial exchange transaction using given fields (mo match found yet)
-    public String addNewUnmatchedExchangeTransaction(String username1, String user1LikedBookID) {
+    public synchronized String addNewUnmatchedExchangeTransaction(String username1, String user1LikedBookID) {
         String transactionID = exchangeTransactionsRef.push().getKey();
         ExchangeTransaction t = new ExchangeTransaction(transactionID, username1, user1LikedBookID); // create new exchange transaction
         exchangeTransactionsMap.put(transactionID, t);
@@ -221,7 +228,7 @@ public class TransactionManager {
     }
 
     // Add new forSale transaction using given fields
-    public String addNewForSaleTransaction(String userThatLikedBook, String forSaleBookID, String forSaleBookOwner) {
+    public synchronized String addNewForSaleTransaction(String userThatLikedBook, String forSaleBookID, String forSaleBookOwner) {
         String transactionID = forSaleTransactionsRef.push().getKey();
         ForSaleTransaction t = new ForSaleTransaction(transactionID, userThatLikedBook, forSaleBookID, forSaleBookOwner); // create new forSale transaction
         forSaleTransactionsMap.put(transactionID, t);

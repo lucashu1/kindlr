@@ -1,4 +1,6 @@
 package com.example.team19.kindlr;
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -53,6 +55,8 @@ public class Transaction implements Serializable {
         }
         // currentUser is not in transaction
         else {
+            Log.d("WARN",
+                    "Couldn't find other user in transaction! Username1: " + username1 + "; Username2: " + username2);
             return null;
         }
     }

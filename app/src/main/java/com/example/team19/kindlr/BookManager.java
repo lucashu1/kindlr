@@ -21,6 +21,7 @@ public class BookManager {
     private FirebaseDatabase database;
     private DatabaseReference booksRef;
 //    private DatabaseReference booksRef;
+    private boolean initialized;
 
     // Singleton logic
     private static BookManager bookManagerSingleton;
@@ -33,9 +34,13 @@ public class BookManager {
     // BookManager constructor
     public BookManager() {
         booksMap = new HashMap<String, Book>();
+        initialized = false;
     }
 
     public void initialize() {
+        if (initialized)
+            return;
+
         database  = FirebaseDatabase.getInstance();
         booksRef = database.getReference("books");
 
@@ -61,6 +66,8 @@ public class BookManager {
                 Log.w("WARN", "Failed to read value.", error.toException());
             }
         });
+
+        initialized = true;
     }
 
     public HashMap<String, Book> getAllBooks() {
@@ -68,7 +75,7 @@ public class BookManager {
     }
 
     // Save usersMap to Firebase (write to DB)
-    public void saveToFirebase() {
+    public synchronized void saveToFirebase() {
         booksRef.setValue(booksMap);
     }
 
@@ -149,7 +156,7 @@ public class BookManager {
         return filteredBooks;
     }
 
-    public String postBookForExchange(String bookName, String isbn, String author, String genre, int pageCount, List<String> tags, String owner) {
+    public synchronized String postBookForExchange(String bookName, String isbn, String author, String genre, int pageCount, List<String> tags, String owner) {
         String bookKey = booksRef.push().getKey();
         Book book = new Book(bookKey, bookName, isbn, author, genre, pageCount, tags, false, owner);
 
@@ -160,7 +167,7 @@ public class BookManager {
     }
 
 
-    public String postBookForSale(String bookName, String isbn, String author, String genre, int pageCount, List<String> tags, String owner){
+    public synchronized String postBookForSale(String bookName, String isbn, String author, String genre, int pageCount, List<String> tags, String owner){
         String bookKey = booksRef.push().getKey();
         Book book = new Book(bookKey, bookName, isbn, author, genre, pageCount, tags, true, owner);
 

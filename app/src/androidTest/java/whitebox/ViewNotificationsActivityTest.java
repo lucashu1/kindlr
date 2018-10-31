@@ -35,7 +35,6 @@ public class ViewNotificationsActivityTest {
     public void initialize() {
         UserManager.getUserManager().addUser("bhahntest", "asdf", "Ben", "Hahn", "Los Angeles", "California", "314-555-5555", "bhahn@usc.edu");
         UserManager.getUserManager().addUser("shahntest", "asdf", "Sam", "Hahn", "St. Louis", "Missouri", "314-555-5556", "shahn@wust.edu");
-        UserManager.getUserManager().attemptLogin("bhahntest", "asdf");
     }
 
     @Test
@@ -46,6 +45,9 @@ public class ViewNotificationsActivityTest {
         String txId1 = TransactionManager.getTransactionManager().makeUserLikeBook("bhahntest", bookId2);
         String txId2 = TransactionManager.getTransactionManager().makeUserLikeBook("shahntest", bookId1);
         ArrayList<Transaction> matches = TransactionManager.getTransactionManager().getAllMatchedTransactionsForUser("bhahntest");
+
+        boolean loggedIn = UserManager.getUserManager().attemptLogin("bhahntest", "asdf");
+        assertTrue(loggedIn);
 
         assertTrue(matches.size() == 1);
         assertTrue(matches.get(0) != null);
