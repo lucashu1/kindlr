@@ -40,7 +40,7 @@ public class Transaction implements Serializable {
 
     // gets the other user in the transaction (not currentUser)
         // returns null if currently logged-in user is not a part of the transaction
-    public User getOtherUsernameInTransaction()
+    public User getOtherUserInTransaction()
     {
         String currentUsername = UserManager.getUserManager().getCurrentUser().getUsername();
         // currentUser is User1

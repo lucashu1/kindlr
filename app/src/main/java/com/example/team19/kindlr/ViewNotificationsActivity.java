@@ -38,7 +38,7 @@ public class ViewNotificationsActivity extends Activity {
         for (int i = 0; i < matches.size(); i++) {
             Transaction tx = matches.get(i);
             Book otherUsersBook = tx.getOtherUsersBook();
-            User otherUser = tx.getOtherUsernameInTransaction();
+            User otherUser = tx.getOtherUserInTransaction();
 
             TableLayout table = (TableLayout)findViewById(R.id.notifications_table_layout);
             TableRow row = new TableRow(this);

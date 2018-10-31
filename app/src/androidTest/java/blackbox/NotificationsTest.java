@@ -87,7 +87,7 @@ public class NotificationsTest {
 
         ArrayList<Transaction> matches = tm.getAllMatchedTransactionsForUser(um.getCurrentUser().getUsername());
 
-        //assertEquals(matches.get(0).getOtherUsernameInTransaction().getUsername(), "andy");
+        //assertEquals(matches.get(0).getOtherUserInTransaction().getUsername(), "andy");
     }
 
     @Test

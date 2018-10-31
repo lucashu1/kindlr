@@ -3,11 +3,8 @@ package whitebox;
 import com.example.team19.kindlr.BookManager;
 import com.example.team19.kindlr.Transaction;
 import com.example.team19.kindlr.TransactionManager;
-import com.example.team19.kindlr.User;
 import com.example.team19.kindlr.UserManager;
-import com.example.team19.kindlr.ViewNotificationsActivity;
 
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -59,7 +56,7 @@ public class ViewNotificationsActivityTest {
 
     @Test
     public void testMatchesAreCorrect() {
-        assertTrue(matches.get(0).getOtherUsernameInTransaction().equals("shahntest"));
+        assertTrue(matches.get(0).getOtherUserInTransaction().getUsername().equals("shahntest"));
         assertTrue(matches.get(0).getOtherUsersBook().getBookName().equals("It"));
     }
 
