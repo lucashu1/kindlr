@@ -24,7 +24,7 @@ public class BookManager {
 
     // Singleton logic
     private static BookManager bookManagerSingleton;
-    public static BookManager getBookManager() {
+    public synchronized static BookManager getBookManager() {
         if (bookManagerSingleton == null)
             bookManagerSingleton = new BookManager();
         return bookManagerSingleton;

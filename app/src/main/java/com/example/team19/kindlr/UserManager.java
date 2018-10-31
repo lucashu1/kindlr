@@ -21,7 +21,7 @@ public class UserManager {
 
     // Singleton initializer
     private static UserManager userManagerSingleton;
-    public static UserManager getUserManager() {
+    public synchronized static UserManager getUserManager() {
         if (userManagerSingleton == null)
             userManagerSingleton = new UserManager();
         return userManagerSingleton;

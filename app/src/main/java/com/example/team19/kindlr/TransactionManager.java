@@ -21,7 +21,7 @@ public class TransactionManager {
     private DatabaseReference forSaleTransactionsRef;
 
     private static TransactionManager transactionManagerSingleton;
-    public static TransactionManager getTransactionManager() {
+    public synchronized static TransactionManager getTransactionManager() {
         if (transactionManagerSingleton == null)
             transactionManagerSingleton = new TransactionManager();
         return transactionManagerSingleton;
