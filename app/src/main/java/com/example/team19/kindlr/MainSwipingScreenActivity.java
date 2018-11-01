@@ -1,14 +1,14 @@
 package com.example.team19.kindlr;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Activity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainSwipingScreenActivity extends Activity {
@@ -19,6 +19,7 @@ public class MainSwipingScreenActivity extends Activity {
     List<Book> curBooks = null;
     private int curIndex = 0;
     private User currentUser;
+    private EditText searchText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,23 @@ public class MainSwipingScreenActivity extends Activity {
                 startActivity(intent);
             }
         });
+
+        Button filterBtn = (Button)findViewById(R.id.filter_button);
+        filterBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchText = findViewById(R.id.searchFilter);
+                String stringSearchText = searchText.getText().toString();
+                Log.i("FilterText",stringSearchText);
+                bookFilter.setSearchText(stringSearchText);
+//                filterBooks(stringSearchText);
+                refreshBook();
+
+
+            }
+        });
+
+
 
         refreshBook();
     }

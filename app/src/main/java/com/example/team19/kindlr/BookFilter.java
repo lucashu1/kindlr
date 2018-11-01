@@ -1,5 +1,7 @@
 package com.example.team19.kindlr;
 
+import android.util.Log;
+
 public class BookFilter {
     private String searchText;
     private String author;
@@ -57,6 +59,8 @@ public class BookFilter {
 
     public boolean isMatch(Book book) {
         if (getSearchText() != null) {
+
+            Log.i("SearchText", "Not Null "+ book.getAuthor()+" "+ getSearchText());
             if (book.getAuthor().contains(getSearchText())) {
                 return true;
             } else if (book.getBookName().contains(getSearchText())) {

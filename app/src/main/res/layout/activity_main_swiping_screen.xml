@@ -26,6 +26,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="View Notifications" />
+
+
     </LinearLayout>
     <LinearLayout
         android:id="@+id/book_content"
@@ -35,13 +37,31 @@
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent">
+
+        <EditText
+            android:id="@+id/searchFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:visibility="visible"
+            android:hint="Filter"
+            />
+
+        <Button
+            android:id="@+id/filter_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search"
+            />
+
+
         <TextView
             android:id="@+id/title_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Title" />
+            android:text="Title"/>
 
         <TextView
             android:id="@+id/author_text"
