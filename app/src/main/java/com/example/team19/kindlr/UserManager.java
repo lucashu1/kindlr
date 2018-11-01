@@ -1,7 +1,10 @@
 package com.example.team19.kindlr;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -17,6 +20,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class UserManager {
 
     private static final boolean ENABLE_FIREBASE_READS = false;
+
+    private static final String TAG = "USERMGR";
 
     private FirebaseDatabase database;
     private DatabaseReference usersRef;
@@ -37,7 +42,7 @@ public class UserManager {
     public UserManager() {
         usersMap = Collections.synchronizedMap(new HashMap<String, User>());
         initialized = false;
-        Log.d("INIT", "Called UserManager constructor");
+        Log.d(TAG, "Called UserManager constructor");
     }
 
     // Save usersMap to Firebase (write to DB)
@@ -49,7 +54,7 @@ public class UserManager {
         if (initialized)
             return;
 
-        Log.d("INIT", "Initializing UserManager");
+        Log.d(TAG, "Initializing UserManager");
 
         database = FirebaseDatabase.getInstance();
         usersRef = database.getReference("users");
@@ -64,7 +69,7 @@ public class UserManager {
                     // whenever data at this location is updated.
                     User newUser = dataSnapshot.getValue(User.class);
                     if (!usersMap.containsKey(usersMap)) {
-                        Log.d("USERMANAGER", "Adding new user via onChildAdded: " + newUser.getUsername());
+                        Log.d(TAG, "Adding new user via onChildAdded: " + newUser.getUsername());
                         usersMap.put(newUser.getUsername(), newUser);
                     }
                 }
@@ -73,14 +78,14 @@ public class UserManager {
                 public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {
                     User changedUser = dataSnapshot.getValue(User.class);
                     usersMap.put(changedUser.getUsername(), changedUser); // overwrite
-                    Log.d("USERMANAGER", "Updating user via onChildChanged: " + changedUser.getUsername());
+                    Log.d(TAG, "Updating user via onChildChanged: " + changedUser.getUsername());
                 }
 
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
                     User removedUser = dataSnapshot.getValue(User.class);
                     if (usersMap.containsKey(removedUser.getUsername())) {
-                        Log.d("USERMANAGER", "Removing user via onChildRemoved: " + removedUser.getUsername());
+                        Log.d(TAG, "Removing user via onChildRemoved: " + removedUser.getUsername());
                         usersMap.remove(removedUser.getUsername());
                     }
 
@@ -94,8 +99,9 @@ public class UserManager {
                 @Override
                 public void onCancelled(DatabaseError error) {
                     // Failed to read value
-                    Log.w("WARN", "Failed to read value.", error.toException());
+                    Log.w(TAG, "Failed to read value.", error.toException());
                 }
+
             });
         }
 
@@ -122,9 +128,23 @@ public class UserManager {
         User u = new User(username, hashedPassword, firstName, lastName, city, state, phoneNum, email);
 //        usersMap.put(username, u);
 
-        usersRef.child(username).setValue(u); // add user to firebase
-        if (!usersMap.containsKey(username))
-            usersMap.put(username, u); // update in Map
+        Log.d(TAG, "Adding user: " + username);
+        usersMap.put(username, u); // update in Map
+
+        // add to firebase
+        usersRef.child(username).setValue(u)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d(TAG, "Successfully wrote new user to firebase" );
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d(TAG, "Failed to write new user to firebase: " + e.getMessage());
+                }
+            });
 
         currentUser = u;
 
@@ -139,9 +159,14 @@ public class UserManager {
         if (!doesUserExist(username))
             return;
 
-        usersRef.child(username).removeValue();
-        if (usersMap.containsKey(username))
-            usersMap.remove(username);
+        Log.d(TAG, "Removing user: " + username);
+        usersMap.remove(username);
+        usersRef.child(username).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "Successfully removed user from firebase");
+            }
+        }); // add user to firebase;
     }
 
     // Return User with given username
@@ -158,21 +183,21 @@ public class UserManager {
 
     // Attempt to login and set currentUser. Return true if successful
     public synchronized boolean attemptLogin(String username, String hashedPassword) {
-        Log.i("TESTLOG", "Attempting to log user in");
-        Log.i("TESTLOG", "User map " + usersMap.toString());
+        Log.i(TAG, "Attempting to log user in");
+        Log.i(TAG, "User map " + usersMap.toString());
         if (!usersMap.containsKey(username)) {
-            Log.i("TESTLOG", "User " + username + " does not exist");
+            Log.i(TAG, "User " + username + " does not exist");
             return false;
         }
 
-        Log.i("TESTLOG","Fetching user");
+        Log.i(TAG,"Fetching user");
         User u = usersMap.get(username);
-        Log.i("TESTLOG", "Real password is " + u.getHashedPassword());
+        Log.i(TAG, "Real password is " + u.getHashedPassword());
 
         if (!u.getHashedPassword().equals(hashedPassword))
             return false;
 
-        Log.i("TESTLOG", "Assigning current user");
+        Log.i(TAG, "Assigning current user");
         currentUser = u;
         return true;
     }
@@ -197,7 +222,7 @@ public class UserManager {
             return false;
 
         usersMap.get(username).dislikeBook(bookID);
-        usersRef.child(username).setValue(usersMap.get(username)); // update user in firebase
+        usersRef.child(username).setValue(usersMap.get(username));
         return true;
     }
 
