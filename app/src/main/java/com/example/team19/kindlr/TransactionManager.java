@@ -3,6 +3,7 @@ package com.example.team19.kindlr;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,6 +14,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class TransactionManager {
+
+    private static final boolean ENABLE_FIREBASE_READS = false;
 
     private Map<String, ExchangeTransaction> exchangeTransactionsMap;
     private Map<String, ForSaleTransaction> forSaleTransactionsMap;
@@ -29,16 +32,18 @@ public class TransactionManager {
     }
 
     public TransactionManager() {
-        exchangeTransactionsMap = new HashMap<String, ExchangeTransaction>();
-        forSaleTransactionsMap = new HashMap<String, ForSaleTransaction>();
+        Log.d("INIT", "Called TransactionManager constructor");
+        exchangeTransactionsMap = Collections.synchronizedMap(new HashMap<String, ExchangeTransaction>());
+        forSaleTransactionsMap = Collections.synchronizedMap(new HashMap<String, ForSaleTransaction>());
         initialized = false;
     }
 
-    public void initialize()
+    public synchronized void initialize()
     {
         if (initialized)
             return;
 
+        Log.d("INIT", "Initializing TransactionManager");
         database = FirebaseDatabase.getInstance();
         exchangeTransactionsRef = database.getReference("exchangeTransactions");
         forSaleTransactionsRef = database.getReference("forSaleTransactions");
@@ -46,51 +51,51 @@ public class TransactionManager {
 //        exchangeTransactionsMap = new HashMap<String, ExchangeTransaction>();
 //        forSaleTransactionsMap = new HashMap<String, ForSaleTransaction>();
 
-        // On data change, re-read usersMap from the database
-        exchangeTransactionsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                Log.d("TESTINFO", "exchangeTransactions being updated");
-                exchangeTransactionsMap = new HashMap<String, ExchangeTransaction>();
+        if (ENABLE_FIREBASE_READS) {
+            exchangeTransactionsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    // This method is called once with the initial value and again
+                    // whenever data at this location is updated.
+                    Log.d("TESTINFO", "exchangeTransactions being updated");
+                    exchangeTransactionsMap = new HashMap<String, ExchangeTransaction>();
 
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    ExchangeTransaction t = snapshot.getValue(ExchangeTransaction.class);
-                    exchangeTransactionsMap.put(snapshot.getKey(), t);
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        ExchangeTransaction t = snapshot.getValue(ExchangeTransaction.class);
+                        exchangeTransactionsMap.put(snapshot.getKey(), t);
+                    }
+                    Log.d("TESTINFO", "Refreshed exchangeTransactionsMap to be " + exchangeTransactionsMap.toString());
+                    Log.d("TESTINFO", "Length of exchangeTransactionsMap: " + exchangeTransactionsMap.size());
                 }
-                Log.d("TESTINFO", "Refreshed exchangeTransactionsMap to be " + exchangeTransactionsMap.toString());
-                Log.d("TESTINFO", "Length of exchangeTransactionsMap: " + exchangeTransactionsMap.size());
-            }
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w("WARN", "Failed to read value.", error.toException());
-            }
-        });
-
-        // On data change, re-read usersMap from the database
-        forSaleTransactionsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                Log.d("TESTINFO", "forSaleTransactions being updated");
-                forSaleTransactionsMap = new HashMap<String, ForSaleTransaction>();
-
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    ForSaleTransaction t = snapshot.getValue(ForSaleTransaction.class);
-                    forSaleTransactionsMap.put(snapshot.getKey(), t);
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                    Log.w("WARN", "Failed to read value.", error.toException());
                 }
-                Log.d("TESTINFO", "Refreshed forSaleTransactionsMap to be " + forSaleTransactionsMap.toString());
-                Log.d("TESTINFO", "Length of forSaleTransactionsMap: " + forSaleTransactionsMap.size());
-            }
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w("WARN", "Failed to read value.", error.toException());
-            }
-        });
+            });
+
+            forSaleTransactionsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    // This method is called once with the initial value and again
+                    // whenever data at this location is updated.
+                    Log.d("TESTINFO", "forSaleTransactions being updated");
+                    forSaleTransactionsMap = new HashMap<String, ForSaleTransaction>();
+
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        ForSaleTransaction t = snapshot.getValue(ForSaleTransaction.class);
+                        forSaleTransactionsMap.put(snapshot.getKey(), t);
+                    }
+                    Log.d("TESTINFO", "Refreshed forSaleTransactionsMap to be " + forSaleTransactionsMap.toString());
+                    Log.d("TESTINFO", "Length of forSaleTransactionsMap: " + forSaleTransactionsMap.size());
+                }
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                    Log.w("WARN", "Failed to read value.", error.toException());
+                }
+            });
+        }
 
         initialized = true;
     }

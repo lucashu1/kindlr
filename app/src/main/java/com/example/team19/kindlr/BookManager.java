@@ -9,6 +9,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,8 @@ public class BookManager {
 //    private DatabaseReference booksRef;
     private boolean initialized;
 
+    private static final boolean ENABLE_FIREBASE_READS = false;
+
     // Singleton logic
     private static BookManager bookManagerSingleton;
     public synchronized static BookManager getBookManager() {
@@ -33,39 +36,44 @@ public class BookManager {
 
     // BookManager constructor
     public BookManager() {
-        booksMap = new HashMap<String, Book>();
+        booksMap = Collections.synchronizedMap(new HashMap<String, Book>());
         initialized = false;
+        Log.d("INIT", "Called BookManager constructor");
     }
 
-    public void initialize() {
+    public synchronized void initialize() {
         if (initialized)
             return;
+
+        Log.d("INIT", "Initializing BookManager");
 
         database  = FirebaseDatabase.getInstance();
         booksRef = database.getReference("books");
 
-        // On data change, re-read booksMap from the database
-        booksRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                Log.d("TESTINFO", "Books being updated");
-                booksMap = new HashMap<String, Book>();
+        if (ENABLE_FIREBASE_READS) {
+            // On data change, re-read booksMap from the database
+            booksRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    // This method is called once with the initial value and again
+                    // whenever data at this location is updated.
+                    Log.d("TESTINFO", "Books being updated");
+                    booksMap = new HashMap<String, Book>();
 
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Book book = snapshot.getValue(Book.class);
-                    booksMap.put(snapshot.getKey(), book);
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Book book = snapshot.getValue(Book.class);
+                        booksMap.put(snapshot.getKey(), book);
+                    }
+                    Log.d("TESTINFO", "Refreshed booksMap to be " + booksMap.toString());
                 }
-                Log.d("TESTINFO", "Refreshed booksMap to be " + booksMap.toString());
-            }
 
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w("WARN", "Failed to read value.", error.toException());
-            }
-        });
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                    Log.w("WARN", "Failed to read value.", error.toException());
+                }
+            });
+        }
 
         initialized = true;
     }

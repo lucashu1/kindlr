@@ -39,15 +39,15 @@ public class ViewNotificationsActivityTest {
 
     @Test
     public void testMatchesFound() {
+        boolean loggedIn = UserManager.getUserManager().attemptLogin("bhahntest", "asdf");
+        assertTrue(loggedIn);
+
         // Set up transaction
         String bookId1 = BookManager.getBookManager().postBookForExchange("Software Engineering", "978-3-16-148410-3", "Ian Sommerville", "Computer Science", 9001, new ArrayList<String>(), "bhahntest");
         String bookId2 = BookManager.getBookManager().postBookForExchange("It", "978-3-16-148410-4", "Stephen King", "Horror", 47, new ArrayList<String>(), "shahntest");
         String txId1 = TransactionManager.getTransactionManager().makeUserLikeBook("bhahntest", bookId2);
         String txId2 = TransactionManager.getTransactionManager().makeUserLikeBook("shahntest", bookId1);
         ArrayList<Transaction> matches = TransactionManager.getTransactionManager().getAllMatchedTransactionsForUser("bhahntest");
-
-        boolean loggedIn = UserManager.getUserManager().attemptLogin("bhahntest", "asdf");
-        assertTrue(loggedIn);
 
         assertTrue(matches.size() == 1);
         assertTrue(matches.get(0) != null);
