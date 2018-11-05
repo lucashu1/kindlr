@@ -44,6 +44,9 @@
         <activity
             android:name=".ViewProfileActivity"
             android:label="@string/title_activity_view_profile" />
+        <activity android:name=".EditProfileActivity"
+                  android:label="EditProfileActivity"
+                  />
         <activity android:name=".InitFirebaseDummyActivity" android:label="TestFirebaseDummyActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
