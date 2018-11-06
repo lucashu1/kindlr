@@ -47,7 +47,7 @@ public class ViewExchangeActivity extends Activity {
         ratingTV.setText("Rating: " + rating + "/5");
 
         final TransactionManager tm = TransactionManager.getTransactionManager();
-        final ExchangeTransaction et = (ExchangeTransaction) tm.getExchangeTransactionsMap().get(transactionKey);
+        final ExchangeTransaction et = (ExchangeTransaction) tm.exchangeTransMgr.getItemByID(transactionKey);
         final UserManager um = UserManager.getUserManager();
 
         if (et.wasRejected()) {

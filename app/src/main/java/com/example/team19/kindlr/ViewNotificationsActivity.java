@@ -31,7 +31,7 @@ public class ViewNotificationsActivity extends Activity {
         TransactionManager tm = TransactionManager.getTransactionManager();
         User currentUser = um.getCurrentUser();
 
-        ArrayList<Transaction> matches = tm.getAllMatchedTransactionsForUser(currentUser.getUsername());
+        ArrayList<Transaction> matches = tm.exchangeTransMgr.getAllMatchedTransactionsForUser(currentUser.getUsername());
 
         Log.d("TESTINFO", "The matches are " + matches.toString());
 

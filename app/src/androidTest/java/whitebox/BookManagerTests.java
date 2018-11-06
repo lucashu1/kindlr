@@ -41,10 +41,10 @@ public class BookManagerTests {
         ArrayList<String> sweTags = new ArrayList<String>();
         sweTags.add("Textbook");
         String sweID = bm.postBookForSale("Software Engineering", "978-0133943030", "Ian Sommerville", "Comedy", 500, sweTags, username);
-        assertTrue(bm.bookExists(sweID));
-        assertTrue(bm.getBookByID(sweID).getForSale());
-        assertEquals(bm.getBookByID(sweID).getIsbn(), "978-0133943030");
-        bm.deleteBook(sweID);
+        assertTrue(bm.doesItemExist(sweID));
+        assertTrue(bm.getItemByID(sweID).getForSale());
+        assertEquals(bm.getItemByID(sweID).getIsbn(), "978-0133943030");
+        bm.deleteItem(sweID);
     }
 
     @Test
@@ -54,10 +54,10 @@ public class BookManagerTests {
         harryPotterTags.add("Good for kids");
         harryPotterTags.add("Magic");
         String harryPotterID = bm.postBookForExchange("Harry Potter and the Philosopher's Stone", "9789604533084", "J.K. Rowling", "Fantasy", 300, harryPotterTags, username);
-        assertTrue(bm.bookExists(harryPotterID));
-        assertTrue(!bm.getBookByID(harryPotterID).getForSale());
-        assertEquals(bm.getBookByID(harryPotterID).getIsbn(), "9789604533084");
-        bm.deleteBook(harryPotterID);
+        assertTrue(bm.doesItemExist(harryPotterID));
+        assertTrue(!bm.getItemByID(harryPotterID).getForSale());
+        assertEquals(bm.getItemByID(harryPotterID).getIsbn(), "9789604533084");
+        bm.deleteItem(harryPotterID);
     }
 
     @Test
@@ -78,8 +78,8 @@ public class BookManagerTests {
         }
         assertEquals(filteredBooks.size(), 1);
         assertEquals(filteredBooks.get(0).getBookName(), "Hello World");
-        bm.deleteBook(book1ID);
-        bm.deleteBook(book2ID);
+        bm.deleteItem(book1ID);
+        bm.deleteItem(book2ID);
     }
 
     @After

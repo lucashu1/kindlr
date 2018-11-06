@@ -35,11 +35,11 @@ public class ExchangeTransaction extends Transaction implements Serializable {
         this.user2LikedBookID = user2LikedBookID;
         isMatched = true;
 
-        TransactionManager.getTransactionManager().saveToFirebase();
+        TransactionManager.getTransactionManager().saveAllToFirebase();
 
         // mark books involved as 'invisible' so they don't show up
-        BookManager.getBookManager().getBookByID(user1LikedBookID).makeInvisible();
-        BookManager.getBookManager().getBookByID(user2LikedBookID).makeInvisible();
+        BookManager.getBookManager().getItemByID(user1LikedBookID).makeInvisible();
+        BookManager.getBookManager().getItemByID(user2LikedBookID).makeInvisible();
 
         // TODO:
         // notify both users involved?
@@ -68,9 +68,9 @@ public class ExchangeTransaction extends Transaction implements Serializable {
     public void rejectTransaction() {
         BookManager bm = BookManager.getBookManager();
         if (user1LikedBookID != null && user1LikedBookID.length() > 0)
-            bm.getBookByID(user1LikedBookID).makeVisible();
+            bm.getItemByID(user1LikedBookID).makeVisible();
         if (user2LikedBookID != null && user2LikedBookID.length() > 0)
-            bm.getBookByID(user2LikedBookID).makeVisible();
+            bm.getItemByID(user2LikedBookID).makeVisible();
         wasRejected = true;
     }
 

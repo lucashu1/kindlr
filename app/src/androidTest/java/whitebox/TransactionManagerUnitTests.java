@@ -35,8 +35,7 @@ public class TransactionManagerUnitTests {
     }
 
     @Before
-    public void addUsers()
-    {
+    public void addUsers() {
         Log.d("TESTINFO", "Adding users");
         UserManager.getUserManager().addUser("testUser1", "",
                 "Mr", "Test", "Los Angeles", "California",
@@ -49,21 +48,20 @@ public class TransactionManagerUnitTests {
 
 
     @Test
-    public void testAddNewForSaleTransaction()
-    {
-        Log.d("TESTINFO", "Performing test");
+    public void testAddNewForSaleTransaction() {
+        Log.i("TESTINFO", "STARTING for add transaction");
         // testUser1 posts "testBook1"
         String saleBookID = BookManager.getBookManager().postBookForSale("testBook1",
                 "978-3-16-148410-2", "author2", "TestGenre", 20,
                 null, "testUser1");
 
         // Make new transaction: testUser2 likes book
-        String transactionId = TransactionManager.getTransactionManager()
+        String transactionId = TransactionManager.getTransactionManager().forSaleTransMgr
                 .addNewForSaleTransaction("testUser2",
                         saleBookID, "testUser1");
 
-        ForSaleTransaction fst = TransactionManager.getTransactionManager()
-                .getForSaleTransactionByID(transactionId);
+        ForSaleTransaction fst = TransactionManager.getTransactionManager().forSaleTransMgr
+                .getItemByID(transactionId);
         assertTrue(fst != null);
 
         assertEquals(fst.getUsername1(), "testUser2");
@@ -71,48 +69,55 @@ public class TransactionManagerUnitTests {
         assertEquals(fst.getUser1LikedBookID(), saleBookID);
 
         // Clean up
-        BookManager.getBookManager().deleteBook(saleBookID);
-        TransactionManager.getTransactionManager().deleteForSaleTransaction(transactionId);
+        BookManager.getBookManager().deleteItem(saleBookID);
+        TransactionManager.getTransactionManager().forSaleTransMgr.deleteItem(transactionId);
+        Log.i("TESTINFO", "done");
     }
 
     @Test
-    public void testForSaleTransactionExists()
-    {
+    public void testForSaleTransactionExists() {
+        Log.i("TESTINFO", "STARTING for sale");
         // testUser1 posts "testBook1"
         String saleBookID = BookManager.getBookManager().postBookForSale("testBook1",
                 "978-3-16-148410-2", "author2", "TestGenre", 20,
                 null, "testUser1");
 
-        String transactionId = TransactionManager.getTransactionManager().addNewForSaleTransaction("testUser2", saleBookID, "testUser1");
-        boolean forSaleExists = TransactionManager.getTransactionManager().forSaleTransactionExists(transactionId);
+        String transactionId = TransactionManager.getTransactionManager().forSaleTransMgr
+                .addNewForSaleTransaction("testUser2", saleBookID, "testUser1");
+        boolean forSaleExists = TransactionManager.getTransactionManager().forSaleTransMgr
+                .doesItemExist(transactionId);
         assertTrue(forSaleExists);
 
         // Clean up
-        BookManager.getBookManager().deleteBook(saleBookID);
-        TransactionManager.getTransactionManager().deleteForSaleTransaction(transactionId);
+        BookManager.getBookManager().deleteItem(saleBookID);
+        TransactionManager.getTransactionManager().forSaleTransMgr.deleteItem(transactionId);
+        Log.i("TESTINFO", "done");
     }
 
     @Test
-    public void testExchangeTransactionExists()
-    {
+    public void testExchangeTransactionExists() {
+        Log.i("TESTINFO", "STARTING if a transaction exists");
         // testUser1 and testUser2 post books for exchange
-        String book1ID = BookManager.getBookManager().postBookForExchange("testBook1", "978-3-16-148410-2", "author2", "TestGenre", 20, null, "testUser1");
-        String book2ID = BookManager.getBookManager().postBookForExchange("testBook2", "978-3-16-148410-2", "author2", "TestGenre", 20, null, "testUser2");
+        String book1ID = BookManager.getBookManager().postBookForExchange("testBook1",
+                "978-3-16-148410-2", "author2", "TestGenre", 20, null, "testUser1");
+        String book2ID = BookManager.getBookManager().postBookForExchange("testBook2",
+                "978-3-16-148410-2", "author2", "TestGenre", 20, null, "testUser2");
 
-        String transactionID = TransactionManager.getTransactionManager().addNewUnmatchedExchangeTransaction("testUser1", "testBook2");
-        boolean exchangeTransactionExists = TransactionManager.getTransactionManager().exchangeTransactionExists(transactionID);
+        String transactionID = TransactionManager.getTransactionManager().exchangeTransMgr.addNewUnmatchedExchangeTransaction("testUser1", "testBook2");
+        boolean exchangeTransactionExists = TransactionManager.getTransactionManager().exchangeTransMgr.doesItemExist(transactionID);
 
         assertTrue(exchangeTransactionExists);
 
         // Clean up
-        TransactionManager.getTransactionManager().deleteExchangeTransaction(transactionID);
-        BookManager.getBookManager().deleteBook(book1ID);
-        BookManager.getBookManager().deleteBook(book2ID);
+        TransactionManager.getTransactionManager().exchangeTransMgr.deleteItem(transactionID);
+        BookManager.getBookManager().deleteItem(book1ID);
+        BookManager.getBookManager().deleteItem(book2ID);
+        Log.i("TESTINFO", "done");
     }
 
     @Test
-    public void testMatchExchangeTransaction()
-    {
+    public void testMatchExchangeTransaction() {
+        Log.i("TESTINFO", "STARTING a match test");
         // testUser1 and testUser2 post books for exchange
         String book1ID = BookManager.getBookManager().postBookForExchange("testBook1",
                 "978-3-16-148410-2", "author2", "TestGenre", 20,
@@ -123,30 +128,31 @@ public class TransactionManagerUnitTests {
                 null, "testUser2");
 
 
-        String transactionID = TransactionManager.getTransactionManager().addNewUnmatchedExchangeTransaction("testUser1", book2ID);
-        ExchangeTransaction t = TransactionManager.getTransactionManager().getExchangeTransactionByID(transactionID);
+        String transactionID = TransactionManager.getTransactionManager().exchangeTransMgr.addNewUnmatchedExchangeTransaction("testUser1", book2ID);
+        ExchangeTransaction t = TransactionManager.getTransactionManager().exchangeTransMgr.getItemByID(transactionID);
         assertTrue(t != null);
         t.matchExchangeTransaction("testUser2", book1ID);
         assertTrue(t.isMatched());
 
         // Clean up
-        TransactionManager.getTransactionManager().deleteExchangeTransaction(transactionID);
-        BookManager.getBookManager().deleteBook(book1ID);
-        BookManager.getBookManager().deleteBook(book2ID);
+        TransactionManager.getTransactionManager().exchangeTransMgr.deleteItem(transactionID);
+        BookManager.getBookManager().deleteItem(book1ID);
+        BookManager.getBookManager().deleteItem(book2ID);
+        Log.i("TESTINFO", "done");
     }
 
     @Test
-    public void testUserLikeSaleBook()
-    {
+    public void testUserLikeSaleBook() {
         // testUser2 posts "testBook2" for sale
-        String saleBookID = BookManager.getBookManager().postBookForSale("testBook2", "978-3-16-148410-2", "author2", "TestGenre", 20, null, "testUser2");
+        String saleBookID = BookManager.getBookManager().postBookForSale("testBook2",
+                "978-3-16-148410-2", "author2", "TestGenre", 20, null, "testUser2");
 
         Log.d("TESTEXCHANGE", "TRYING testUserLikeSaleBook()");
         Log.d("TESTEXCHANGE", "forSaleBookID: " + saleBookID);
 
         // testUser1 likes testBook2
         String saleID = TransactionManager.getTransactionManager().makeUserLikeBook("testUser1", saleBookID);
-        ForSaleTransaction fst = TransactionManager.getTransactionManager().getForSaleTransactionByID(saleID);
+        ForSaleTransaction fst = TransactionManager.getTransactionManager().forSaleTransMgr.getItemByID(saleID);
         assertTrue(fst != null);
 
         assertEquals(fst.getUsername1(), "testUser1");
@@ -154,13 +160,12 @@ public class TransactionManagerUnitTests {
         assertEquals(fst.getUsername2(), "testUser2");
         assertTrue(fst.isMatched());
 
-        TransactionManager.getTransactionManager().deleteForSaleTransaction(saleID);
-        BookManager.getBookManager().deleteBook(saleBookID);
+        TransactionManager.getTransactionManager().forSaleTransMgr.deleteItem(saleID);
+        BookManager.getBookManager().deleteItem(saleBookID);
     }
 
     @Test
-    public void testUserLikeExchangeBook()
-    {
+    public void testUserLikeExchangeBook() {
         // testUser1 and testUser2 post books for exchange
         String book1ID = BookManager.getBookManager().postBookForExchange("testBook1",
                 "978-3-16-148410-2", "author2", "TestGenre",
@@ -173,37 +178,37 @@ public class TransactionManagerUnitTests {
 
         // testUser1 likes testBook2 --> unmatched
         String transactionID = TransactionManager.getTransactionManager().makeUserLikeBook("testUser1", book2ID);
-        ExchangeTransaction t = TransactionManager.getTransactionManager().getExchangeTransactionByID(transactionID);
+        ExchangeTransaction t = TransactionManager.getTransactionManager().exchangeTransMgr.getItemByID(transactionID);
         assertTrue(!t.isMatched());
 
         // testUser2 likes testBook1 --> matched
         transactionID = TransactionManager.getTransactionManager().makeUserLikeBook("testUser2", book1ID);
 //        assertEquals(transactionID, transactionIDAgain);
-        t = TransactionManager.getTransactionManager().getExchangeTransactionByID(transactionID);
+        t = TransactionManager.getTransactionManager().exchangeTransMgr.getItemByID(transactionID);
         assertTrue(t != null);
         assertTrue(t.isMatched());
 
         assertEquals(t.getUsername1(), "testUser1");
         assertEquals(t.getUsername2(), "testUser2");
-        assertEquals(BookManager.getBookManager().getBookByID(t.getUser1LikedBookID()).getBookName(), "testBook2");
-        assertEquals(BookManager.getBookManager().getBookByID(t.getUser2LikedBookID()).getBookName(), "testBook1");
+        assertEquals(BookManager.getBookManager().getItemByID(t.getUser1LikedBookID()).getBookName(), "testBook2");
+        assertEquals(BookManager.getBookManager().getItemByID(t.getUser2LikedBookID()).getBookName(), "testBook1");
 
         // Clean up
-        TransactionManager.getTransactionManager().deleteExchangeTransaction(transactionID);
-        BookManager.getBookManager().deleteBook(book1ID);
-        BookManager.getBookManager().deleteBook(book2ID);
+        TransactionManager.getTransactionManager().exchangeTransMgr.deleteItem(transactionID);
+        BookManager.getBookManager().deleteItem(book1ID);
+        BookManager.getBookManager().deleteItem(book2ID);
     }
 
 
     @Test
-    public void testUserDislikeBook()
-    {
+    public void testUserDislikeBook() {
         // testUser1 posts "testBook1"
-        String saleBookID = BookManager.getBookManager().postBookForSale("testBook1", "978-3-16-148410-2", "author2", "TestGenre", 20, null, "testUser1");
+        String saleBookID = BookManager.getBookManager().postBookForSale("testBook1", "978-3-16-148410-2",
+                "author2", "TestGenre", 20, null, "testUser1");
         boolean disliked = TransactionManager.getTransactionManager().makeUserDislikeBook("testUser2", saleBookID);
         assertTrue(disliked);
 
-        BookManager.getBookManager().deleteBook(saleBookID);
+        BookManager.getBookManager().deleteItem(saleBookID);
     }
 
 

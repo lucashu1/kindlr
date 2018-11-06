@@ -69,11 +69,11 @@ public class Transaction implements Serializable {
         String currentUsername = UserManager.getUserManager().getCurrentUser().getUsername();
         // currentUser is User1
         if (username1 != null && username1.equals(currentUsername) && username2 != null && username2.length() > 0 && user1LikedBookID != null) {
-            return BookManager.getBookManager().getBookByID(user1LikedBookID);
+            return BookManager.getBookManager().getItemByID(user1LikedBookID);
         }
         // currentUser is User2
         else if (username2 != null && username2.equals(currentUsername) && username1 != null && username1.length() > 0 && user2LikedBookID != null) {
-            return BookManager.getBookManager().getBookByID(user2LikedBookID);
+            return BookManager.getBookManager().getItemByID(user2LikedBookID);
         }
         // currentUser is not in transaction
         else {

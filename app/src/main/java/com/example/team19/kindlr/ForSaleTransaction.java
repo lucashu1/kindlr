@@ -28,7 +28,7 @@ public class ForSaleTransaction extends Transaction implements Serializable {
         this.isMatched = true; // forSaleTransactions are matched automatically
 
         // Make book invisible temporarily
-        BookManager.getBookManager().getBookByID(user1LikedBookID).makeInvisible();
+        BookManager.getBookManager().getItemByID(user1LikedBookID).makeInvisible();
 
         // TODO: notify book owner?
     }
@@ -47,7 +47,7 @@ public class ForSaleTransaction extends Transaction implements Serializable {
     public void rejectTransaction() {
         BookManager bm = BookManager.getBookManager();
         if (user1LikedBookID != null && user1LikedBookID.length() > 0)
-            bm.getBookByID(user1LikedBookID).makeVisible();
+            bm.getItemByID(user1LikedBookID).makeVisible();
         wasRejected = true;
     }
 

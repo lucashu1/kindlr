@@ -21,8 +21,8 @@ public class InitFirebaseDummyActivity extends Activity {
         TransactionManager tm = TransactionManager.getTransactionManager();
 
         // Clear database
-        um.clearAllUsers();
-        bm.clearAllBooks();
+        um.removeAllItems();
+        bm.removeAllItems();
         tm.clearAllTransactions();
 
         // Create users
