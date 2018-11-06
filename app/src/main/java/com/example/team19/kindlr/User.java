@@ -75,6 +75,40 @@ public class User implements Serializable {
         return ((double)totalRating)/numRatingsReceived;
     }
 
+    public void setFirstName(String name){
+        firstName = name;
+    }
+
+    public void setUsername(String username){
+        this.username = username;
+    }
+
+    public void setHashedPassword(String pass){
+        hashedPassword = pass;
+    }
+
+    public void setLastName(String lastName){
+        this.lastName = lastName;
+    }
+
+    public void setCity(String city){
+        this.city = city;
+    }
+
+    public void setState(String state){
+        this.state = state;
+    }
+
+    public void setPhoneNum(String phone){
+        phoneNum = phone;
+    }
+
+    public void setEmail(String email){
+        this.email = email;
+    }
+
+
+
     public ArrayList<String> getLikedBooks() {
         return likedBookIDs;
     }

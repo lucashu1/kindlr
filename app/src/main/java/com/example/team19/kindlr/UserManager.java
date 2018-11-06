@@ -62,6 +62,17 @@ public class UserManager extends FirebaseAccessor<User> {
         return true;
     }
 
+    public void updateCurrentUser(User updatedUser){
+        DatabaseReference updateRef = usersRef.child(updatedUser.getUsername());
+        Map<String, Object> userUpdates = new HashMap<>();
+        userUpdates.put(updatedUser.getUsername(), updatedUser);
+        Log.d("update",updatedUser.getCity());
+        usersRef.updateChildren(userUpdates);
+
+//        userUpdates.put("alanisawesome/nickname", "Alan The Machine");
+//        usersRef.child(username).child("username").s
+    }
+
     public boolean doesUserExist(String username) {
         return this.getItemsMap().containsKey(username);
     }

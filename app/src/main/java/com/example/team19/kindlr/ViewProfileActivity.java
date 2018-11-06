@@ -46,6 +46,14 @@ public class ViewProfileActivity extends Activity {
             }
         });
 
+        Button editProfBtn = (Button) findViewById(R.id.edit_profile_button);
+        editProfBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), EditProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
         if (!isCurrentUser) {
             postBookBtn.setVisibility(View.GONE);
         }
