@@ -20,6 +20,10 @@ public class ExchangeTransaction extends Transaction implements Serializable {
         isMatched = false;
     }
 
+    public String toString() {
+        return "ExchangeTransaction \n" + super.toString();
+    }
+
     public ExchangeTransaction(String transactionID, String username1, String user1LikedBookID) {
         super(transactionID);
         this.username1 = username1;

@@ -37,6 +37,10 @@ public class ForSaleTransaction extends Transaction implements Serializable {
         // TODO: notify book owner?
     }
 
+    public String toString() {
+        return "ForSaleTransaction \n" + super.toString();
+    }
+
     // Accept transaction: remove book(s) from circulation
     @Override
     public void acceptTransaction() {

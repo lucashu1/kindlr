@@ -16,6 +16,8 @@ import android.util.Log;
 
 public class ViewNotificationsActivity extends Activity {
 
+    private final static String TAG = "NotificationsActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,12 +35,18 @@ public class ViewNotificationsActivity extends Activity {
 
         ArrayList<Transaction> matches = tm.getAllMatchedTransactionsForUser(currentUser.getUsername());
 
-        Log.d("TESTINFO", "The matches are " + matches.toString());
+        Log.d(TAG, "The matches are " + matches.toString());
 
         for (int i = 0; i < matches.size(); i++) {
             Transaction tx = matches.get(i);
+
+            Log.d(TAG, "Found transaction " + tx.toString());
+
             Book otherUsersBook = tx.getOtherUsersBook();
             User otherUser = tx.getOtherUserInTransaction();
+
+            Log.d(TAG, "Other user's book " + otherUsersBook.toString());
+            Log.d(TAG, "Other user " + otherUser.toString());
 
             TableLayout table = (TableLayout)findViewById(R.id.notifications_table_layout);
             TableRow row = new TableRow(this);
