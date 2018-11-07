@@ -65,17 +65,21 @@ public class BookManagerTests {
         BookManager bm = BookManager.getBookManager();
         ArrayList<String> chaoWangTags = new ArrayList<String>();
         chaoWangTags.add("Professorial");
+
         String book1ID = bm.postBookForExchange("Hello World", "12345", "Chao Wang", "Knowledge", 999, chaoWangTags, username);
         ArrayList<String> halfondTags = new ArrayList<String>();
         halfondTags.add("Sabbatical");
+
         String book2ID = bm.postBookForExchange("I Am Legend", "54321", "William Halfond", "Wisdom", 999, halfondTags, username);
         BookFilter bf = new BookFilter("Hello World");
         bf.setAuthor("Chao Wang");
+
         ArrayList<Book> filteredBooks = new ArrayList<Book>(bm.getFilteredBooks(bf, UserManager.getUserManager().getUserByUsername("testUser2")));
         Log.d("BOOKFILTERTEST", "Length of filteredBooks: " + filteredBooks.size());
         for (int i = 0; i < filteredBooks.size(); i++) {
             Log.d("BOOKFILTERTEST", "Filtered book name: " + filteredBooks.get(i).getBookName());
         }
+
         assertEquals(filteredBooks.size(), 1);
         assertEquals(filteredBooks.get(0).getBookName(), "Hello World");
         bm.deleteItem(book1ID);
