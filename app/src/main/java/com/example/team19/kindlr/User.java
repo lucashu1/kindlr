@@ -20,6 +20,9 @@ public class User implements Serializable {
     public User() {
         totalRating = 0;
         numRatingsReceived = 0;
+
+        likedBooks = new ArrayList<>();
+        dislikedBooks = new ArrayList<>();
     }
 
     public User(String username, String hashedPassword, String firstName, String lastName,
@@ -35,6 +38,9 @@ public class User implements Serializable {
 
         totalRating = 0;
         numRatingsReceived = 0;
+
+        likedBooks = new ArrayList<>();
+        dislikedBooks = new ArrayList<>();
     }
 
     public String getFirstName() {
