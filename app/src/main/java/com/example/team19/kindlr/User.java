@@ -14,15 +14,15 @@ public class User implements Serializable {
     private String email;
     private int totalRating;
     private int numRatingsReceived;
-    private ArrayList<String> likedBookIDs; // array of bookIDs
-    private ArrayList<String> dislikedBookIDs; // array of bookIDs
+    private ArrayList<String> likedBooks; // array of bookIDs
+    private ArrayList<String> dislikedBooks; // array of bookIDs
 
     public User() {
         totalRating = 0;
         numRatingsReceived = 0;
 
-        likedBookIDs = new ArrayList<String>();
-        dislikedBookIDs = new ArrayList<String>();
+        likedBooks = new ArrayList<>();
+        dislikedBooks = new ArrayList<>();
     }
 
     public User(String username, String hashedPassword, String firstName, String lastName,
@@ -39,8 +39,8 @@ public class User implements Serializable {
         totalRating = 0;
         numRatingsReceived = 0;
 
-        likedBookIDs = new ArrayList<String>();
-        dislikedBookIDs = new ArrayList<String>();
+        likedBooks = new ArrayList<>();
+        dislikedBooks = new ArrayList<>();
     }
 
     public String getFirstName() {
@@ -110,11 +110,11 @@ public class User implements Serializable {
 
 
     public ArrayList<String> getLikedBooks() {
-        return likedBookIDs;
+        return likedBooks;
     }
 
     public ArrayList<String> getDislikedBooks() {
-        return dislikedBookIDs;
+        return dislikedBooks;
     }
 
     public String getUsername() {
@@ -126,10 +126,10 @@ public class User implements Serializable {
     }
 
     public void likeBook(String bookID) {
-        likedBookIDs.add(bookID);
+        likedBooks.add(bookID);
     }
 
     public void dislikeBook(String bookID) {
-        dislikedBookIDs.add(bookID);
+        dislikedBooks.add(bookID);
     }
 }

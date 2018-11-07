@@ -34,6 +34,10 @@ public class TransactionManager {
         initialize(false);
     }
 
+    public void refresh() {
+        initialize(false);
+    }
+
     public void initialize(boolean shouldWait) {
         this.forSaleTransMgr.initialize(shouldWait);
         this.exchangeTransMgr.initialize(shouldWait);
@@ -79,6 +83,20 @@ public class TransactionManager {
         // Case 1: Liked book is for sale
         if (BookManager.getBookManager().getItemByID(bookID).getForSale()) {
             transactionID = forSaleTransMgr.addNewForSaleTransaction(username, bookID, BookManager.getBookManager().getItemByID(bookID).getOwner());
+
+            //sends email notification to user's emails
+            String ownerName = BookManager.getBookManager().getBookOwner(bookID);
+            Book book = BookManager.getBookManager().getItemByID(bookID);
+            String subject = "Your book " + book.getBookName() + " has entered a for sale transaction";
+            String bookOwnerEmail = UserManager.getUserManager().getUserByUsername(ownerName).getEmail();
+            String likerEmail = UserManager.getUserManager().getUserByUsername(username).getEmail();
+            String ownerNotif = username + " has liked your book that is for sale.";
+            String likerNotif = "You have liked " + ownerName + "'s book that is for sale.";
+            EmailNotifier ownerNotifier = new EmailNotifier(bookOwnerEmail);
+            ownerNotifier.sendFromGMail(subject, ownerNotif);
+            EmailNotifier likerNotifier = new EmailNotifier(likerEmail);
+            likerNotifier.sendFromGMail(subject, likerNotif);
+
             this.forSaleTransMgr.saveToFirebase();
         }
         // Case 2: Liked book is for exchange
@@ -111,6 +129,21 @@ public class TransactionManager {
                     existingUnmatchedTransaction.matchExchangeTransaction(username, bookID);
                     transactionID = existingUnmatchedTransaction.getTransactionID();
                     foundMatch = true;
+
+                    //sends email notification to user's emails
+                    String ownerName = BookManager.getBookManager().getBookOwner(bookID);
+                    Book book = BookManager.getBookManager().getItemByID(bookID);
+                    String subject = "Your book " + book.getBookName() + " has entered an exchange";
+                    String likerSubject = "The book " + book.getBookName() + " that you liked is in an exchange!";
+                    String bookOwnerEmail = UserManager.getUserManager().getUserByUsername(ownerName).getEmail();
+                    String likerEmail = UserManager.getUserManager().getUserByUsername(username).getEmail();
+                    String ownerNotif = username + " has liked your book that is for sale.";
+                    String likerNotif = "You have liked " + ownerName + "'s book that is for sale.";
+                    EmailNotifier ownerNotifier = new EmailNotifier(bookOwnerEmail);
+                    ownerNotifier.sendFromGMail(subject, ownerNotif);
+                    EmailNotifier likerNotifier = new EmailNotifier(likerEmail);
+                    likerNotifier.sendFromGMail(likerSubject, likerNotif);
+
                     break;
                 }
             }
@@ -125,5 +158,12 @@ public class TransactionManager {
 
 
         return transactionID;
+    }
+
+    public ArrayList<Transaction> getAllMatchedTransactionsForUser(String userName) {
+        ArrayList<Transaction> exchangeTransactions = this.exchangeTransMgr.getAllMatchedTransactionsForUser(userName);
+        ArrayList<Transaction> forSaleTransactions = this.forSaleTransMgr.getAllMatchedTransactionsForUser(userName);
+        exchangeTransactions.addAll(forSaleTransactions);
+        return exchangeTransactions;
     }
 }

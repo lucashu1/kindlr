@@ -50,6 +50,7 @@ public class ViewExchangeActivity extends Activity {
         tagsTV.setText("Tags: " + tags);
         ratingTV.setText("Rating: " + rating + "/5");
 
+        // TODO: handle ForSale books
         final TransactionManager tm = TransactionManager.getTransactionManager();
         final ExchangeTransaction et = (ExchangeTransaction) tm.exchangeTransMgr.getItemByID(transactionKey);
         final UserManager um = UserManager.getUserManager();

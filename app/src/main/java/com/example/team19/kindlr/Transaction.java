@@ -10,6 +10,8 @@ public class Transaction implements Serializable {
         // Exchange: User likes book --> Create new unmatched transaction --> Other book's owner likes one of User 1's books --> match! --> accept transaction
         // Sale: User likes a forSale book --> Create a matched forSale transaction immediately
 
+    private final static String TAG = "Transaction";
+
     protected String transactionID;
     protected boolean forSaleTransaction;
     protected boolean wasAccepted;
@@ -32,6 +34,18 @@ public class Transaction implements Serializable {
         isMatched = false;
     }
 
+    public String toString() {
+        return "    transactionID: " + transactionID + "\n"
+                + "     forSaleTransaction " + forSaleTransaction + "\n"
+                + "     wasRejected " + wasRejected + "\n"
+                + "     username1 " + username1 + "\n"
+                + "     username2 " + username2 + "\n"
+                + "     user1LikedBookID " + user1LikedBookID + "\n"
+                + "     user2LikedBookID " + user2LikedBookID + "\n"
+                + "     timestamp " + timestamp.toString() + "\n"
+                + "     isMatched " + isMatched + "\n";
+    }
+
     // Default constructor
     public Transaction(String transactionID) {
         this.transactionID = transactionID;
@@ -45,20 +59,12 @@ public class Transaction implements Serializable {
     public User getOtherUserInTransaction()
     {
         String currentUsername = UserManager.getUserManager().getCurrentUser().getUsername();
-        // currentUser is User1
-        if (username1 != null && username1.equals(currentUsername) && username2 != null && username2.length() > 0) {
+
+        if (username1.equals(currentUsername)) {
             return UserManager.getUserManager().getUserByUsername(username2);
         }
-        // currentUser is User2
-        else if (username2 != null && username2.equals(currentUsername) && username1 != null && username1.length() > 0) {
-            return UserManager.getUserManager().getUserByUsername(username1);
-        }
-        // currentUser is not in transaction
-        else {
-            Log.d("WARN",
-                    "Couldn't find other user in transaction! Username1: " + username1 + "; Username2: " + username2);
-            return null;
-        }
+
+        return UserManager.getUserManager().getUserByUsername(username1);
     }
 
     // gets the other user in the transaction (not currentUser)
@@ -66,19 +72,22 @@ public class Transaction implements Serializable {
     // TODO: how to handle forSale transactions? (Only 1 book in transaction)
     public Book getOtherUsersBook()
     {
-        String currentUsername = UserManager.getUserManager().getCurrentUser().getUsername();
-        // currentUser is User1
-        if (username1 != null && username1.equals(currentUsername) && username2 != null && username2.length() > 0 && user1LikedBookID != null) {
+        if (user2LikedBookID == null) {
             return BookManager.getBookManager().getItemByID(user1LikedBookID);
         }
-        // currentUser is User2
-        else if (username2 != null && username2.equals(currentUsername) && username1 != null && username1.length() > 0 && user2LikedBookID != null) {
+
+        String currentUsername = UserManager.getUserManager().getCurrentUser().getUsername();
+
+        Log.d(TAG, "currentUsername " + currentUsername);
+        Log.d(TAG, "User1 " + username1);
+        Log.d(TAG, "user1LikedBookID " + user1LikedBookID);
+        Log.d(TAG, "user2LikedBookID" + user2LikedBookID);
+
+        if (username1.equals(currentUsername)) {
             return BookManager.getBookManager().getItemByID(user2LikedBookID);
         }
-        // currentUser is not in transaction
-        else {
-            return null;
-        }
+
+        return BookManager.getBookManager().getItemByID(user1LikedBookID);
     }
 
 

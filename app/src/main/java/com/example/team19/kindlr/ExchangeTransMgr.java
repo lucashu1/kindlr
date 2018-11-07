@@ -7,6 +7,8 @@ import java.util.Map;
 
 public class ExchangeTransMgr extends FirebaseAccessor<ExchangeTransaction> {
 
+    private static final String TAG = "ExchangeTransMgr";
+
     public ExchangeTransMgr() {
         super(ExchangeTransaction.class);
     }
@@ -20,7 +22,7 @@ public class ExchangeTransMgr extends FirebaseAccessor<ExchangeTransaction> {
         String transactionID = this.getInsertKey();
         ExchangeTransaction t = new ExchangeTransaction(transactionID, username1, user1LikedBookID); // create new exchange transaction
         this.getItemsMap().put(transactionID, t);
-        Log.d("INFO", "Created new unmatched exchange transaction");
+        Log.d(TAG, "Created new unmatched exchange transaction: " + transactionID);
         saveToFirebase();
         return transactionID;
     }
@@ -43,6 +45,8 @@ public class ExchangeTransMgr extends FirebaseAccessor<ExchangeTransaction> {
 
             }
         }
+        Log.d(TAG, "Getting matched transactions for user: " + userName + "; found " + result.size() + " matched transactions.");
+
         return result;
     }
 }

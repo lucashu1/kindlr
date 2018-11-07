@@ -3,6 +3,7 @@ package com.example.team19.kindlr;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -26,6 +27,8 @@ public class MainSwipingScreenActivity extends Activity {
     private User currentUser;
     private EditText searchText;
     private ImageView iv;
+
+    private final static String LOG_TAG = "MainSwipingActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +84,20 @@ public class MainSwipingScreenActivity extends Activity {
                 bookFilter.setSearchText(stringSearchText);
 //                filterBooks(stringSearchText);
                 refreshBook();
+            }
+        });
 
+        final Button refreshBtn = (Button)findViewById(R.id.refresh_button);
+        refreshBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(LOG_TAG, "Refresh called");
 
+                UserManager.getUserManager().refresh();
+                TransactionManager.getTransactionManager().refresh();
+                BookManager.getBookManager().refresh();
+
+                refreshBook();
             }
         });
 
@@ -120,6 +135,11 @@ public class MainSwipingScreenActivity extends Activity {
     }
 
     private void incrementIndex() {
+        if (this.curBooks.size() == 0) {
+            curIndex = 0;
+            return;
+        }
+
         this.curBooks.remove(curIndex);
 
         curIndex += 1;
@@ -143,6 +163,7 @@ public class MainSwipingScreenActivity extends Activity {
     private Book getCurrentBook() {
         if (curBooks.size() == 0)
             return null;
+
         return curBooks.get(curIndex);
     }
 

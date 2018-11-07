@@ -1,9 +1,13 @@
 package com.example.team19.kindlr;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.Date;
 
 public class ExchangeTransaction extends Transaction implements Serializable {
+
+    private final static String TAG = "ExchangeTransaction";
 
     public ExchangeTransaction() {
         wasAccepted = false;
@@ -14,6 +18,10 @@ public class ExchangeTransaction extends Transaction implements Serializable {
         user2LikedBookID = null;
         timestamp = new Date();
         isMatched = false;
+    }
+
+    public String toString() {
+        return "ExchangeTransaction \n" + super.toString();
     }
 
     public ExchangeTransaction(String transactionID, String username1, String user1LikedBookID) {
@@ -27,7 +35,7 @@ public class ExchangeTransaction extends Transaction implements Serializable {
     public String matchExchangeTransaction(String username2, String user2LikedBookID) {
         // If this transaction is not already full, then fill it
         if (isMatched) {
-            System.out.println("WARNING: attemped to match an already matched transaction!");
+            Log.d(TAG, "WARNING: Tried to match an already matched transaction: " + this.getTransactionID());
             return this.transactionID;
         }
 

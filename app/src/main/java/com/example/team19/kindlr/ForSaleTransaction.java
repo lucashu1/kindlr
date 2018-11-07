@@ -1,9 +1,13 @@
 package com.example.team19.kindlr;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.Date;
 
 public class ForSaleTransaction extends Transaction implements Serializable {
+
+    private final static String TAG = "ForSaleTransaction";
 
     public ForSaleTransaction() {
         wasAccepted = false;
@@ -33,6 +37,10 @@ public class ForSaleTransaction extends Transaction implements Serializable {
         // TODO: notify book owner?
     }
 
+    public String toString() {
+        return "ForSaleTransaction \n" + super.toString();
+    }
+
     // Accept transaction: remove book(s) from circulation
     @Override
     public void acceptTransaction() {
@@ -45,6 +53,7 @@ public class ForSaleTransaction extends Transaction implements Serializable {
     // Reject transaction --> make books visible again
     @Override
     public void rejectTransaction() {
+        Log.d(TAG, "rejected transaction: " + this.transactionID);
         BookManager bm = BookManager.getBookManager();
         if (user1LikedBookID != null && user1LikedBookID.length() > 0)
             bm.getItemByID(user1LikedBookID).makeVisible();
