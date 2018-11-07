@@ -55,7 +55,7 @@ public class SignUpTest {
     @After
     public void clearTestUser() {
         if (UserManager.getUserManager().doesUserExist(testUsername)) {
-            UserManager.getUserManager().deleteUser(testUsername);
+            UserManager.getUserManager().deleteItem(testUsername);
         }
     }
 
@@ -110,7 +110,7 @@ public class SignUpTest {
 
         assertTrue(checkMainSwipingExists());
 
-        UserManager.getUserManager().deleteUser(testUsername);
+        UserManager.getUserManager().deleteItem(testUsername);
     }
 
     @Test
@@ -125,7 +125,7 @@ public class SignUpTest {
                 "WA", "4254639202", "szot@usc.edu");
 
         assertFalse(checkMainSwipingExists());
-        UserManager.getUserManager().deleteUser(testUsername);
+        UserManager.getUserManager().deleteItem(testUsername);
     }
 
     @Test

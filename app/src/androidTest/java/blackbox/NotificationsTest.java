@@ -85,7 +85,7 @@ public class NotificationsTest {
         onView(withId(R.id.sign_in_button)).perform(click());
         onView(withId(R.id.notifications)).perform(click());
 
-        ArrayList<Transaction> matches = tm.getAllMatchedTransactionsForUser(um.getCurrentUser().getUsername());
+        ArrayList<Transaction> matches = tm.exchangeTransMgr.getAllMatchedTransactionsForUser(um.getCurrentUser().getUsername());
 
         //assertEquals(matches.get(0).getOtherUserInTransaction().getUsername(), "andy");
     }
@@ -98,7 +98,7 @@ public class NotificationsTest {
         onView(withId(R.id.sign_in_button)).perform(click());
         onView(withId(R.id.notifications)).perform(click());
 
-        ArrayList<Transaction> matches = tm.getAllMatchedTransactionsForUser(um.getCurrentUser().getUsername());
+        ArrayList<Transaction> matches = tm.exchangeTransMgr.getAllMatchedTransactionsForUser(um.getCurrentUser().getUsername());
 
         //assertTrue(matches.size() == 0);
     }
@@ -137,12 +137,12 @@ public class NotificationsTest {
 
     @AfterClass
     public static void deleteTestVariables() {
-        um.deleteUser("bhahntest");
-        um.deleteUser("shahntest");
-        bm.deleteBook(bookId1);
-        bm.deleteBook(bookId2);
-        tm.deleteExchangeTransaction(txId1);
-        tm.deleteExchangeTransaction(txId2);
+        um.deleteItem("bhahntest");
+        um.deleteItem("shahntest");
+        bm.deleteItem(bookId1);
+        bm.deleteItem(bookId2);
+        tm.exchangeTransMgr.deleteItem(txId1);
+        tm.exchangeTransMgr.deleteItem(txId2);
     }
 
 

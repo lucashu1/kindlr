@@ -87,9 +87,9 @@ public class LikeBookTest {
 
     @After
     public void destroyVars(){
-        UserManager.getUserManager().deleteUser("andy");
-        UserManager.getUserManager().deleteUser("jacob");
-        BookManager.getBookManager().deleteBook("bookID");
+        UserManager.getUserManager().deleteItem("andy");
+        UserManager.getUserManager().deleteItem("jacob");
+        BookManager.getBookManager().deleteItem("bookID");
     }
 
 

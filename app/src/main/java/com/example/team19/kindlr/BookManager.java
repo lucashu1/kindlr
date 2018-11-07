@@ -64,7 +64,7 @@ public class BookManager extends FirebaseAccessor<Book> {
     public String postBookForExchange(String bookName, String isbn, String author,
                                                    String genre, int pageCount, List<String> tags, String owner) {
 
-        return postBook(bookName, isbn, author, genre, pageCount, tags, owner, true);
+        return postBook(bookName, isbn, author, genre, pageCount, tags, owner, false);
     }
 
 

@@ -47,7 +47,7 @@ public class ViewNotificationsActivityTest {
         String bookId2 = BookManager.getBookManager().postBookForExchange("It", "978-3-16-148410-4", "Stephen King", "Horror", 47, new ArrayList<String>(), "shahntest");
         String txId1 = TransactionManager.getTransactionManager().makeUserLikeBook("bhahntest", bookId2);
         String txId2 = TransactionManager.getTransactionManager().makeUserLikeBook("shahntest", bookId1);
-        ArrayList<Transaction> matches = TransactionManager.getTransactionManager().getAllMatchedTransactionsForUser("bhahntest");
+        ArrayList<Transaction> matches = TransactionManager.getTransactionManager().exchangeTransMgr.getAllMatchedTransactionsForUser("bhahntest");
 
         assertTrue(matches.size() == 1);
         assertTrue(matches.get(0) != null);
@@ -55,9 +55,9 @@ public class ViewNotificationsActivityTest {
         assertTrue(matches.get(0).getOtherUsersBook().getBookName().equals("It"));
 
         // Clean up
-        TransactionManager.getTransactionManager().deleteExchangeTransaction(txId1);
-        BookManager.getBookManager().deleteBook(bookId1);
-        BookManager.getBookManager().deleteBook(bookId2);
+        TransactionManager.getTransactionManager().exchangeTransMgr.deleteItem(txId1);
+        BookManager.getBookManager().deleteItem(bookId1);
+        BookManager.getBookManager().deleteItem(bookId2);
     }
 
 //    @Test
@@ -68,8 +68,8 @@ public class ViewNotificationsActivityTest {
 
     @After
     public void cleanUp() {
-        UserManager.getUserManager().deleteUser("bhahntest");
-        UserManager.getUserManager().deleteUser("shahntest");
+        UserManager.getUserManager().deleteItem("bhahntest");
+        UserManager.getUserManager().deleteItem("shahntest");
 //        TransactionManager.getTransactionManager().deleteExchangeTransaction(txId1);
 //        BookManager.getBookManager().deleteBook(bookId1);
 //        BookManager.getBookManager().deleteBook(bookId2);

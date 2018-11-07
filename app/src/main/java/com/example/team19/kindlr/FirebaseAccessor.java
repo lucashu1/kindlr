@@ -26,16 +26,16 @@ public abstract class FirebaseAccessor<T> {
         this.firebaseName = firebaseName;
     }
 
-    public boolean doesItemExist(String bookID) {
-        return (itemsMap.containsKey(bookID));
+    public boolean doesItemExist(String itemId) {
+        return (itemsMap.containsKey(itemId));
     }
 
-    public void deleteItem(String bookID) {
-        if (!doesItemExist(bookID))
+    public void deleteItem(String itemId) {
+        if (!doesItemExist(itemId))
             return;
 
-        itemsMap.remove(bookID);
-        DatabaseReference itemRef = dataRef.child(bookID);
+        itemsMap.remove(itemId);
+        DatabaseReference itemRef = dataRef.child(itemId);
         itemRef.removeValue();
     }
 

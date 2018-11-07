@@ -139,7 +139,7 @@ public class PostBookTest {
 
     @After
     public void cleanup(){
-        UserManager.getUserManager().deleteUser(loginInput);
+        UserManager.getUserManager().deleteItem(loginInput);
     }
 
 

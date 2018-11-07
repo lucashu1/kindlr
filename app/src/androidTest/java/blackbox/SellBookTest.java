@@ -121,7 +121,7 @@ public class SellBookTest {
     @After
     public void cleanUp()
     {
-        UserManager.getUserManager().deleteUser("andy");
+        UserManager.getUserManager().deleteItem("andy");
     }
 
 

@@ -33,7 +33,7 @@ public class UserManagerTest {
         UserManager um = UserManager.getUserManager();
         assertTrue(um.doesUserExist(username));
         assertEquals(um.getUserByUsername(username).getEmail(), email);
-        um.deleteUser(username);
+        um.deleteItem(username);
     }
 
     @Test
@@ -50,6 +50,6 @@ public class UserManagerTest {
 
     @After
     public void deleteTestUser() {
-        UserManager.getUserManager().deleteUser(username);
+        UserManager.getUserManager().deleteItem(username);
     }
 }

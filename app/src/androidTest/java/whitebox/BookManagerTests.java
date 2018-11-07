@@ -84,8 +84,8 @@ public class BookManagerTests {
 
     @After
     public void deleteTestUsers() {
-        UserManager.getUserManager().deleteUser(username);
-        UserManager.getUserManager().deleteUser("testUser2");
+        UserManager.getUserManager().deleteItem(username);
+        UserManager.getUserManager().deleteItem("testUser2");
     }
 
 }

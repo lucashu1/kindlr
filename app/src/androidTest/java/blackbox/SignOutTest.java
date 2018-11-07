@@ -80,6 +80,6 @@ public class SignOutTest {
 
     @After
     public void cleanUp(){
-        UserManager.getUserManager().deleteUser(loginInput);
+        UserManager.getUserManager().deleteItem(loginInput);
     }
 }

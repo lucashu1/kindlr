@@ -214,7 +214,7 @@ public class TransactionManagerUnitTests {
 
     @After
     public void deleteTestVariables() {
-        UserManager.getUserManager().deleteUser("testUser1");
-        UserManager.getUserManager().deleteUser("testUser2");
+        UserManager.getUserManager().deleteItem("testUser1");
+        UserManager.getUserManager().deleteItem("testUser2");
     }
 }
