@@ -87,7 +87,7 @@ public class MainSwipingScreenActivity extends Activity {
             }
         });
 
-        final Button refreshBtn = (Button)findViewById(R.id.refresh_button);
+        /*final Button refreshBtn = (Button)findViewById(R.id.refresh_button);
         refreshBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,7 +99,7 @@ public class MainSwipingScreenActivity extends Activity {
 
                 refreshBook();
             }
-        });
+        });*/
 
         iv = (ImageView) findViewById(R.id.image);
 
