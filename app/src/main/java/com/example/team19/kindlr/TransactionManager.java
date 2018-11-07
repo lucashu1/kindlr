@@ -88,11 +88,13 @@ public class TransactionManager {
             String ownerName = BookManager.getBookManager().getBookOwner(bookID);
             Book book = BookManager.getBookManager().getItemByID(bookID);
             String subject = "Your book " + book.getBookName() + " has entered a for sale transaction";
+            String bookOwnerEmail = UserManager.getUserManager().getUserByUsername(ownerName).getEmail();
+            String likerEmail = UserManager.getUserManager().getUserByUsername(username).getEmail();
             String ownerNotif = username + " has liked your book that is for sale.";
             String likerNotif = "You have liked " + ownerName + "'s book that is for sale.";
-            EmailNotifier ownerNotifier = new EmailNotifier("joshuahung98@gmail.com");
+            EmailNotifier ownerNotifier = new EmailNotifier(bookOwnerEmail);
             ownerNotifier.sendFromGMail(subject, ownerNotif);
-            EmailNotifier likerNotifier = new EmailNotifier("joshualh@usc.edu");
+            EmailNotifier likerNotifier = new EmailNotifier(likerEmail);
             likerNotifier.sendFromGMail(subject, likerNotif);
 
             this.forSaleTransMgr.saveToFirebase();
@@ -128,29 +130,19 @@ public class TransactionManager {
                     transactionID = existingUnmatchedTransaction.getTransactionID();
                     foundMatch = true;
 
-//                    String ownerName = BookManager.getBookManager().getBookOwner(bookID);
-//                    User likeUsr = UserManager.getUserManager().getUserByUsername(username);
-//                    User owner = UserManager.getUserManager().getUserByUsername(ownerName);
-//                    Book book = BookManager.getBookManager().getItemByID(bookID);
-//
-//                    String subject = book.getBookID() + "has entered an exchange transaction";
-//                    String ownerNotif = username + "has liked your book that is for exchange.";
-//                    EmailNotifier toOwner = new EmailNotifier(owner.getEmail());
-//                    toOwner.sendFromGMail(subject, ownerNotif);
-//
-//                    String likerNotif = "You have liked " + ownerName + "'s book.";
-//                    EmailNotifier toLiker = new EmailNotifier(likeUsr.getEmail());
-//                    toLiker.sendFromGMail(subject, likerNotif);
-
-//                    String ownerName = BookManager.getBookManager().getBookOwner(bookID);
-//                    Book book = BookManager.getBookManager().getItemByID(bookID);
-//                    String subject = "Your book " + book.getBookName() + " has entered a for sale transaction";
-//                    String ownerNotif = username + " has liked your book that is for sale.";
-//                    String likerNotif = "You have liked " + ownerName + "'s book that is for sale.";
-//                    EmailNotifier ownerNotifier = new EmailNotifier("joshuahung98@gmail.com");
-//                    ownerNotifier.sendFromGMail(subject, ownerNotif);
-//                    EmailNotifier likerNotifier = new EmailNotifier("joshualh@usc.edu");
-//                    likerNotifier.sendFromGMail(subject, likerNotif);
+                    //sends email notification to user's emails
+                    String ownerName = BookManager.getBookManager().getBookOwner(bookID);
+                    Book book = BookManager.getBookManager().getItemByID(bookID);
+                    String subject = "Your book " + book.getBookName() + " has entered an exchange";
+                    String likerSubject = "The book " + book.getBookName() + " that you liked is in an exchange!";
+                    String bookOwnerEmail = UserManager.getUserManager().getUserByUsername(ownerName).getEmail();
+                    String likerEmail = UserManager.getUserManager().getUserByUsername(username).getEmail();
+                    String ownerNotif = username + " has liked your book that is for sale.";
+                    String likerNotif = "You have liked " + ownerName + "'s book that is for sale.";
+                    EmailNotifier ownerNotifier = new EmailNotifier(bookOwnerEmail);
+                    ownerNotifier.sendFromGMail(subject, ownerNotif);
+                    EmailNotifier likerNotifier = new EmailNotifier(likerEmail);
+                    likerNotifier.sendFromGMail(likerSubject, likerNotif);
 
                     break;
                 }
