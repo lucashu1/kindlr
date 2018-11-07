@@ -78,8 +78,6 @@ public class MainSwipingScreenActivity extends Activity {
                 bookFilter.setSearchText(stringSearchText);
 //                filterBooks(stringSearchText);
                 refreshBook();
-
-
             }
         });
 
