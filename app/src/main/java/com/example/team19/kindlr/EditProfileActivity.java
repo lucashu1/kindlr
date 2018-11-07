@@ -90,7 +90,7 @@ public class EditProfileActivity extends Activity {
             currUser.setEmail(emailStr);
         }
 
-        UserManager.getUserManager().updateCurrentUser(currUser);
+        UserManager.getUserManager().updateUser(currUser);
 
     }
 
