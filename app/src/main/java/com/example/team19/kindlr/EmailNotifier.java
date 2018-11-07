@@ -10,20 +10,29 @@ import javax.mail.internet.*;
 public class EmailNotifier {
     private static String USER_NAME = "chaowang310";  // GMail user name (just the part before "@gmail.com")
     private static String PASSWORD = "310sucks"; // GMail password
-    private static String RECIPIENT = "joshualh@usc.edu";
+    private static String RECIPIENT;
 
-    public static void main(String[] args) {
-        String from = USER_NAME;
-        String pass = PASSWORD;
-        String[] to = { RECIPIENT }; // list of recipient email addresses
-        String subject = "Java send mail example";
-        String body = "Welcome to JavaMail!";
+//    public static void main(String[] args) {
+//        String from = USER_NAME;
+//        String pass = PASSWORD;
+//        RECIPIENT = "joshualh@usc.edu";
+//        String[] to = { RECIPIENT }; // list of recipient email addresses
+//        String subject = "Java send mail example";
+//        String body = "Welcome to JavaMail!";
+//
+//        sendFromGMail(subject, body);
+//        System.out.println("sent");
+//    }
 
-        sendFromGMail(from, pass, to, subject, body);
-        System.out.println("sent");
+    public EmailNotifier(String recipient)
+    {
+        RECIPIENT = recipient;
     }
 
-    private static void sendFromGMail(String from, String pass, String[] to, String subject, String body) {
+    public void sendFromGMail(String subject, String body) {
+        String from = USER_NAME;
+        String pass = PASSWORD;
+        String[] to = { RECIPIENT };
         Properties props = System.getProperties();
         String host = "smtp.gmail.com";
         props.put("mail.smtp.starttls.enable", "true");

@@ -83,6 +83,22 @@ public class TransactionManager {
         // Case 1: Liked book is for sale
         if (BookManager.getBookManager().getItemByID(bookID).getForSale()) {
             transactionID = forSaleTransMgr.addNewForSaleTransaction(username, bookID, BookManager.getBookManager().getItemByID(bookID).getOwner());
+
+            String ownerName = BookManager.getBookManager().getBookOwner(bookID);
+            User likeUsr = UserManager.getUserManager().getUserByUsername(username);
+            User owner = UserManager.getUserManager().getUserByUsername(ownerName);
+            EmailNotifier toOwner = new EmailNotifier(owner.getEmail());
+            //liker is the one that works
+            EmailNotifier toLiker = new EmailNotifier(likeUsr.getEmail());
+            Log.d("OWNEREMAIL", owner.getEmail());
+            Log.d("LIKEUSREMAIL", likeUsr.getEmail());
+            Book book = BookManager.getBookManager().getItemByID(bookID);
+            String subject = "Your book " + book.getBookName() + " has entered a for sale transaction";
+            String ownerNotif = username + " has liked your book that is for sale.";
+            String likerNotif = "You have liked " + ownerName + "'s book that is for sale.";
+            toOwner.sendFromGMail(subject, ownerNotif);
+            toLiker.sendFromGMail(subject, likerNotif);
+
             this.forSaleTransMgr.saveToFirebase();
         }
         // Case 2: Liked book is for exchange
