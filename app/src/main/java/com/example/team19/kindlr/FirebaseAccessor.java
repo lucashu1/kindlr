@@ -11,19 +11,20 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public abstract class FirebaseAccessor<T> {
     private FirebaseDatabase database;
     private DatabaseReference dataRef;
     private Map<String, T> itemsMap;
     private Class<T> typeParamClass;
-    private String firebaseName;
+
+    private final static String LOG_TAG = "FirebaseAccessor";
 
     private Boolean initialized;
 
     public FirebaseAccessor(Class<T> typeParamClass) {
         initialized = false;
         this.typeParamClass = typeParamClass;
-        this.firebaseName = firebaseName;
     }
 
     public boolean doesItemExist(String itemId) {
@@ -52,14 +53,19 @@ public abstract class FirebaseAccessor<T> {
     }
 
     protected abstract String getFirebaseRefName();
+
+
     protected void startDbRead() {
         database  = FirebaseDatabase.getInstance();
         dataRef = database.getReference(this.getFirebaseRefName());
+
+        Log.d(LOG_TAG, "Got data ref");
 
         // On data change, re-read booksMap from the database
         dataRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d(LOG_TAG, "Firebase on data change event fired");
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 itemsMap = new HashMap<String, T>();
@@ -91,6 +97,7 @@ public abstract class FirebaseAccessor<T> {
     }
 
     protected void onFinishDbRead() {
+        Log.d(LOG_TAG, "Calling back on DB read");
         synchronized(initialized) {
             initialized.notify();
         }
@@ -100,16 +107,26 @@ public abstract class FirebaseAccessor<T> {
         dataRef.removeValue();
     }
 
-
     public final void initialize() {
-        startDbRead();
+        initialize(false);
+    }
 
-        synchronized(initialized) {
-            try {
-                initialized.wait();
-            } catch (InterruptedException e) {
-                // Happens if someone interrupts your thread.
+
+    public final void initialize(boolean shouldWait) {
+        Log.d(LOG_TAG, "Starting DB read for " + this.getFirebaseRefName());
+        startDbRead();
+        Log.d(LOG_TAG, "Sent DB read");
+
+        if (shouldWait) {
+            synchronized (initialized) {
+                try {
+                    initialized.wait();
+                } catch (InterruptedException e) {
+                    // Happens if someone interrupts your thread.
+                }
             }
         }
+
+        Log.d(LOG_TAG, "Finished reading from DB for " + this.getFirebaseRefName());
     }
 }

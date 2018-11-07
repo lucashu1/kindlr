@@ -31,8 +31,12 @@ public class TransactionManager {
     }
 
     public void initialize() {
-        this.forSaleTransMgr.initialize();
-        this.exchangeTransMgr.initialize();
+        initialize(false);
+    }
+
+    public void initialize(boolean shouldWait) {
+        this.forSaleTransMgr.initialize(shouldWait);
+        this.exchangeTransMgr.initialize(shouldWait);
     }
 
     public void saveAllToFirebase() {

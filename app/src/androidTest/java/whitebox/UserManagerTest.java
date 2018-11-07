@@ -19,7 +19,7 @@ public class UserManagerTest {
 
     @BeforeClass
     public static void prepUserManagerTests() {
-        UserManager.getUserManager().initialize();
+        UserManager.getUserManager().initialize(true);
         UserManager um = UserManager.getUserManager();
     }
 

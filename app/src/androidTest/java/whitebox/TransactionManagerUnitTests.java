@@ -29,9 +29,9 @@ public class TransactionManagerUnitTests {
 
     @BeforeClass
     public static void initManagers() {
-        UserManager.getUserManager().initialize();
-        BookManager.getBookManager().initialize();
-        TransactionManager.getTransactionManager().initialize();
+        UserManager.getUserManager().initialize(true);
+        BookManager.getBookManager().initialize(true);
+        TransactionManager.getTransactionManager().initialize(true);
     }
 
     @Before

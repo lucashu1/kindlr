@@ -25,8 +25,8 @@ public class BookManagerTests {
 
     @BeforeClass
     public static void initFirebase() {
-        UserManager.getUserManager().initialize();
-        BookManager.getBookManager().initialize();
+        UserManager.getUserManager().initialize(true);
+        BookManager.getBookManager().initialize(true);
     }
 
     @Before
