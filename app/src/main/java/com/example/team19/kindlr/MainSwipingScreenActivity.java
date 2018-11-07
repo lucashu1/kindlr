@@ -164,8 +164,8 @@ public class MainSwipingScreenActivity extends Activity {
             bookAuthor.setText("Surprising!");
         }
         else {
-            bookTitle.setText(book.getBookName());
-            bookAuthor.setText(book.getAuthor());
+            bookTitle.setText("Title: " + book.getBookName());
+            bookAuthor.setText("Author: " + book.getAuthor());
         }
     }
 

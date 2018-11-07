@@ -63,7 +63,7 @@ public class UserManager extends FirebaseAccessor<User> {
     }
 
     public void updateUser(User updatedUser){
-        if (!this.getItemsMap().containsKey(updatedUser)) {
+        if (!this.getItemsMap().containsKey(updatedUser.getUsername())) {
             Log.d(TAG, "WARNING: Tried to update non-existent user: " + updatedUser.getUsername());
             return;
         }
