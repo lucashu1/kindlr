@@ -10,6 +10,8 @@ public class Transaction implements Serializable {
         // Exchange: User likes book --> Create new unmatched transaction --> Other book's owner likes one of User 1's books --> match! --> accept transaction
         // Sale: User likes a forSale book --> Create a matched forSale transaction immediately
 
+    private final static String TAG = "Transaction";
+
     protected String transactionID;
     protected boolean forSaleTransaction;
     protected boolean wasAccepted;
@@ -55,8 +57,8 @@ public class Transaction implements Serializable {
         }
         // currentUser is not in transaction
         else {
-            Log.d("WARN",
-                    "Couldn't find other user in transaction! Username1: " + username1 + "; Username2: " + username2);
+            Log.d(TAG,
+                    "WARN: Couldn't find other user in transaction! Username1: " + username1 + "; Username2: " + username2);
             return null;
         }
     }

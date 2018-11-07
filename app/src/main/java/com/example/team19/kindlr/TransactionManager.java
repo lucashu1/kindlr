@@ -126,4 +126,11 @@ public class TransactionManager {
 
         return transactionID;
     }
+
+    public ArrayList<Transaction> getAllMatchedTransactionsForUser(String userName) {
+        ArrayList<Transaction> exchangeTransactions = this.exchangeTransMgr.getAllMatchedTransactionsForUser(userName);
+        ArrayList<Transaction> forSaleTransactions = this.forSaleTransMgr.getAllMatchedTransactionsForUser(userName);
+        exchangeTransactions.addAll(forSaleTransactions);
+        return exchangeTransactions;
+    }
 }
