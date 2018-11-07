@@ -39,7 +39,7 @@
                 android:inputType="textPersonName"
                 android:visibility="visible"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editText2" />
+                app:layout_constraintTop_toBottomOf="@+id/title" />
 
             <EditText
                 android:id="@+id/author"
@@ -52,7 +52,7 @@
                 android:inputType="textPersonName"
                 android:visibility="visible"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editText3" />
+                app:layout_constraintTop_toBottomOf="@+id/isbn" />
 
             <EditText
                 android:id="@+id/genre"
@@ -65,18 +65,31 @@
                 android:inputType="textPersonName"
                 android:visibility="visible"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editText4" />
+                app:layout_constraintTop_toBottomOf="@+id/author" />
 
             <EditText
-                android:id="@+id/pagecount"
+            android:id="@+id/pagecount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="30dp"
+            android:ems="10"
+            android:hint="Page Count"
+            android:inputType="number"
+            app:layout_constraintTop_toBottomOf="@+id/genre" />
+
+            <EditText
+                android:id="@+id/image_url"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="30dp"
                 android:ems="10"
-                android:hint="Page Count"
-                android:inputType="number"
-                app:layout_constraintTop_toBottomOf="@+id/editText" />
+                android:hint="Image URL"
+                android:inputType="textPersonName"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/pagecount" />
 
             <TextView
                 android:layout_width="match_parent"

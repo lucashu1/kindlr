@@ -7,6 +7,9 @@ import android.widget.TextView;
 import android.widget.ImageView;
 import android.widget.Button;
 import android.view.View;
+
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 public class ViewExchangeActivity extends Activity {
@@ -38,6 +41,7 @@ public class ViewExchangeActivity extends Activity {
         final Button deny = (Button) findViewById(R.id.deny);
         final TextView message = (TextView) findViewById(R.id.message);
 
+        Picasso.get().load(image).resize(500,500).centerCrop().into(imageIV);
         nameTV.setText("Name: " + name);
         titleTV.setText("Title: " + title);
         authorTV.setText("Author: " + author);

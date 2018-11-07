@@ -14,6 +14,7 @@ public class Book {
     private boolean forSale;
     private String owner;
     private boolean visible; // if a book is a part of a current transaction, make it invisible
+    private String imageURL;
 
     public Book(String bookID, String bookName, String isbn, String author, String genre, int pageCount, List<String> tags, boolean forSale, String owner){
         this.author = author;
@@ -26,6 +27,22 @@ public class Book {
         this.forSale = forSale;
         this.owner = owner;
         this.visible = true;
+        this.imageURL = "https://png.pngtree.com/element_pic/17/07/27/bd157c7c747dc708790aa64b43c3da35.jpg";
+    }
+
+    //This constructor also takes in imageURL
+    public Book(String bookID, String bookName, String isbn, String author, String genre, int pageCount, List<String> tags, boolean forSale, String owner, String imageURL){
+        this.author = author;
+        this.bookName = bookName;
+        this.bookID = bookID;
+        this.isbn = isbn;
+        this.genre = genre;
+        this.pageCount = pageCount;
+        this.tags = tags;
+        this.forSale = forSale;
+        this.owner = owner;
+        this.visible = true;
+        this.imageURL = imageURL;
     }
 
     public Book() {
@@ -63,6 +80,8 @@ public class Book {
     public boolean getForSale(){
         return forSale;
     }
+
+    public String getImageURL() { return imageURL; }
 
     public void setForSale(boolean sale){
         forSale = sale;

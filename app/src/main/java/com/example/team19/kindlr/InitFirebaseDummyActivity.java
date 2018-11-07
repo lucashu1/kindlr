@@ -34,11 +34,11 @@ public class InitFirebaseDummyActivity extends Activity {
         ArrayList<String> harryPotterTags = new ArrayList<String>();
         harryPotterTags.add("Good for kids");
         harryPotterTags.add("Magic");
-        String harryPotterID = bm.postBookForExchange("Harry Potter and the Philosopher's Stone", "9789604533084", "J.K. Rowling", "Fantasy", 300, harryPotterTags, "andy");
-        String goDogGoID = bm.postBookForExchange("Go Dog, Go!", "9781299086180", "P.D. Eastman", "Non-Fiction", 10, null, "lucashu1");
+        String harryPotterID = bm.postBookForExchange("Harry Potter and the Philosopher's Stone", "9789604533084", "J.K. Rowling", "Fantasy", 300, harryPotterTags, "andy", "");
+        String goDogGoID = bm.postBookForExchange("Go Dog, Go!", "9781299086180", "P.D. Eastman", "Non-Fiction", 10, null, "lucashu1", "");
         ArrayList<String> sweTags = new ArrayList<String>();
         sweTags.add("Textbook");
-        String sweID = bm.postBookForSale("Software Engineering", "978-0133943030", "Ian Sommerville", "Comedy", 500, sweTags, "bhahn");
+        String sweID = bm.postBookForSale("Software Engineering", "978-0133943030", "Ian Sommerville", "Comedy", 500, sweTags, "bhahn", "");
 
         // Create transactions (make users like books)
         tm.makeUserLikeBook("andy", goDogGoID);

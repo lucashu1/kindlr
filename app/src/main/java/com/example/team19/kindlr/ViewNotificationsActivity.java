@@ -33,7 +33,7 @@ public class ViewNotificationsActivity extends Activity {
 
         ArrayList<Transaction> matches = tm.exchangeTransMgr.getAllMatchedTransactionsForUser(currentUser.getUsername());
 
-        Log.d("TESTINFO", "The matches are " + matches.toString());
+        Log.d("TESTINFO", "Size of matches is " + matches.size());
 
         for (int i = 0; i < matches.size(); i++) {
             Transaction tx = matches.get(i);
@@ -44,8 +44,8 @@ public class ViewNotificationsActivity extends Activity {
             TableRow row = new TableRow(this);
 
             ImageView img = new ImageView(this);
-            final String imageURL = "https://png.pngtree.com/element_pic/17/07/27/bd157c7c747dc708790aa64b43c3da35.jpg";
-            Picasso.get().load(imageURL).into(img);
+            final String imageURL = otherUsersBook.getImageURL();
+            Picasso.get().load(imageURL).resize(150, 150).into(img);
 
 
             TextView t = new TextView(this);
@@ -92,9 +92,9 @@ public class ViewNotificationsActivity extends Activity {
             view.setText("VIEW");
 
             //TODO: Generalize
-            if (i == 0) view.setId(R.id.view_notification_1);
+            /*if (i == 0) view.setId(R.id.view_notification_1);
             else if (i == 1) view.setId(R.id.view_notification_2);
-            else if (i == 2) view.setId(R.id.view_notification_3);
+            else if (i == 2) view.setId(R.id.view_notification_3);*/
 
             row.addView(img);
             row.addView(t);

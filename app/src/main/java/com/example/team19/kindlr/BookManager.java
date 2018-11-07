@@ -64,22 +64,22 @@ public class BookManager extends FirebaseAccessor<Book> {
     }
 
     public String postBookForExchange(String bookName, String isbn, String author,
-                                                   String genre, int pageCount, List<String> tags, String owner) {
+                                                   String genre, int pageCount, List<String> tags, String owner, String imageURL) {
 
-        return postBook(bookName, isbn, author, genre, pageCount, tags, owner, false);
+        return postBook(bookName, isbn, author, genre, pageCount, tags, owner, imageURL, false);
     }
 
 
     public String postBookForSale(String bookName, String isbn, String author, String genre,
-                                               int pageCount, List<String> tags, String owner){
-        return postBook(bookName, isbn, author, genre, pageCount, tags, owner, true);
+                                               int pageCount, List<String> tags, String owner, String imageURL){
+        return postBook(bookName, isbn, author, genre, pageCount, tags, owner, imageURL, true);
     }
 
     public String postBook(String bookName, String isbn, String author, String genre,
-                         int pageCount, List<String> tags, String owner, boolean forSale) {
+                         int pageCount, List<String> tags, String owner, String imageURL, boolean forSale) {
 
         String bookKey = this.getInsertKey();
-        Book book = new Book(bookKey, bookName, isbn, author, genre, pageCount, tags, forSale, owner);
+        Book book = new Book(bookKey, bookName, isbn, author, genre, pageCount, tags, forSale, owner, imageURL);
 
         // Add book to map, save to firebase
         this.getItemsMap().put(bookKey, book);

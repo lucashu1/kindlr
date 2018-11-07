@@ -6,9 +6,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainSwipingScreenActivity extends Activity {
@@ -20,6 +25,7 @@ public class MainSwipingScreenActivity extends Activity {
     private int curIndex = 0;
     private User currentUser;
     private EditText searchText;
+    private ImageView iv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +85,8 @@ public class MainSwipingScreenActivity extends Activity {
 
             }
         });
+
+        iv = (ImageView) findViewById(R.id.image);
 
 
 
@@ -140,13 +148,20 @@ public class MainSwipingScreenActivity extends Activity {
 
     private void updateDisplay() {
         Book book = getCurrentBook();
+
+
+
         if (book == null) {
             bookTitle.setText("No books!");
             bookAuthor.setText("Surprising!");
+            String noBooksImageURL = "https://banner2.kisspng.com/20180407/yhw/kisspng-empty-set-null-set-symbol-mathematics-forbidden-5ac859ad09c119.24223671152307959704.jpg";
+            Picasso.get().load(noBooksImageURL).resize(500,500).centerCrop().into(iv);
         }
         else {
-            bookTitle.setText(book.getBookName());
-            bookAuthor.setText(book.getAuthor());
+            String imageURL = book.getImageURL();
+            Picasso.get().load(imageURL).resize(500,500).centerCrop().into(iv);
+            bookTitle.setText("Title: " + book.getBookName());
+            bookAuthor.setText("Author: " + book.getAuthor());
         }
     }
 

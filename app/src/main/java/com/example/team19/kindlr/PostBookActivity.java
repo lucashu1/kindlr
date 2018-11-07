@@ -18,6 +18,7 @@ public class PostBookActivity extends AppCompatActivity {
     private EditText author;
     private EditText genre;
     private EditText pagecount;
+    private EditText imageurl;
     private boolean isForSale;
     private TextView errorView;
 
@@ -31,6 +32,7 @@ public class PostBookActivity extends AppCompatActivity {
         author = (EditText) findViewById(R.id.author);
         genre = (EditText) findViewById(R.id.genre);
         pagecount = (EditText) findViewById(R.id.pagecount);
+        imageurl = (EditText) findViewById(R.id.image_url);
         errorView = (TextView)findViewById(R.id.error_msg);
 
 
@@ -64,6 +66,10 @@ public class PostBookActivity extends AppCompatActivity {
         String isbnStr = isbn.getText().toString();
         String authorStr = author.getText().toString();
         String genreStr = genre.getText().toString();
+        String imageURL = imageurl.getText().toString();
+
+        //Set to default image if user does not provide link
+        if (imageURL.equals("") || imageURL == null) imageURL = "https://png.pngtree.com/element_pic/17/07/27/bd157c7c747dc708790aa64b43c3da35.jpg";
 
         int pageCountInt = 0;
         try {
@@ -84,11 +90,11 @@ public class PostBookActivity extends AppCompatActivity {
 
         if (!isForSale) {
             BookManager.getBookManager().postBookForExchange(titleStr, isbnStr, authorStr, genreStr,
-                    pageCountInt, new ArrayList<String>(), currentUser.getUsername());
+                    pageCountInt, new ArrayList<String>(), currentUser.getUsername(), imageURL);
         }
         else {
             BookManager.getBookManager().postBookForSale(titleStr, isbnStr, authorStr, genreStr,
-                    pageCountInt, new ArrayList<String>(), currentUser.getUsername());
+                    pageCountInt, new ArrayList<String>(), currentUser.getUsername(), imageURL);
         }
 
         return true;
