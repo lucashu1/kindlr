@@ -80,8 +80,6 @@ public class MainSwipingScreenActivity extends Activity {
             }
         });
 
-
-
         refreshBook();
     }
 
@@ -112,6 +110,11 @@ public class MainSwipingScreenActivity extends Activity {
     }
 
     private void incrementIndex() {
+        if (this.curBooks.size() == 0) {
+            curIndex = 0;
+            return;
+        }
+
         this.curBooks.remove(curIndex);
 
         curIndex += 1;
@@ -135,6 +138,7 @@ public class MainSwipingScreenActivity extends Activity {
     private Book getCurrentBook() {
         if (curBooks.size() == 0)
             return null;
+
         return curBooks.get(curIndex);
     }
 

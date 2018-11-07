@@ -44,6 +44,8 @@ public class BookManager extends FirebaseAccessor<Book> {
         List<String> currentUserDislikedBooks = forUser.getDislikedBooks();
         List<String> currentUserLikedBooks = forUser.getLikedBooks();
 
+        Log.d("TESTLOG", "" + currentUserDislikedBooks.toString());
+
         for (Map.Entry<String, Book> entry : getItemsMap().entrySet()) {
             Book b = entry.getValue();
             String bookID = b.getBookID();
