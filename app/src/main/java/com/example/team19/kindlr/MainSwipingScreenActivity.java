@@ -87,9 +87,9 @@ public class MainSwipingScreenActivity extends Activity {
             public void onClick(View view) {
                 Log.d(LOG_TAG, "Refresh called");
 
-                UserManager.getUserManager().initialize();
-                TransactionManager.getTransactionManager().initialize();
-                BookManager.getBookManager().initialize();
+                UserManager.getUserManager().refresh();
+                TransactionManager.getTransactionManager().refresh();
+                BookManager.getBookManager().refresh();
 
                 refreshBook();
             }

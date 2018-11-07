@@ -111,6 +111,9 @@ public abstract class FirebaseAccessor<T> {
         initialize(false);
     }
 
+    public final void refresh() {
+        this.initialize(false);
+    }
 
     public final void initialize(boolean shouldWait) {
         Log.d(LOG_TAG, "Starting DB read for " + this.getFirebaseRefName());

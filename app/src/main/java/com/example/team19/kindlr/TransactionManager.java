@@ -34,6 +34,10 @@ public class TransactionManager {
         initialize(false);
     }
 
+    public void refresh() {
+        initialize(false);
+    }
+
     public void initialize(boolean shouldWait) {
         this.forSaleTransMgr.initialize(shouldWait);
         this.exchangeTransMgr.initialize(shouldWait);
