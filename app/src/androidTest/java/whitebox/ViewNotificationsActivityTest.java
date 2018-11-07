@@ -1,5 +1,7 @@
 package whitebox;
 
+import android.util.Log;
+
 import com.example.team19.kindlr.BookManager;
 import com.example.team19.kindlr.Transaction;
 import com.example.team19.kindlr.TransactionManager;
@@ -24,6 +26,8 @@ public class ViewNotificationsActivityTest {
 //    private static String txId2;
 //    private static ArrayList<Transaction> matches;
 
+    private static final String TAG = "ViewNotificationsActivityTest";
+
     @BeforeClass
     public static void initManagers() {
         UserManager.getUserManager().initialize();
@@ -45,6 +49,9 @@ public class ViewNotificationsActivityTest {
         // Set up transaction
         String bookId1 = BookManager.getBookManager().postBookForExchange("Software Engineering", "978-3-16-148410-3", "Ian Sommerville", "Computer Science", 9001, new ArrayList<String>(), "bhahntest");
         String bookId2 = BookManager.getBookManager().postBookForExchange("It", "978-3-16-148410-4", "Stephen King", "Horror", 47, new ArrayList<String>(), "shahntest");
+
+        Log.d(TAG, "testMatchesFound(): posted books with IDs " + bookId1 + "; " + bookId2);
+
         String txId1 = TransactionManager.getTransactionManager().makeUserLikeBook("bhahntest", bookId2);
         String txId2 = TransactionManager.getTransactionManager().makeUserLikeBook("shahntest", bookId1);
         ArrayList<Transaction> matches = TransactionManager.getTransactionManager().exchangeTransMgr.getAllMatchedTransactionsForUser("bhahntest");

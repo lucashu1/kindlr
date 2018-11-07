@@ -15,6 +15,8 @@ public class BookManager extends FirebaseAccessor<Book> {
         return bookManagerSingleton;
     }
 
+    private final static String TAG = "BookManager";
+
     // BookManager constructor
     public BookManager() {
         super(Book.class);
@@ -27,7 +29,7 @@ public class BookManager extends FirebaseAccessor<Book> {
     // Return username of book owner for a given bookID. Return null if book not found
     public String getBookOwner(String bookID) {
         if (!this.doesItemExist(bookID)) {
-            Log.d("WARN", "called getBookOwner() on a bookID that wasn't found: " + bookID);
+            Log.d(TAG, "WARNING: called getBookOwner() on a bookID that wasn't found: " + bookID);
             return null;
         }
 
@@ -35,7 +37,7 @@ public class BookManager extends FirebaseAccessor<Book> {
     }
 
     public List<Book> getFilteredBooks(BookFilter bookFilter, User forUser) {
-        Log.i("TESTINFO", "Getting filtered books");
+        Log.i(TAG, "Getting filtered books");
         List<Book> filteredBooks = new ArrayList();
 
         // Filter out current user's already liked/disliked books

@@ -21,6 +21,8 @@ public class TransactionManager {
     public ExchangeTransMgr exchangeTransMgr = new ExchangeTransMgr();
     public ForSaleTransMgr forSaleTransMgr = new ForSaleTransMgr();
 
+    private final static String TAG = "TransactionManager";
+
     private static TransactionManager transactionManagerSingleton;
     public synchronized static TransactionManager getTransactionManager() {
         if (transactionManagerSingleton == null)
@@ -90,7 +92,14 @@ public class TransactionManager {
                 ExchangeTransaction existingUnmatchedTransaction = entry.getValue();
                 String otherUser = existingUnmatchedTransaction.getUsername1();
                 String otherLikedBook = existingUnmatchedTransaction.getUser1LikedBookID();
-                Log.d("TESTINFO","Iterating over unmatched transactions. otherLikedBook: " + otherLikedBook);
+
+                if (!BookManager.getBookManager().doesItemExist(otherLikedBook)) {
+                    Log.d(TAG, "Found a non-existent book while iterating through unmatched transactions: " + otherLikedBook);
+                    continue;
+                }
+
+                Log.d(TAG,"Iterating over unmatched transactions. otherLikedBook: " + otherLikedBook);
+                Log.d(TAG, "otherLikedBook name: " + BookManager.getBookManager().getItemByID(otherLikedBook).getBookName());
                 String otherLikedBookOwner = BookManager.getBookManager().getBookOwner(otherLikedBook);
 
                 // Other book's owner has liked a book that is owned by current user --> match!

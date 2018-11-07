@@ -33,7 +33,10 @@ public class ExchangeTransMgr extends FirebaseAccessor<ExchangeTransaction> {
         // exchange transactions
         for(Map.Entry<String, ExchangeTransaction> entry : this.getItemsMap().entrySet())
         {
-            Transaction transaction = entry.getValue();
+            ExchangeTransaction transaction = entry.getValue();
+            if (transaction.getUsername1() == null || transaction.getUsername2() == null)
+                continue;
+
             if((transaction.getUsername1().equals(userName) || transaction.getUsername2().equals(userName)) && transaction.isMatched())
             {
                 result.add(transaction);
