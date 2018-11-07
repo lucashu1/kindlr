@@ -66,12 +66,12 @@ public class BookManagerTests {
         ArrayList<String> chaoWangTags = new ArrayList<String>();
         chaoWangTags.add("Professorial");
 
-        String book1ID = bm.postBookForExchange("Hello World", "12345", "Chao Wang", "Knowledge", 999, chaoWangTags, username);
+        String book1ID = bm.postBookForExchange("testBookFilteringBookTitle", "12345", "Chao Wang", "Knowledge", 999, chaoWangTags, username);
         ArrayList<String> halfondTags = new ArrayList<String>();
         halfondTags.add("Sabbatical");
 
         String book2ID = bm.postBookForExchange("I Am Legend", "54321", "William Halfond", "Wisdom", 999, halfondTags, username);
-        BookFilter bf = new BookFilter("Hello World");
+        BookFilter bf = new BookFilter("testBookFilteringBookTitle");
         bf.setAuthor("Chao Wang");
 
         ArrayList<Book> filteredBooks = new ArrayList<Book>(bm.getFilteredBooks(bf, UserManager.getUserManager().getUserByUsername("testUser2")));
@@ -81,7 +81,7 @@ public class BookManagerTests {
         }
 
         assertEquals(filteredBooks.size(), 1);
-        assertEquals(filteredBooks.get(0).getBookName(), "Hello World");
+        assertEquals(filteredBooks.get(0).getBookName(), "testBookFilteringBookTitle");
         bm.deleteItem(book1ID);
         bm.deleteItem(book2ID);
     }
