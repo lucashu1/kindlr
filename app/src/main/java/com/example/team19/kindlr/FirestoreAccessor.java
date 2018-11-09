@@ -22,45 +22,53 @@ public abstract class FirestoreAccessor<T> {
 
     private Map<String, T> itemsMap;
     private Class<T> typeParamClass;
-    private String firestoreCollection;
+    private String firestoreCollectionName;
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private final static String TAG = "FirestoreAccessor";
 
     private Boolean initialized;
 
-    public FirestoreAccessor(Class<T> typeParamClass, String firestoreCollection) {
+    public FirestoreAccessor(Class<T> typeParamClass, String firestoreCollectionName) {
         initialized = false;
         this.typeParamClass = typeParamClass;
-        this.firestoreCollection = firestoreCollection;
+        this.firestoreCollectionName = firestoreCollectionName;
     }
 
+    // Get name of this Collection (similar to a top-level Reference)
     private String getCollectionName() {
-        return firestoreCollection;
+        return firestoreCollectionName;
     }
 
+    // Get Firestore CollectionReference
     private CollectionReference getCollection() {
-        return this.db.collection(this.firestoreCollection);
+        return this.db.collection(getCollectionName());
     }
 
+    // Get Firestore DocumentReference (elements of Collection)
     private DocumentReference getDocument(String id) {
         return this.getCollection().document(id);
     }
 
+    // Re-init itemsMap
     private void clearMap() {
-        this.itemsMap.clear();
+        this.itemsMap = new HashMap<String, T>();
     }
 
+    // Check if item in map
     public boolean doesItemExist(String itemId) {
         return (itemsMap.containsKey(itemId));
     }
 
+    // Get a unique insert key/id
     public String getInsertKey() {
         return this.getCollection().document().getId();
     }
 
+    // Add item to map, and to firestore
     public String addItem(T pojo) {
         String id = this.getInsertKey();
+        this.itemsMap.put(id, pojo);
         Log.d(TAG, "Adding document: " + id);
         this.getCollection().document(id).set(pojo)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -79,13 +87,17 @@ public abstract class FirestoreAccessor<T> {
         return id;
     }
 
+    // Return entire itemsMap
     protected Map<String, T> getItemsMap() {
         return itemsMap;
     }
 
+    // Delete specific item from map, and from Firestore
     public boolean deleteItem(String itemId) {
         if (!doesItemExist(itemId))
             return false;
+
+        itemsMap.remove(itemId);
 
         Log.d(TAG, "Deleting document: " + itemId);
         this.getCollection().document(itemId)
@@ -106,10 +118,12 @@ public abstract class FirestoreAccessor<T> {
         return true;
     }
 
+    // Alias for updateItem
     protected void updateChild(String id) {
         updateItem(id);
     }
 
+    // Update specific item from map in Firestore
     protected void updateItem(String id) {
         if (!doesItemExist(id))
             return;
@@ -129,6 +143,7 @@ public abstract class FirestoreAccessor<T> {
                 });
     }
 
+    // Return item by ID from map
     public T getItemByID(String itemId) {
         if (!itemsMap.containsKey(itemId))
             return null;
@@ -156,10 +171,35 @@ public abstract class FirestoreAccessor<T> {
         this.clearMap();
     }
 
+    // Alias for addOrUpdateAllItems()
+    public void saveToFirebase() {
+        this.addOrUpdateAllItems();
+    }
+
+    // Remove all items currently in the itemsMap from firestore
+    protected void addOrUpdateAllItems() {
+        // Prepare batch delete
+        WriteBatch batch = db.batch();
+        for (Map.Entry<String, T> entry : this.itemsMap.entrySet()) {
+            String id = entry.getKey();
+            T obj = entry.getValue();
+            batch.set(this.getDocument(id), obj);
+        }
+
+        // Commit the batch
+        batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Log.d(TAG, "Added/updated all items for " + getCollectionName() + " to firestore");
+            }
+        });
+    }
+
     public final void initialize() {
         initialize(false);
     }
 
+    // Release initialized lock
     protected void onFinishDbRead() {
         Log.d(TAG, "Calling back on DB read");
         synchronized(initialized) {
@@ -167,8 +207,9 @@ public abstract class FirestoreAccessor<T> {
         }
     }
 
+    // Initial read from DB (blocking/locked)
     public final void initialize(boolean shouldWait) {
-        Log.d(TAG, "Starting DB read for " + this.firestoreCollection);
+        Log.d(TAG, "Starting DB read for " + getCollectionName());
         this.refresh();
         Log.d(TAG, "Sent DB read");
 
@@ -182,9 +223,10 @@ public abstract class FirestoreAccessor<T> {
             }
         }
 
-        Log.d(TAG, "Finished reading from DB for " + this.firestoreCollection);
+        Log.d(TAG, "Finished reading from DB for " + getCollectionName());
     }
 
+    // Wipe map and read from Firestore
     public final void refresh() {
         this.getCollection()
             .get()
