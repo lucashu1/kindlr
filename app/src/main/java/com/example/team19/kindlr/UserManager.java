@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UserManager extends FirebaseAccessor<User> {
+public class UserManager extends FirestoreAccessor<User> {
 
     private static final String TAG = "USERMGR";
     private User currentUser;
@@ -33,7 +33,7 @@ public class UserManager extends FirebaseAccessor<User> {
         super(User.class);
     }
 
-    public String getFirebaseRefName() {
+    public String getFirestoreCollectionName() {
         return "users";
     }
 
@@ -54,8 +54,7 @@ public class UserManager extends FirebaseAccessor<User> {
 //        usersMap.put(username, u);
 
         Log.d(TAG, "Adding user: " + username);
-        this.getItemsMap().put(username, u); // update in Map
-        this.getItemsMap().put(username, u); // update in Map
+        this.putItem(username, u);
 
         currentUser = u;
 
@@ -69,8 +68,7 @@ public class UserManager extends FirebaseAccessor<User> {
         }
 
         Log.d(TAG, "Updating user: " + updatedUser.getUsername());
-        this.getItemsMap().put(updatedUser.getUsername(), updatedUser);
-        this.saveToFirebase();
+        this.putItem(updatedUser.getUsername(), updatedUser);
     }
 
     public boolean doesUserExist(String username) {
@@ -92,18 +90,18 @@ public class UserManager extends FirebaseAccessor<User> {
     // Attempt to login and set currentUser. Return true if successful
     public boolean attemptLogin(String username, String hashedPassword) {
         if (!this.getItemsMap().containsKey(username)) {
-            Log.i(TAG, "User " + username + " does not exist");
+            Log.d(TAG, "User " + username + " does not exist");
             return false;
         }
 
-        Log.i(TAG,"Fetching user");
+        Log.d(TAG,"Fetching user");
         User u = this.getItemsMap().get(username);
-        Log.i(TAG, "Real password is " + u.getHashedPassword());
+        Log.d(TAG, "Real password is " + u.getHashedPassword());
 
         if (!u.getHashedPassword().equals(hashedPassword))
             return false;
 
-        Log.i(TAG, "Assigning current user");
+        Log.d(TAG, "Assigning current user");
         currentUser = u;
         return true;
     }
@@ -116,7 +114,7 @@ public class UserManager extends FirebaseAccessor<User> {
             return false;
 
         this.getItemsMap().get(username).likeBook(bookID);
-        updateChild(username);
+        this.updateChildFromMap(username);
         return true;
     }
 
@@ -128,7 +126,7 @@ public class UserManager extends FirebaseAccessor<User> {
             return false;
 
         this.getItemsMap().get(username).dislikeBook(bookID);
-        updateChild(username);
+        this.updateChildFromMap(username);
         return true;
     }
 }

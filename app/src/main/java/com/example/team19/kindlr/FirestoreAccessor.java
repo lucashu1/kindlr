@@ -22,27 +22,24 @@ public abstract class FirestoreAccessor<T> {
 
     private Map<String, T> itemsMap;
     private Class<T> typeParamClass;
-    private String firestoreCollectionName;
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private final static String TAG = "FirestoreAccessor";
 
     private Boolean initialized;
 
-    public FirestoreAccessor(Class<T> typeParamClass, String firestoreCollectionName) {
+    public FirestoreAccessor(Class<T> typeParamClass) {
         initialized = false;
         this.typeParamClass = typeParamClass;
-        this.firestoreCollectionName = firestoreCollectionName;
+        this.itemsMap = new HashMap<String, T>();
     }
 
     // Get name of this Collection (similar to a top-level Reference)
-    private String getCollectionName() {
-        return firestoreCollectionName;
-    }
+    abstract String getFirestoreCollectionName();
 
     // Get Firestore CollectionReference
     private CollectionReference getCollection() {
-        return this.db.collection(getCollectionName());
+        return this.db.collection(getFirestoreCollectionName());
     }
 
     // Get Firestore DocumentReference (elements of Collection)
@@ -66,8 +63,7 @@ public abstract class FirestoreAccessor<T> {
     }
 
     // Add item to map, and to firestore
-    public String addItem(T pojo) {
-        String id = this.getInsertKey();
+    public String putItem(String id, T pojo) {
         this.itemsMap.put(id, pojo);
         Log.d(TAG, "Adding document: " + id);
         this.getCollection().document(id).set(pojo)
@@ -118,16 +114,12 @@ public abstract class FirestoreAccessor<T> {
         return true;
     }
 
-    // Alias for updateItem
-    protected void updateChild(String id) {
-        updateItem(id);
-    }
-
-    // Update specific item from map in Firestore
-    protected void updateItem(String id) {
+    // UpdateChild from map
+    protected void updateChildFromMap(String id) {
         if (!doesItemExist(id))
             return;
 
+        // Update in Firestore
         this.getCollection().document(id).set(itemsMap.get(id))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -163,7 +155,7 @@ public abstract class FirestoreAccessor<T> {
         batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                Log.d(TAG, "Removed all items for " + getCollectionName() + " from firestore");
+                Log.d(TAG, "Removed all items for " + getFirestoreCollectionName() + " from firestore");
             }
         });
 
@@ -176,7 +168,7 @@ public abstract class FirestoreAccessor<T> {
         this.addOrUpdateAllItems();
     }
 
-    // Remove all items currently in the itemsMap from firestore
+    // Add all items in itemsMap to Firestore
     protected void addOrUpdateAllItems() {
         // Prepare batch delete
         WriteBatch batch = db.batch();
@@ -190,7 +182,7 @@ public abstract class FirestoreAccessor<T> {
         batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                Log.d(TAG, "Added/updated all items for " + getCollectionName() + " to firestore");
+                Log.d(TAG, "Added/updated all items for " + getFirestoreCollectionName() + " to firestore");
             }
         });
     }
@@ -209,7 +201,7 @@ public abstract class FirestoreAccessor<T> {
 
     // Initial read from DB (blocking/locked)
     public final void initialize(boolean shouldWait) {
-        Log.d(TAG, "Starting DB read for " + getCollectionName());
+        Log.d(TAG, "Starting DB read for " + getFirestoreCollectionName());
         this.refresh();
         Log.d(TAG, "Sent DB read");
 
@@ -223,29 +215,59 @@ public abstract class FirestoreAccessor<T> {
             }
         }
 
-        Log.d(TAG, "Finished reading from DB for " + getCollectionName());
+        Log.d(TAG, "Finished reading from DB for " + getFirestoreCollectionName());
+    }
+
+    // Default refresh: don't erase existing entries
+    public final void refresh() {
+        refresh(false);
     }
 
     // Wipe map and read from Firestore
-    public final void refresh() {
-        this.getCollection()
-            .get()
-            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        itemsMap = new HashMap<String, T>();
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            T obj = document.toObject(typeParamClass);
-                            itemsMap.put(document.getId(), obj);
-                            Log.d(TAG, document.getId() + " => " + document.getData());
+    public final void refresh(boolean eraseExisting) {
+        // create new map before reading from DB --> erases existing entries
+        if (eraseExisting == true) {
+            this.getCollection()
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                itemsMap = new HashMap<String, T>(); // create new hashmap
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    T obj = document.toObject(typeParamClass);
+                                    itemsMap.put(document.getId(), obj);
+                                    Log.d(TAG, document.getId() + " => " + document.getData());
+                                }
+                            } else {
+                                Log.d(TAG, "Error getting documents: ", task.getException());
+                            }
+                            onFinishDbRead();
                         }
-                    } else {
-                        Log.d(TAG, "Error getting documents: ", task.getException());
-                    }
-                    onFinishDbRead();
-                }
-            });
+                    });
+        }
+
+        // don't create new map -- don't delete existing entries
+        else {
+            this.getCollection()
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    T obj = document.toObject(typeParamClass);
+                                    itemsMap.put(document.getId(), obj);
+                                    Log.d(TAG, document.getId() + " => " + document.getData());
+                                }
+                            } else {
+                                Log.d(TAG, "Error getting documents: ", task.getException());
+                            }
+                            onFinishDbRead();
+                        }
+                    });
+        }
+
     }
 
     // TODO: add real-time listening? https://firebase.google.com/docs/firestore/query-data/listen

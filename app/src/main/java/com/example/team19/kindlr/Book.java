@@ -102,6 +102,4 @@ public class Book {
     public boolean isVisible() {
         return visible;
     }
-
-    public boolean getVisible() { return visible; }
 }

@@ -17,11 +17,11 @@ public class UserManagerTest {
     static String password = "asdfasdf";
     static String email = "szot@usc.edu";
 
-    @BeforeClass
-    public static void prepUserManagerTests() {
-        UserManager.getUserManager().initialize(true);
-        UserManager um = UserManager.getUserManager();
-    }
+//    @BeforeClass
+//    public static void prepUserManagerTests() {
+//        UserManager.getUserManager().initialize(true);
+//        UserManager um = UserManager.getUserManager();
+//    }
 
     @Before
     public void createTestUser() {

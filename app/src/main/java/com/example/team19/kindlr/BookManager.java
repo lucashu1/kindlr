@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class BookManager extends FirebaseAccessor<Book> {
+public class BookManager extends FirestoreAccessor<Book> {
     // Singleton logic
     private static BookManager bookManagerSingleton;
     public synchronized static BookManager getBookManager() {
@@ -22,7 +22,7 @@ public class BookManager extends FirebaseAccessor<Book> {
         super(Book.class);
     }
 
-    public String getFirebaseRefName() {
+    public String getFirestoreCollectionName() {
         return "books";
     }
 
@@ -37,7 +37,7 @@ public class BookManager extends FirebaseAccessor<Book> {
     }
 
     public List<Book> getFilteredBooks(BookFilter bookFilter, User forUser) {
-        Log.i(TAG, "Getting filtered books");
+        Log.d(TAG, "Getting filtered books");
         List<Book> filteredBooks = new ArrayList();
 
         // Filter out current user's already liked/disliked books
@@ -66,16 +66,31 @@ public class BookManager extends FirebaseAccessor<Book> {
         return filteredBooks;
     }
 
+    // With image
     public String postBookForExchange(String bookName, String isbn, String author,
                                                    String genre, int pageCount, List<String> tags, String owner, String imageURL) {
 
         return postBook(bookName, isbn, author, genre, pageCount, tags, owner, imageURL, false);
     }
 
+    // No image
+    public String postBookForExchange(String bookName, String isbn, String author,
+                                      String genre, int pageCount, List<String> tags, String owner) {
 
+        return postBook(bookName, isbn, author, genre, pageCount, tags, owner, null, false);
+    }
+
+
+    // With image
     public String postBookForSale(String bookName, String isbn, String author, String genre,
                                                int pageCount, List<String> tags, String owner, String imageURL){
         return postBook(bookName, isbn, author, genre, pageCount, tags, owner, imageURL, true);
+    }
+
+    // No image
+    public String postBookForSale(String bookName, String isbn, String author, String genre,
+                                  int pageCount, List<String> tags, String owner){
+        return postBook(bookName, isbn, author, genre, pageCount, tags, owner, null, true);
     }
 
     public String postBook(String bookName, String isbn, String author, String genre,
@@ -85,8 +100,7 @@ public class BookManager extends FirebaseAccessor<Book> {
         Book book = new Book(bookKey, bookName, isbn, author, genre, pageCount, tags, forSale, owner, imageURL);
 
         // Add book to map, save to firebase
-        this.getItemsMap().put(bookKey, book);
-        saveToFirebase();
+        this.putItem(bookKey, book);
 
         return bookKey;
     }

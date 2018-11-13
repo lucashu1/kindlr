@@ -23,11 +23,11 @@ public class BookManagerTests {
     private static String password = "asdfasdf";
     private static String email = "szot@usc.edu";
 
-    @BeforeClass
-    public static void initFirebase() {
-        UserManager.getUserManager().initialize(true);
-        BookManager.getBookManager().initialize(true);
-    }
+//    @BeforeClass
+//    public static void initFirebase() {
+//        UserManager.getUserManager().initialize(true);
+//        BookManager.getBookManager().initialize(true);
+//    }
 
     @Before
     public void createTestUser() {

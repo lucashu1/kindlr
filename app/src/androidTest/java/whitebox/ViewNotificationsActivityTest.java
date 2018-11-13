@@ -30,8 +30,8 @@ public class ViewNotificationsActivityTest {
 
     @BeforeClass
     public static void initManagers() {
-        UserManager.getUserManager().initialize(true);
-        BookManager.getBookManager().initialize(true);
+//        UserManager.getUserManager().initialize(true);
+//        BookManager.getBookManager().initialize(true);
         TransactionManager.getTransactionManager().initialize(true);
     }
 
