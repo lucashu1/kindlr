@@ -98,11 +98,11 @@ public class MainSwipingScreenActivity extends Activity {
             public void onClick(View view) {
                 Log.d(LOG_TAG, "Refresh called");
 
-//                UserManager.getUserManager().refresh();
-//                TransactionManager.getTransactionManager().refresh();
-//                BookManager.getBookManager().refresh();
-//
-//                // Wait for refresh to finish before continuing
+                UserManager.getUserManager().refresh();
+                TransactionManager.getTransactionManager().refresh();
+                BookManager.getBookManager().refresh();
+
+                // Wait for refresh to finish before continuing
 //                while (!UserManager.getUserManager().isDoneRefreshing() ||
 //                        !BookManager.getBookManager().isDoneRefreshing() ||
 //                        !TransactionManager.getTransactionManager().forSaleTransMgr.isDoneRefreshing() ||
@@ -110,9 +110,16 @@ public class MainSwipingScreenActivity extends Activity {
 //                    Thread.yield();
 //                }
 
-                UserManager.getUserManager().refreshSynchronous();
-                TransactionManager.getTransactionManager().exchangeTransMgr.refreshSynchronous();
-                BookManager.getBookManager().refreshSynchronous();
+//                UserManager.getUserManager().refreshSynchronous();
+//                TransactionManager.getTransactionManager().exchangeTransMgr.refreshSynchronous();
+//                BookManager.getBookManager().refreshSynchronous();
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ie) {
+                    ie.printStackTrace();
+                }
+
 
                 refreshBook();
             }

@@ -44,7 +44,12 @@ public class TransactionManager {
     }
 
     public void initialize(boolean shouldWait) {
-        this.refreshSynchronous();
+        if (shouldWait == true) {
+            this.refreshSynchronous();
+        }
+        else {
+            this.refresh();
+        }
     }
 
     public void refreshSynchronous() {

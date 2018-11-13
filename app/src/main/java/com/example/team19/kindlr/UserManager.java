@@ -120,10 +120,14 @@ public class UserManager extends FirestoreAccessor<User> {
 
     // Make user dislike book, and update DB. Return true if successful
     public boolean makeUserDislikeBook(String username, String bookID) {
-        if (!this.getItemsMap().containsKey(username))
+        if (!this.getItemsMap().containsKey(username)) {
+            Log.d(TAG, "Tried to call dislikeBook on a user that doesn't exist in map: " + username);
             return false;
-        if (!BookManager.getBookManager().doesItemExist(bookID))
+        }
+        if (!BookManager.getBookManager().doesItemExist(bookID)) {
+            Log.d(TAG, "Tried to call dislikeBook on a book that doesn't exist in books map: " + bookID);
             return false;
+        }
 
         this.getItemsMap().get(username).dislikeBook(bookID);
         this.updateChildFromMap(username);
