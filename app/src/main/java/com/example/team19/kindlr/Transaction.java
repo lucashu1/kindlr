@@ -84,10 +84,10 @@ public class Transaction implements Serializable {
         Log.d(TAG, "user2LikedBookID" + user2LikedBookID);
 
         if (username1.equals(currentUsername)) {
-            return BookManager.getBookManager().getItemByID(user2LikedBookID);
+            return BookManager.getBookManager().getIgittemByID(user1LikedBookID);
         }
 
-        return BookManager.getBookManager().getItemByID(user1LikedBookID);
+        return BookManager.getBookManager().getItemByID(user2LikedBookID);
     }
 
 

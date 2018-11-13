@@ -5,7 +5,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class ExchangeTransMgr extends FirebaseAccessor<ExchangeTransaction> {
+public class ExchangeTransMgr extends FirestoreAccessor<ExchangeTransaction> {
 
     private static final String TAG = "ExchangeTransMgr";
 
@@ -13,7 +13,7 @@ public class ExchangeTransMgr extends FirebaseAccessor<ExchangeTransaction> {
         super(ExchangeTransaction.class);
     }
 
-    public String getFirebaseRefName() {
+    public String getFirestoreCollectionName() {
         return "exchangeTransactions";
     }
 
@@ -21,9 +21,8 @@ public class ExchangeTransMgr extends FirebaseAccessor<ExchangeTransaction> {
     public String addNewUnmatchedExchangeTransaction(String username1, String user1LikedBookID) {
         String transactionID = this.getInsertKey();
         ExchangeTransaction t = new ExchangeTransaction(transactionID, username1, user1LikedBookID); // create new exchange transaction
-        this.getItemsMap().put(transactionID, t);
+        this.putItem(transactionID, t);
         Log.d(TAG, "Created new unmatched exchange transaction: " + transactionID);
-        saveToFirebase();
         return transactionID;
     }
 

@@ -49,6 +49,10 @@ public class Book {
         this("", "", "", "", "", -1, new ArrayList<String>(), false, "");
     }
 
+    private void updateBookInFirestore() {
+        BookManager.getBookManager().updateChildFromMap(this.bookID);
+    }
+
     public String getBookID(){
         return bookID;
     }
@@ -93,10 +97,12 @@ public class Book {
 
     public void makeInvisible() {
         visible = false;
+        this.updateBookInFirestore();
     }
 
     public void makeVisible() {
         visible = true;
+        this.updateBookInFirestore();
     }
 
     public boolean isVisible() {

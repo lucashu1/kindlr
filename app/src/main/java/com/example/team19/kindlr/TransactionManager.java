@@ -96,8 +96,6 @@ public class TransactionManager {
             ownerNotifier.sendFromGMail(subject, ownerNotif);
             EmailNotifier likerNotifier = new EmailNotifier(likerEmail);
             likerNotifier.sendFromGMail(subject, likerNotif);
-
-            this.forSaleTransMgr.saveToFirebase();
         }
         // Case 2: Liked book is for exchange
         else {
@@ -153,7 +151,6 @@ public class TransactionManager {
                 transactionID = this.exchangeTransMgr.addNewUnmatchedExchangeTransaction(username, bookID);
             }
 
-            this.exchangeTransMgr.saveToFirebase();
         }
 
 

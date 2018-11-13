@@ -32,6 +32,10 @@ public class ExchangeTransaction extends Transaction implements Serializable {
         this.isMatched = false;
     }
 
+    private void updateTransactionInFirestore() {
+        TransactionManager.getTransactionManager().exchangeTransMgr.updateChildFromMap(this.transactionID);
+    }
+
     public String matchExchangeTransaction(String username2, String user2LikedBookID) {
         // If this transaction is not already full, then fill it
         if (isMatched) {
@@ -43,11 +47,14 @@ public class ExchangeTransaction extends Transaction implements Serializable {
         this.user2LikedBookID = user2LikedBookID;
         isMatched = true;
 
-        TransactionManager.getTransactionManager().saveAllToFirebase();
+        this.updateTransactionInFirestore();
 
         // mark books involved as 'invisible' so they don't show up
         BookManager.getBookManager().getItemByID(user1LikedBookID).makeInvisible();
         BookManager.getBookManager().getItemByID(user2LikedBookID).makeInvisible();
+
+        BookManager.getBookManager().updateChildFromMap(user1LikedBookID);
+        BookManager.getBookManager().updateChildFromMap(user2LikedBookID);
 
         // TODO:
         // notify both users involved?
@@ -69,6 +76,7 @@ public class ExchangeTransaction extends Transaction implements Serializable {
 //            BookManager.getBookManager().removeBook(user1LikedBookID);
 //        if (user2LikedBookID != null && user2LikedBookID.length() > 0)
 //            BookManager.getBookManager().removeBook(user2LikedBookID);
+        this.updateTransactionInFirestore();
     }
 
     // Reject transaction --> make books visible again
@@ -80,6 +88,8 @@ public class ExchangeTransaction extends Transaction implements Serializable {
         if (user2LikedBookID != null && user2LikedBookID.length() > 0)
             bm.getItemByID(user2LikedBookID).makeVisible();
         wasRejected = true;
+
+        this.updateTransactionInFirestore();
     }
 
 //    // gets other user's (non current user's) book in the transaction

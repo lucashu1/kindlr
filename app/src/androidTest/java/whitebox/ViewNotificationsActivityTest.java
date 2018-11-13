@@ -28,12 +28,12 @@ public class ViewNotificationsActivityTest {
 
     private static final String TAG = "ViewNotificationsActivityTest";
 
-    @BeforeClass
-    public static void initManagers() {
+//    @BeforeClass
+//    public static void initManagers() {
 //        UserManager.getUserManager().initialize(true);
 //        BookManager.getBookManager().initialize(true);
-        TransactionManager.getTransactionManager().initialize(true);
-    }
+//        TransactionManager.getTransactionManager().initialize(true);
+//    }
 
     @Before
     public void initialize() {
@@ -58,8 +58,8 @@ public class ViewNotificationsActivityTest {
 
         assertTrue(matches.size() == 1);
         assertTrue(matches.get(0) != null);
-        assertTrue(matches.get(0).getOtherUserInTransaction().getUsername().equals("shahntest"));
-        assertTrue(matches.get(0).getOtherUsersBook().getBookName().equals("It"));
+        assertEquals(matches.get(0).getOtherUserInTransaction().getUsername(), "shahntest");
+        assertEquals(matches.get(0).getOtherUsersBook().getBookName(),   "It");
 
         // Clean up
         TransactionManager.getTransactionManager().exchangeTransMgr.deleteItem(txId1);

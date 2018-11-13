@@ -5,7 +5,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class ForSaleTransMgr extends FirebaseAccessor<ForSaleTransaction> {
+public class ForSaleTransMgr extends FirestoreAccessor<ForSaleTransaction> {
 
     private static final String TAG = "ForSaleTransMgr";
 
@@ -13,7 +13,7 @@ public class ForSaleTransMgr extends FirebaseAccessor<ForSaleTransaction> {
         super(ForSaleTransaction.class);
     }
 
-    public String getFirebaseRefName() {
+    public String getFirestoreCollectionName() {
         return "forSaleTransactions";
     }
 
@@ -21,9 +21,9 @@ public class ForSaleTransMgr extends FirebaseAccessor<ForSaleTransaction> {
     public String addNewForSaleTransaction(String userThatLikedBook, String forSaleBookID, String forSaleBookOwner) {
         String transactionID = this.getInsertKey();
         ForSaleTransaction t = new ForSaleTransaction(transactionID, userThatLikedBook, forSaleBookID, forSaleBookOwner); // create new forSale transaction
-        this.getItemsMap().put(transactionID, t);
+        this.putItem(transactionID, t);
+
         Log.d(TAG, "Created new forSale transaction with ID " + transactionID);
-        saveToFirebase();
         return transactionID;
     }
 
