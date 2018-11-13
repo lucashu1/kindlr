@@ -28,6 +28,11 @@ public class MainSwipingScreenActivity extends Activity {
     private EditText searchText;
     private ImageView iv;
 
+    public static Boolean usersRefreshed;
+    public static Boolean booksRefreshed;
+    public static Boolean forSaleTransactionsRefreshed;
+    public static Boolean exchangeTransactionsRefreshed;
+
     private final static String LOG_TAG = "MainSwipingActivity";
 
     @Override
@@ -87,19 +92,31 @@ public class MainSwipingScreenActivity extends Activity {
             }
         });
 
-        /*final Button refreshBtn = (Button)findViewById(R.id.refresh_button);
+        final Button refreshBtn = (Button)findViewById(R.id.refresh_button);
         refreshBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(LOG_TAG, "Refresh called");
 
-                UserManager.getUserManager().refresh();
-                TransactionManager.getTransactionManager().refresh();
-                BookManager.getBookManager().refresh();
+//                UserManager.getUserManager().refresh();
+//                TransactionManager.getTransactionManager().refresh();
+//                BookManager.getBookManager().refresh();
+//
+//                // Wait for refresh to finish before continuing
+//                while (!UserManager.getUserManager().isDoneRefreshing() ||
+//                        !BookManager.getBookManager().isDoneRefreshing() ||
+//                        !TransactionManager.getTransactionManager().forSaleTransMgr.isDoneRefreshing() ||
+//                        !TransactionManager.getTransactionManager().exchangeTransMgr.isDoneRefreshing()) {
+//                    Thread.yield();
+//                }
+
+                UserManager.getUserManager().refreshSynchronous();
+                TransactionManager.getTransactionManager().exchangeTransMgr.refreshSynchronous();
+                BookManager.getBookManager().refreshSynchronous();
 
                 refreshBook();
             }
-        });*/
+        });
 
         iv = (ImageView) findViewById(R.id.image);
 

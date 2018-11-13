@@ -26,16 +26,25 @@ public abstract class FirestoreAccessor<T> {
 
     private final static String TAG = "FirestoreAccessor";
 
-    private Boolean initialized;
+    private Boolean initialized; // 1-time initialized (first read)
+    private Boolean refreshed; // refreshed, after ANY read from Firestore
 
     public FirestoreAccessor(Class<T> typeParamClass) {
         initialized = false;
+        refreshed = true;
         this.typeParamClass = typeParamClass;
         this.itemsMap = new HashMap<String, T>();
     }
 
     // Get name of this Collection (similar to a top-level Reference)
     abstract String getFirestoreCollectionName();
+
+    public Boolean isDoneRefreshing() {
+        return refreshed;
+    }
+
+//    // Get refresh lock (for MainSwipingScreen refresh)
+//    abstract Boolean getRefreshLock();
 
     // Get Firestore CollectionReference
     private CollectionReference getCollection() {
@@ -197,21 +206,29 @@ public abstract class FirestoreAccessor<T> {
         synchronized(initialized) {
             initialized.notify();
         }
+        refreshed = true;
     }
 
     // Initial read from DB (blocking/locked)
     public final void initialize(boolean shouldWait) {
-        Log.d(TAG, "Starting DB read for " + getFirestoreCollectionName());
+        if (shouldWait == true) {
+            this.refreshSynchronous();
+        } else {
+            this.refresh();
+        }
+    }
+
+    // Synchronous refresh
+    public final void refreshSynchronous() {
+        Log.d(TAG, "Starting synchronous DB read for " + getFirestoreCollectionName());
         this.refresh();
         Log.d(TAG, "Sent DB read");
 
-        if (shouldWait) {
-            synchronized (initialized) {
-                try {
-                    initialized.wait();
-                } catch (InterruptedException e) {
-                    // Happens if someone interrupts your thread.
-                }
+        synchronized (initialized) {
+            try {
+                initialized.wait();
+            } catch (InterruptedException e) {
+                // Happens if someone interrupts your thread.
             }
         }
 
@@ -226,6 +243,7 @@ public abstract class FirestoreAccessor<T> {
     // Wipe map and read from Firestore
     public final void refresh(boolean eraseExisting) {
         // create new map before reading from DB --> erases existing entries
+        refreshed = false; // set this to false at start of refresh
         if (eraseExisting == true) {
             this.getCollection()
                     .get()

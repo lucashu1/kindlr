@@ -34,13 +34,22 @@ public class TransactionManager {
         initialize(false);
     }
 
+    public Boolean isDoneRefreshing() {
+        return (this.exchangeTransMgr.isDoneRefreshing() && this.forSaleTransMgr.isDoneRefreshing());
+    }
+
     public void refresh() {
-        initialize(false);
+        this.forSaleTransMgr.refresh();
+        this.exchangeTransMgr.refresh();
     }
 
     public void initialize(boolean shouldWait) {
-        this.forSaleTransMgr.initialize(shouldWait);
-        this.exchangeTransMgr.initialize(shouldWait);
+        this.refreshSynchronous();
+    }
+
+    public void refreshSynchronous() {
+        this.forSaleTransMgr.refreshSynchronous();
+        this.exchangeTransMgr.refreshSynchronous();
     }
 
     public void saveAllToFirebase() {
