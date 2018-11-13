@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class ViewProfileActivity extends Activity {
     private User displayUser;
@@ -20,6 +21,30 @@ public class ViewProfileActivity extends Activity {
 
 //        TextView profileNameView = (TextView)findViewById(R.id.profile_name);
 //        profileNameView.setText(displayUser.getUsername());
+
+        TextView firstNameView = (TextView)findViewById(R.id.first_name_view);
+        firstNameView.setText("First Name: " + displayUser.getFirstName());
+
+        TextView lastNameView = (TextView)findViewById(R.id.last_name_view);
+        lastNameView.setText(("Last Name: " + displayUser.getLastName()));
+
+        TextView usernameView = (TextView)findViewById(R.id.username_view);
+        usernameView.setText("Username: "+displayUser.getUsername());
+
+        TextView passwordView = (TextView)findViewById(R.id.password_view);
+        passwordView.setText("Password :" + displayUser.getHashedPassword());
+
+        TextView cityView = (TextView)findViewById(R.id.city_view);
+        cityView.setText("City: " + displayUser.getCity());
+
+        TextView stateView = (TextView)findViewById(R.id.state_view);
+        stateView.setText("State: "+ displayUser.getState());
+
+        TextView phoneView = (TextView)findViewById(R.id.phone_view);
+        phoneView.setText("Phone: " + displayUser.getPhoneNum());
+
+        TextView emailView = (TextView)findViewById(R.id.email_view);
+        emailView.setText("Email: " + displayUser.getEmail());
 
         Button postBookBtn = (Button) findViewById(R.id.post_book_button);
         postBookBtn.setOnClickListener(new View.OnClickListener() {

@@ -16,6 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_gravity="center"
 
         >
         <TextView
@@ -26,6 +27,7 @@
             android:layout_marginTop="42dp"
             android:ems="10"
             android:text="First Name"
+            android:textStyle="bold"
             android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -38,6 +40,7 @@
             android:layout_marginTop="30dp"
             android:ems="10"
             android:text="Last Name"
+            android:textStyle="bold"
             android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/first_name_view"
@@ -50,6 +53,7 @@
             android:layout_marginTop="30dp"
             android:ems="10"
             android:text="Username"
+            android:textStyle = "bold"
             android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/last_name_view"
@@ -62,6 +66,7 @@
             android:layout_marginTop="30dp"
             android:ems="10"
             android:text="Password"
+            android:textStyle="bold"
             android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/username_view"/>
@@ -72,7 +77,9 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="30dp"
             android:ems="10"
+
             android:text="City"
+            android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@+id/password_view"/>
 
         <TextView
@@ -83,6 +90,7 @@
             android:layout_marginTop="30dp"
             android:ems="10"
             android:text="State"
+            android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@+id/city_view" />
 
         <TextView
@@ -93,6 +101,7 @@
             android:layout_marginTop="30dp"
             android:ems="10"
             android:text="Phone Number"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/state_view"/>
 
@@ -104,6 +113,7 @@
             android:layout_marginTop="30dp"
             android:ems="10"
             android:text="Email"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/phone_view"
             />
