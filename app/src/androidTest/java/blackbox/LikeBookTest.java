@@ -41,8 +41,8 @@ public class LikeBookTest {
     @Before
     public void initValidString() {
 
-        UserManager.getUserManager().addUser("andy","asdf","andrew","szot","la","ca","77777777","u@me.com");
-        UserManager.getUserManager().addUser("jacob","asdf","jacob","dormuth","la","ca","777888999","jacob@jacob.com");
+        UserManager.getUserManager().addUser("andy","asdf","andrew","szot","la","ca","77777777","chaowang310@gmail.com");
+        UserManager.getUserManager().addUser("jacob","asdf","jacob","dormuth","la","ca","777888999","chaowang310@gmail.com");
         loginInput = "andy";
         loginPassword = "asdf";
         List<String> tags = new ArrayList<String>();

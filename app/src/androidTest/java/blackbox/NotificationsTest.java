@@ -52,12 +52,12 @@ public class NotificationsTest {
     public ActivityTestRule<ViewNotificationsActivity> mActivityRule
             = new ActivityTestRule<>(ViewNotificationsActivity.class);
 
-    @BeforeClass
-    public static void initManagers() {
-        UserManager.getUserManager().initialize();
-        BookManager.getBookManager().initialize();
-        TransactionManager.getTransactionManager().initialize();
-    }
+//    @BeforeClass
+//    public static void initManagers() {
+//        UserManager.getUserManager().initialize();
+//        BookManager.getBookManager().initialize();
+//        TransactionManager.getTransactionManager().initialize();
+//    }
 
     @Before
     public void initialize() {

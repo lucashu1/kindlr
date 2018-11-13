@@ -9,7 +9,7 @@ import javax.mail.internet.*;
 
 public class EmailNotifier {
     private static String USER_NAME = "chaowang310";  // GMail user name (just the part before "@gmail.com")
-    private static String PASSWORD = "310sucks"; // GMail password
+    private static String PASSWORD = "310rules"; // GMail password
     private static String RECIPIENT;
 
 //    public static void main(String[] args) {

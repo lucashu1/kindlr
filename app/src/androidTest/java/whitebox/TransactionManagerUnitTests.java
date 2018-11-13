@@ -39,11 +39,11 @@ public class TransactionManagerUnitTests {
         Log.d("TESTINFO", "Adding users");
         UserManager.getUserManager().addUser("testUser1", "",
                 "Mr", "Test", "Los Angeles", "California",
-                "3333333333", "joshuahung98@gmail.com");
+                "3333333333", "");
         UserManager.getUserManager().addUser("testUser2",
                 "", "Mrs", "Test",
                 "Los Angeles", "California", "4444444444",
-                "joshualh@usc.edu");
+                "");
     }
 
 

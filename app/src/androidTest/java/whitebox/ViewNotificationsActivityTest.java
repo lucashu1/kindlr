@@ -37,8 +37,8 @@ public class ViewNotificationsActivityTest {
 
     @Before
     public void initialize() {
-        UserManager.getUserManager().addUser("bhahntest", "asdf", "Ben", "Hahn", "Los Angeles", "California", "314-555-5555", "bhahn@usc.edu");
-        UserManager.getUserManager().addUser("shahntest", "asdf", "Sam", "Hahn", "St. Louis", "Missouri", "314-555-5556", "shahn@wust.edu");
+        UserManager.getUserManager().addUser("bhahntest", "asdf", "Ben", "Hahn", "Los Angeles", "California", "314-555-5555", "");
+        UserManager.getUserManager().addUser("shahntest", "asdf", "Sam", "Hahn", "St. Louis", "Missouri", "314-555-5556", "");
     }
 
     @Test
