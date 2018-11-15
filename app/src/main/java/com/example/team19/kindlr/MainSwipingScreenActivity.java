@@ -136,6 +136,7 @@ public class MainSwipingScreenActivity extends Activity {
     protected void onResume() {
         super.onResume();
         currentUser = UserManager.getUserManager().getCurrentUser() != null ? UserManager.getUserManager().getCurrentUser() : currentUser;
+        Log.d(LOG_TAG, "Resumed MainSwipingScreenActivity. CurrentUser: " + currentUser.getUsername());
         refreshBook();
     }
 

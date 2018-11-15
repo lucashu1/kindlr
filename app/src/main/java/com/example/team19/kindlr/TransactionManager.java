@@ -104,8 +104,8 @@ public class TransactionManager {
             String subject = "Your book " + book.getBookName() + " has entered a for sale transaction";
             String bookOwnerEmail = UserManager.getUserManager().getUserByUsername(ownerName).getEmail();
             String likerEmail = UserManager.getUserManager().getUserByUsername(username).getEmail();
-            String ownerNotif = username + " has liked your book that is for sale.";
-            String likerNotif = "You have liked " + ownerName + "'s book that is for sale.";
+            String ownerNotif = username + " has liked your book that is for sale. View your notifications page for more details.";
+            String likerNotif = "You have liked " + ownerName + "'s book that is for sale. View your notifications page for more details.";
             EmailNotifier ownerNotifier = new EmailNotifier(bookOwnerEmail, subject, ownerNotif);
             ownerNotifier.execute();
             EmailNotifier likerNotifier = new EmailNotifier(likerEmail, subject, likerNotif);
@@ -149,8 +149,8 @@ public class TransactionManager {
                     String likerSubject = "The book " + book.getBookName() + " that you liked is in an exchange!";
                     String bookOwnerEmail = UserManager.getUserManager().getUserByUsername(ownerName).getEmail();
                     String likerEmail = UserManager.getUserManager().getUserByUsername(username).getEmail();
-                    String ownerNotif = username + " has liked your book that is for sale.";
-                    String likerNotif = "You have liked " + ownerName + "'s book that is for sale.";
+                    String ownerNotif = username + " has liked your book that is available for exchange. View your notifications page for more details.";
+                    String likerNotif = "You have liked " + ownerName + "'s book that is available for exchange. View your notifications page for more details.";
                     EmailNotifier ownerNotifier = new EmailNotifier(bookOwnerEmail, subject, ownerNotif);
                     ownerNotifier.execute();
                     EmailNotifier likerNotifier = new EmailNotifier(likerEmail, subject, likerNotif);
