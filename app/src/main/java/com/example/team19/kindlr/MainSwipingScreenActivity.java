@@ -132,13 +132,20 @@ public class MainSwipingScreenActivity extends Activity {
         refreshBook();
     }
 
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        this.currentUser = UserManager.getUserManager().getCurrentUser();
+//        refreshBook();
+//    }
+
     private void dislikeBook() {
         Book book = this.getCurrentBook();
         if (book == null) {
             ErrorHelper.displayError("Invalid", "No book to dislike!", this);
         }
         else {
-            TransactionManager.getTransactionManager().makeUserDislikeBook(this.currentUser.getUsername(), book.getBookID());
+            TransactionManager.getTransactionManager().makeUserDislikeBook(UserManager.getUserManager().getCurrentUser().getUsername(), book.getBookID());
         }
     }
 
@@ -148,7 +155,7 @@ public class MainSwipingScreenActivity extends Activity {
             ErrorHelper.displayError("Invalid", "No book to like!", this);
         }
         else {
-            TransactionManager.getTransactionManager().makeUserLikeBook(this.currentUser.getUsername(), book.getBookID());
+            TransactionManager.getTransactionManager().makeUserLikeBook(UserManager.getUserManager().getCurrentUser().getUsername(), book.getBookID());
         }
     }
 
@@ -175,7 +182,8 @@ public class MainSwipingScreenActivity extends Activity {
     }
 
     private void refreshBook() {
-        curBooks = bookMgr.getFilteredBooks(bookFilter, currentUser);
+        currentUser = UserManager.getUserManager().getCurrentUser() != null ? UserManager.getUserManager().getCurrentUser() : currentUser;
+        curBooks = bookMgr.getFilteredBooks(bookFilter, UserManager.getUserManager().getCurrentUser());
         Log.i("InfoMsg", "" + curBooks.size());
 
         if (curIndex > curBooks.size()) {
@@ -193,8 +201,6 @@ public class MainSwipingScreenActivity extends Activity {
 
     private void updateDisplay() {
         Book book = getCurrentBook();
-
-
 
         if (book == null) {
             bookTitle.setText("No books!");

@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class ViewProfileActivity extends Activity {
-    private User displayUser;
     private boolean isCurrentUser;
 
     @Override
@@ -16,36 +15,12 @@ public class ViewProfileActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_profile);
 
-        displayUser = (User)getIntent().getSerializableExtra("DISPLAY_USER");
-        isCurrentUser = (UserManager.getUserManager().getCurrentUser().getUsername().equals(displayUser.getUsername()));
+//        isCurrentUser = (UserManager.getUserManager().getCurrentUser().getUsername().equals(displayUser.getUsername()));
 
 //        TextView profileNameView = (TextView)findViewById(R.id.profile_name);
 //        profileNameView.setText(displayUser.getUsername());
 
-        TextView firstNameView = (TextView)findViewById(R.id.first_name_view);
-        firstNameView.setText("First Name: " + displayUser.getFirstName());
-
-        TextView lastNameView = (TextView)findViewById(R.id.last_name_view);
-        lastNameView.setText(("Last Name: " + displayUser.getLastName()));
-
-        TextView usernameView = (TextView)findViewById(R.id.username_view);
-        usernameView.setText("Username: "+displayUser.getUsername());
-
-        TextView passwordView = (TextView)findViewById(R.id.password_view);
-//        passwordView.setText("Password :" + displayUser.getHashedPassword());
-        passwordView.setText("Password :" + "Confidential");
-
-        TextView cityView = (TextView)findViewById(R.id.city_view);
-        cityView.setText("City: " + displayUser.getCity());
-
-        TextView stateView = (TextView)findViewById(R.id.state_view);
-        stateView.setText("State: "+ displayUser.getState());
-
-        TextView phoneView = (TextView)findViewById(R.id.phone_view);
-        phoneView.setText("Phone: " + displayUser.getPhoneNum());
-
-        TextView emailView = (TextView)findViewById(R.id.email_view);
-        emailView.setText("Email: " + displayUser.getEmail());
+        populateFields();
 
         Button postBookBtn = (Button) findViewById(R.id.post_book_button);
         postBookBtn.setOnClickListener(new View.OnClickListener() {
@@ -79,9 +54,42 @@ public class ViewProfileActivity extends Activity {
             }
         });
 
-        if (!isCurrentUser) {
-            postBookBtn.setVisibility(View.GONE);
-        }
+//        if (!isCurrentUser) {
+//            postBookBtn.setVisibility(View.GONE);
+//        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        populateFields();
+    }
+
+    private void populateFields() {
+        TextView firstNameView = (TextView)findViewById(R.id.first_name_view);
+        firstNameView.setText("First Name: " + UserManager.getUserManager().getCurrentUser().getFirstName());
+
+        TextView lastNameView = (TextView)findViewById(R.id.last_name_view);
+        lastNameView.setText(("Last Name: " + UserManager.getUserManager().getCurrentUser().getLastName()));
+
+        TextView usernameView = (TextView)findViewById(R.id.username_view);
+        usernameView.setText("Username: "+ UserManager.getUserManager().getCurrentUser().getUsername());
+
+        TextView passwordView = (TextView)findViewById(R.id.password_view);
+//        passwordView.setText("Password :" + displayUser.getHashedPassword());
+        passwordView.setText("Password :" + "Confidential");
+
+        TextView cityView = (TextView)findViewById(R.id.city_view);
+        cityView.setText("City: " + UserManager.getUserManager().getCurrentUser().getCity());
+
+        TextView stateView = (TextView)findViewById(R.id.state_view);
+        stateView.setText("State: "+ UserManager.getUserManager().getCurrentUser().getState());
+
+        TextView phoneView = (TextView)findViewById(R.id.phone_view);
+        phoneView.setText("Phone: " + UserManager.getUserManager().getCurrentUser().getPhoneNum());
+
+        TextView emailView = (TextView)findViewById(R.id.email_view);
+        emailView.setText("Email: " + UserManager.getUserManager().getCurrentUser().getEmail());
     }
 
     public void navigateToPostBook(boolean isForSale) {

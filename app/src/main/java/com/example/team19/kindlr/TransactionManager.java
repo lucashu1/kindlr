@@ -106,10 +106,10 @@ public class TransactionManager {
             String likerEmail = UserManager.getUserManager().getUserByUsername(username).getEmail();
             String ownerNotif = username + " has liked your book that is for sale.";
             String likerNotif = "You have liked " + ownerName + "'s book that is for sale.";
-            EmailNotifier ownerNotifier = new EmailNotifier(bookOwnerEmail);
-            ownerNotifier.sendFromGMail(subject, ownerNotif);
-            EmailNotifier likerNotifier = new EmailNotifier(likerEmail);
-            likerNotifier.sendFromGMail(subject, likerNotif);
+            EmailNotifier ownerNotifier = new EmailNotifier(bookOwnerEmail, subject, ownerNotif);
+            ownerNotifier.execute();
+            EmailNotifier likerNotifier = new EmailNotifier(likerEmail, subject, likerNotif);
+            likerNotifier.execute();
         }
         // Case 2: Liked book is for exchange
         else {
@@ -151,10 +151,10 @@ public class TransactionManager {
                     String likerEmail = UserManager.getUserManager().getUserByUsername(username).getEmail();
                     String ownerNotif = username + " has liked your book that is for sale.";
                     String likerNotif = "You have liked " + ownerName + "'s book that is for sale.";
-                    EmailNotifier ownerNotifier = new EmailNotifier(bookOwnerEmail);
-                    ownerNotifier.sendFromGMail(subject, ownerNotif);
-                    EmailNotifier likerNotifier = new EmailNotifier(likerEmail);
-                    likerNotifier.sendFromGMail(likerSubject, likerNotif);
+                    EmailNotifier ownerNotifier = new EmailNotifier(bookOwnerEmail, subject, ownerNotif);
+                    ownerNotifier.execute();
+                    EmailNotifier likerNotifier = new EmailNotifier(likerEmail, subject, likerNotif);
+                    likerNotifier.execute();
 
                     break;
                 }

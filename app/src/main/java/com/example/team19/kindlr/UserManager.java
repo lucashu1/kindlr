@@ -48,15 +48,15 @@ public class UserManager extends FirestoreAccessor<User> {
         return true;
     }
 
-    public void updateUser(User updatedUser){
-        if (!this.getItemsMap().containsKey(updatedUser.getUsername())) {
-            Log.d(TAG, "WARNING: Tried to update non-existent user: " + updatedUser.getUsername());
-            return;
-        }
-
-        Log.d(TAG, "Updating user: " + updatedUser.getUsername());
-        this.putItem(updatedUser.getUsername(), updatedUser);
-    }
+//    public void updateUser(User updatedUser){
+//        if (!this.getItemsMap().containsKey(updatedUser.getUsername())) {
+//            Log.d(TAG, "WARNING: Tried to update non-existent user: " + updatedUser.getUsername());
+//            return;
+//        }
+//
+//        Log.d(TAG, "Updating user: " + updatedUser.getUsername());
+//        this.putItem(updatedUser.getUsername(), updatedUser);
+//    }
 
     public boolean doesUserExist(String username) {
         return this.getItemsMap().containsKey(username);
@@ -95,6 +95,10 @@ public class UserManager extends FirestoreAccessor<User> {
         Log.d(TAG, "Assigning current user");
         currentUser = u;
         return true;
+    }
+
+    public void setCurrentUser(String username) {
+        currentUser = this.getItemsMap().get(username);
     }
 
     // Make user like book, and update DB. Return true if successful

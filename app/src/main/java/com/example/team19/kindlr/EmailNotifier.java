@@ -1,4 +1,6 @@
 package com.example.team19.kindlr;
+import android.os.AsyncTask;
+
 import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
@@ -7,10 +9,10 @@ import javax.mail.internet.*;
  * Created by Joshua on 11/4/18.
  */
 
-public class EmailNotifier {
+public class EmailNotifier extends AsyncTask<Void, Void, String> {
     private static String USER_NAME = "chaowang310";  // GMail user name (just the part before "@gmail.com")
     private static String PASSWORD = "310rules"; // GMail password
-    private static String RECIPIENT;
+    private String recipient, subject, body;
 
 //    public static void main(String[] args) {
 //        String from = USER_NAME;
@@ -24,15 +26,23 @@ public class EmailNotifier {
 //        System.out.println("sent");
 //    }
 
-    public EmailNotifier(String recipient)
+    public EmailNotifier(String recipient, String subject, String body)
     {
-        RECIPIENT = recipient;
+        this.recipient = recipient;
+        this.subject = subject;
+        this.body = body;
+    }
+
+    @Override
+    protected String doInBackground(Void... params) {
+        sendFromGMail(subject, body);
+        return "Sent email to " + this.recipient;
     }
 
     public void sendFromGMail(String subject, String body) {
         String from = USER_NAME;
         String pass = PASSWORD;
-        String[] to = { RECIPIENT };
+        String[] to = { this.recipient };
         Properties props = System.getProperties();
         String host = "smtp.gmail.com";
         props.put("mail.smtp.starttls.enable", "true");
@@ -43,7 +53,7 @@ public class EmailNotifier {
         props.put("mail.smtp.auth", "true");
 
         Session session = Session.getDefaultInstance(props);
-        MimeMessage message = new MimeMessage(session);
+        final MimeMessage message = new MimeMessage(session);
 
         try {
             message.setFrom(new InternetAddress(from));
@@ -60,10 +70,12 @@ public class EmailNotifier {
 
             message.setSubject(subject);
             message.setText(body);
+
             Transport transport = session.getTransport("smtp");
             transport.connect(host, from, pass);
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
+
         }
         catch (AddressException ae) {
             ae.printStackTrace();

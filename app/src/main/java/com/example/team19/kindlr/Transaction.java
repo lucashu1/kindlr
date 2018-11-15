@@ -1,10 +1,14 @@
 package com.example.team19.kindlr;
 import android.util.Log;
 
+import com.google.firebase.firestore.Exclude;
+import com.google.firebase.firestore.IgnoreExtraProperties;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+@IgnoreExtraProperties
 public class Transaction implements Serializable {
     // TRANSACTION FLOW
         // Exchange: User likes book --> Create new unmatched transaction --> Other book's owner likes one of User 1's books --> match! --> accept transaction
@@ -56,6 +60,7 @@ public class Transaction implements Serializable {
 
     // gets the other user in the transaction (not currentUser)
         // returns null if currently logged-in user is not a part of the transaction
+    @Exclude
     public User getOtherUserInTransaction()
     {
         String currentUsername = UserManager.getUserManager().getCurrentUser().getUsername();
@@ -70,6 +75,7 @@ public class Transaction implements Serializable {
     // gets the other user in the transaction (not currentUser)
     // returns null if currently logged-in user is not a part of the transaction
     // TODO: how to handle forSale transactions? (Only 1 book in transaction)
+    @Exclude
     public Book getOtherUsersBook()
     {
         if (user2LikedBookID == null) {

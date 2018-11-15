@@ -56,42 +56,36 @@ public class EditProfileActivity extends Activity {
     public void editAccount() {
         String firstNameStr = firstName.getText().toString();
         String lastNameStr = lastName.getText().toString();
-        String usernameStr = username.getText().toString();
         String passwordStr = password.getText().toString();
         String cityStr = city.getText().toString();
-        String stateStr = "WA";
+        String stateStr = "CA";
         String phoneStr = phone.getText().toString();
         String emailStr = email.getText().toString();
 
-        User currUser = UserManager.getUserManager().getCurrentUser();
         if(!firstNameStr.isEmpty()){
-            currUser.setFirstName(firstNameStr);
+            UserManager.getUserManager().getCurrentUser().setFirstName(firstNameStr);
         }
         if(!lastNameStr.isEmpty()){
-            currUser.setLastName(lastNameStr);
-        }
-        if(!lastNameStr.isEmpty()){
-            currUser.setUsername(usernameStr);
+            UserManager.getUserManager().getCurrentUser().setLastName(lastNameStr);
         }
         if(!passwordStr.isEmpty()){
-            currUser.setHashedPassword(passwordStr);
+            UserManager.getUserManager().getCurrentUser().setHashedPassword(passwordStr);
         }
         if(!cityStr.isEmpty()){
-            currUser.setCity(cityStr);
+            UserManager.getUserManager().getCurrentUser().setCity(cityStr);
         }
         if(!stateStr.isEmpty()){
-            currUser.setState(stateStr);
-            Log.d("profile",currUser.getCity());
+            UserManager.getUserManager().getCurrentUser().setState(stateStr);
+            Log.d("profile",UserManager.getUserManager().getCurrentUser().getCity());
         }
         if(!phoneStr.isEmpty()){
-            currUser.setPhoneNum(phoneStr);
+            UserManager.getUserManager().getCurrentUser().setPhoneNum(phoneStr);
         }
         if(!emailStr.isEmpty()){
-            currUser.setEmail(emailStr);
+            UserManager.getUserManager().getCurrentUser().setEmail(emailStr);
         }
 
-        UserManager.getUserManager().updateUser(currUser);
-
+        UserManager.getUserManager().updateChildFromMap(UserManager.getUserManager().getCurrentUser().getUsername());
     }
 
     public void navigateBack() {
