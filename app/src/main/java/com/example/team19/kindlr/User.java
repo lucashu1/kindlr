@@ -1,5 +1,7 @@
 package com.example.team19.kindlr;
 
+import com.google.firebase.firestore.Exclude;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -67,7 +69,11 @@ public class User implements Serializable {
         return email;
     }
 
+    public int getTotalRating() { return totalRating; }
+    public int getNumRatingsReceived() { return numRatingsReceived; }
+
     // Get average rating (totalRating/numRatingsReceived)
+    @Exclude
     public double getRating() {
         // don't div
         if (numRatingsReceived == 0)

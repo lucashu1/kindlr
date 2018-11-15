@@ -132,12 +132,12 @@ public class MainSwipingScreenActivity extends Activity {
         refreshBook();
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        this.currentUser = UserManager.getUserManager().getCurrentUser();
-//        refreshBook();
-//    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        currentUser = UserManager.getUserManager().getCurrentUser() != null ? UserManager.getUserManager().getCurrentUser() : currentUser;
+        refreshBook();
+    }
 
     private void dislikeBook() {
         Book book = this.getCurrentBook();
@@ -183,7 +183,7 @@ public class MainSwipingScreenActivity extends Activity {
 
     private void refreshBook() {
         currentUser = UserManager.getUserManager().getCurrentUser() != null ? UserManager.getUserManager().getCurrentUser() : currentUser;
-        curBooks = bookMgr.getFilteredBooks(bookFilter, UserManager.getUserManager().getCurrentUser());
+        curBooks = BookManager.getBookManager().getFilteredBooks(bookFilter, currentUser);
         Log.i("InfoMsg", "" + curBooks.size());
 
         if (curIndex > curBooks.size()) {

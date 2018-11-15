@@ -5,7 +5,7 @@ import android.util.Log;
 public class UserManager extends FirestoreAccessor<User> {
 
     private static final String TAG = "USERMGR";
-    private User currentUser;
+    private String currentUsername;
 
     // Singleton initializer
     private static UserManager userManagerSingleton;
@@ -43,7 +43,7 @@ public class UserManager extends FirestoreAccessor<User> {
         Log.d(TAG, "Adding user: " + username);
         this.putItem(username, u);
 
-        currentUser = u;
+        this.currentUsername = username;
 
         return true;
     }
@@ -71,7 +71,7 @@ public class UserManager extends FirestoreAccessor<User> {
 
     // Get currently logged in user object
     public User getCurrentUser() {
-        return currentUser;
+        return this.getItemsMap().get(this.currentUsername);
     }
 
     // Attempt to login and set currentUser. Return true if successful
@@ -93,12 +93,12 @@ public class UserManager extends FirestoreAccessor<User> {
         }
 
         Log.d(TAG, "Assigning current user");
-        currentUser = u;
+        this.currentUsername = username;
         return true;
     }
 
     public void setCurrentUser(String username) {
-        currentUser = this.getItemsMap().get(username);
+        this.currentUsername = username;
     }
 
     // Make user like book, and update DB. Return true if successful
