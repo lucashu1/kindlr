@@ -32,7 +32,8 @@ public class ViewProfileActivity extends Activity {
         usernameView.setText("Username: "+displayUser.getUsername());
 
         TextView passwordView = (TextView)findViewById(R.id.password_view);
-        passwordView.setText("Password :" + displayUser.getHashedPassword());
+//        passwordView.setText("Password :" + displayUser.getHashedPassword());
+        passwordView.setText("Password :" + "Confidential");
 
         TextView cityView = (TextView)findViewById(R.id.city_view);
         cityView.setText("City: " + displayUser.getCity());

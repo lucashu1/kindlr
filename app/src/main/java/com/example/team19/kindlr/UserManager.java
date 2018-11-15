@@ -1,19 +1,6 @@
 package com.example.team19.kindlr;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 public class UserManager extends FirestoreAccessor<User> {
 
@@ -88,7 +75,7 @@ public class UserManager extends FirestoreAccessor<User> {
     }
 
     // Attempt to login and set currentUser. Return true if successful
-    public boolean attemptLogin(String username, String hashedPassword) {
+    public boolean attemptLogin(String username, String hashedPassword) throws Exception {
         if (!this.getItemsMap().containsKey(username)) {
             Log.d(TAG, "User " + username + " does not exist");
             return false;
@@ -98,8 +85,12 @@ public class UserManager extends FirestoreAccessor<User> {
         User u = this.getItemsMap().get(username);
         Log.d(TAG, "Real password is " + u.getHashedPassword());
 
-        if (!u.getHashedPassword().equals(hashedPassword))
+//        if (!u.getHashedPassword().equals(hashedPassword))
+//            return false;
+
+        if(!Password.check(hashedPassword, u.getHashedPassword())){
             return false;
+        }
 
         Log.d(TAG, "Assigning current user");
         currentUser = u;

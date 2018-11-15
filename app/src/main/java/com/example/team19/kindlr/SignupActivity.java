@@ -1,14 +1,13 @@
 package com.example.team19.kindlr;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Activity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+
 
 public class SignupActivity extends Activity {
 
@@ -62,6 +61,13 @@ public class SignupActivity extends Activity {
         String lastNameStr = lastName.getText().toString();
         String usernameStr = username.getText().toString();
         String passwordStr = password.getText().toString();
+        try{
+            passwordStr = Password.getSaltedHash(passwordStr);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         String cityStr = city.getText().toString();
         String stateStr = "WA";
         String phoneStr = phone.getText().toString();
