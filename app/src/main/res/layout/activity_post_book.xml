@@ -13,7 +13,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <EditText
                 android:id="@+id/title"
@@ -23,6 +23,8 @@
                 android:layout_marginTop="42dp"
                 android:ems="10"
                 android:hint="Book Title"
+                android:backgroundTint="@color/middle_blue"
+                android:textCursorDrawable="@color/middle_blue"
                 android:inputType="textPersonName"
                 android:visibility="visible"
                 app:layout_constraintStart_toStartOf="parent"
@@ -36,6 +38,8 @@
                 android:layout_marginTop="30dp"
                 android:ems="10"
                 android:hint="ISBN"
+                android:backgroundTint="@color/middle_blue"
+                android:textCursorDrawable="@color/middle_blue"
                 android:inputType="textPersonName"
                 android:visibility="visible"
                 app:layout_constraintStart_toStartOf="parent"
@@ -48,6 +52,8 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="30dp"
                 android:ems="10"
+                android:backgroundTint="@color/middle_blue"
+                android:textCursorDrawable="@color/middle_blue"
                 android:hint="Author"
                 android:inputType="textPersonName"
                 android:visibility="visible"
@@ -60,6 +66,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="30dp"
+                android:backgroundTint="@color/middle_blue"
+                android:textCursorDrawable="@color/middle_blue"
                 android:ems="10"
                 android:hint="Genre"
                 android:inputType="textPersonName"
@@ -75,6 +83,8 @@
             android:layout_marginTop="30dp"
             android:ems="10"
             android:hint="Page Count"
+            android:backgroundTint="@color/middle_blue"
+            android:textCursorDrawable="@color/middle_blue"
             android:inputType="number"
             app:layout_constraintTop_toBottomOf="@+id/genre" />
 
@@ -85,6 +95,8 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="30dp"
                 android:ems="10"
+                android:backgroundTint="@color/middle_blue"
+                android:textCursorDrawable="@color/middle_blue"
                 android:hint="Image URL"
                 android:inputType="textPersonName"
                 android:visibility="visible"
@@ -105,13 +117,19 @@
                     android:id="@+id/post"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Post Book" />
+                    android:text="Post Book"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="145dp"
+                    android:background="@drawable/shape_capsule"
+                    android:textColor="@drawable/text_selector"/>
 
                 <Button
                     android:id="@+id/back"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Back"/>
+                    android:text="Back"
+                    android:background="@drawable/shape_capsule"
+                    android:textColor="@drawable/text_selector"/>
             </LinearLayout>
 
 

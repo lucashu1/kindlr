@@ -10,7 +10,28 @@
 
     tools:context=".ViewProfileActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/edit_profile_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Edit Profile"
+            android:layout_weight="1"
+            android:background="@drawable/shape_capsule"
+            android:textColor="@drawable/text_selector"/>
 
+        <Button
+            android:id="@+id/signout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sign Out"
+            android:layout_weight="1"
+            android:background="@drawable/shape_capsule"
+            android:textColor="@drawable/text_selector"/>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,10 +40,12 @@
         android:layout_gravity="center"
 
         >
+
         <TextView
             android:id="@+id/first_name_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:layout_marginStart="26dp"
             android:layout_marginTop="42dp"
             android:ems="10"
@@ -38,6 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="26dp"
             android:layout_marginTop="30dp"
+            android:layout_marginRight="15dp"
             android:ems="10"
             android:text="Last Name"
             android:textStyle="bold"
@@ -126,44 +150,26 @@
         android:orientation="horizontal"
         >
 
+        <Button
+            android:id="@+id/post_book_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Post Book"
+            android:layout_weight="1"
+            android:background="@drawable/shape_capsule"
+            android:textColor="@drawable/text_selector"/>
 
 
-
-
-    <Button
-        android:id="@+id/post_book_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Post Book"
-        android:layout_weight="1"/>
-
-
-    <Button
-        android:id="@+id/sell_book_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Sell Book"
-        android:layout_weight="1"/>
-
-
-    <Button
-        android:id="@+id/edit_profile_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Edit Profile"
-        android:layout_weight="1"/>
-
-
-
-    <Button
-        android:id="@+id/signout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Sign Out"
-        android:layout_weight="1"/>
+        <Button
+            android:id="@+id/sell_book_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sell Book"
+            android:layout_weight="1"
+            android:background="@drawable/shape_capsule"
+            android:textColor="@drawable/text_selector"/>
 
     </LinearLayout>
-
 
 
 </LinearLayout>

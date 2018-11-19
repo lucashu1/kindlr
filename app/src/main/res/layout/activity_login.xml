@@ -42,6 +42,8 @@
                     android:completionHint="@string/prompt_username"
                     android:hint="@string/prompt_username"
                     android:inputType="textEmailAddress"
+                    android:backgroundTint="@color/middle_blue"
+                    android:textCursorDrawable="@color/middle_blue"
                     android:maxLines="1"
                     android:singleLine="true" />
 
@@ -60,6 +62,8 @@
                     android:imeActionLabel="@string/action_sign_in_short"
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
+                    android:backgroundTint="@color/middle_blue"
+                    android:textCursorDrawable="@color/middle_blue"
                     android:maxLines="1"
                     android:singleLine="true" />
 
