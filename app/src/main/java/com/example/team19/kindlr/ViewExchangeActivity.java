@@ -52,7 +52,7 @@ public class ViewExchangeActivity extends Activity {
 
         // TODO: handle ForSale books
         final TransactionManager tm = TransactionManager.getTransactionManager();
-        final ExchangeTransaction et = (ExchangeTransaction) tm.exchangeTransMgr.getItemByID(transactionKey);
+        final Transaction et = tm.getItemByID(transactionKey);
         final UserManager um = UserManager.getUserManager();
 
         if (et.wasRejected()) {

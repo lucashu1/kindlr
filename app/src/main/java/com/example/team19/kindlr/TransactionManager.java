@@ -62,11 +62,20 @@ public class TransactionManager {
         this.exchangeTransMgr.saveToFirebase();
     }
 
+    public Transaction getItemByID(String itemId) {
+        Transaction t = this.forSaleTransMgr.getItemByID(itemId);
+        if (t == null) {
+            return this.exchangeTransMgr.getItemByID(itemId);
+        }
+
+        return t;
+    }
+
     // Make user like book, and return the String of the resulting transactionID
     public String makeUserLikeBook(String username, String bookID) {
         boolean success = UserManager.getUserManager().makeUserLikeBook(username, bookID);
         if (!success) {
-            Log.d("WARN","Unsuccessful makeUserLIkeBook! username: " + username + "; bookID: " + bookID);
+            Log.d(TAG,"Unsuccessful makeUserLIkeBook! username: " + username + "; bookID: " + bookID);
             return null;
         }
         return processLikedBook(username, bookID);
@@ -96,6 +105,7 @@ public class TransactionManager {
 
         // Case 1: Liked book is for sale
         if (BookManager.getBookManager().getItemByID(bookID).getForSale()) {
+            Log.d(TAG, "Adding for sale transaction");
             transactionID = forSaleTransMgr.addNewForSaleTransaction(username, bookID, BookManager.getBookManager().getItemByID(bookID).getOwner());
 
             //sends email notification to user's emails
@@ -113,6 +123,7 @@ public class TransactionManager {
         }
         // Case 2: Liked book is for exchange
         else {
+            Log.d(TAG, "Adding for exchange transaction");
             boolean foundMatch = false;
             // See if this 'like' could complete a 'match' with any existing transactions
             for (Map.Entry<String, ExchangeTransaction> entry : exchangeTransMgr.getItemsMap().entrySet()) {

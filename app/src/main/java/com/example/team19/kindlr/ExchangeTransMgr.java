@@ -38,7 +38,7 @@ public class ExchangeTransMgr extends FirestoreAccessor<ExchangeTransaction> {
             if (transaction.getUsername1() == null || transaction.getUsername2() == null)
                 continue;
 
-            if((transaction.getUsername1().equals(userName) || transaction.getUsername2().equals(userName)) && transaction.isMatched())
+            if((transaction.getUsername1().equals(userName) || (transaction.getUsername2().equals(userName)) && transaction.isMatched()))
             {
                 result.add(transaction);
 

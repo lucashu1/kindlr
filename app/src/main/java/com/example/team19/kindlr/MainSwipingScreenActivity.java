@@ -20,6 +20,7 @@ import java.util.List;
 public class MainSwipingScreenActivity extends Activity {
     private TextView bookTitle;
     private TextView bookAuthor;
+    private TextView forSaleText;
     private BookManager bookMgr = BookManager.getBookManager();
     private BookFilter bookFilter = new BookFilter();
     List<Book> curBooks = null;
@@ -42,6 +43,7 @@ public class MainSwipingScreenActivity extends Activity {
 
         bookTitle = (TextView)findViewById(R.id.title_text);
         bookAuthor = (TextView)findViewById(R.id.author_text);
+        forSaleText = (TextView)findViewById(R.id.for_sale_text);
 
         this.currentUser = UserManager.getUserManager().getCurrentUser();
 
@@ -173,12 +175,15 @@ public class MainSwipingScreenActivity extends Activity {
             bookAuthor.setText("Surprising!");
             String noBooksImageURL = "https://banner2.kisspng.com/20180407/yhw/kisspng-empty-set-null-set-symbol-mathematics-forbidden-5ac859ad09c119.24223671152307959704.jpg";
             Picasso.get().load(noBooksImageURL).resize(500,500).centerCrop().into(iv);
+            forSaleText.setVisibility(View.GONE);
         }
         else {
             String imageURL = book.getImageURL();
             Picasso.get().load(imageURL).resize(500,500).centerCrop().into(iv);
             bookTitle.setText("Title: " + book.getBookName());
             bookAuthor.setText("Author: " + book.getAuthor());
+            int visibilityStatus = book.getForSale() ? View.VISIBLE : View.GONE;
+            forSaleText.setVisibility(visibilityStatus);
         }
     }
 
