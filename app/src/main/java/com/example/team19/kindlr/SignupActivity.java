@@ -3,6 +3,8 @@ package com.example.team19.kindlr;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.telephony.PhoneNumberUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -56,6 +58,10 @@ public class SignupActivity extends Activity {
         this.finish();
     }
 
+    boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
     public void createAccount() {
         String firstNameStr = firstName.getText().toString();
         String lastNameStr = lastName.getText().toString();
@@ -69,7 +75,7 @@ public class SignupActivity extends Activity {
         }
 
         String cityStr = city.getText().toString();
-        String stateStr = "WA";
+        String stateStr = state.getSelectedItem().toString();
         String phoneStr = phone.getText().toString();
         String emailStr = email.getText().toString();
 
@@ -77,14 +83,35 @@ public class SignupActivity extends Activity {
                 passwordStr.isEmpty() || cityStr.isEmpty() || stateStr.isEmpty() ||
                 phoneStr.isEmpty() || emailStr.isEmpty()) {
             ErrorHelper.displayError("Invalid", "Incomplete details", this);
+            Log.d("Signup","empty error");
+            return;
+
+
+        }
+
+        //check if phone number is valid
+        if(!PhoneNumberUtils.isGlobalPhoneNumber(phoneStr)){
+            ErrorHelper.displayError("Invalid","Invalid Phone Number",this);
+            Log.d("success","wrong phone");
+            return;
+        }
+
+        //check if email is valid
+        if(!isEmailValid( emailStr)){
+            ErrorHelper.displayError("Invalid","Invalid Email", this);
+            Log.d("email1","bad email");
             return;
         }
 
         boolean success = UserManager.getUserManager().addUser(usernameStr, passwordStr, firstNameStr, lastNameStr,
                 cityStr, stateStr, phoneStr, emailStr);
 
+
         if (!success) {
             ErrorHelper.displayError("Invalid", "Invalid details", this);
+
+            return;
+
         }
         else {
             Intent intent = new Intent(SignupActivity.this, MainSwipingScreenActivity.class);
