@@ -8,14 +8,21 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
+import com.google.firebase.firestore.core.DocumentViewChange;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.annotation.Nullable;
 
 
 public abstract class FirestoreAccessor<T> {
@@ -244,7 +251,7 @@ public abstract class FirestoreAccessor<T> {
     public final void refresh(boolean eraseExisting) {
         // create new map before reading from DB --> erases existing entries
         refreshed = false; // set this to false at start of refresh
-        if (eraseExisting == true) {
+        if (eraseExisting) {
             this.getCollection()
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -267,23 +274,24 @@ public abstract class FirestoreAccessor<T> {
 
         // don't create new map -- don't delete existing entries
         else {
-            this.getCollection()
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    T obj = document.toObject(typeParamClass);
-                                    itemsMap.put(document.getId(), obj);
-                                    Log.d(TAG, document.getId() + " => " + document.getData());
-                                }
-                            } else {
-                                Log.d(TAG, "Error getting documents: ", task.getException());
-                            }
-                            onFinishDbRead();
+            Log.d(TAG, "adding snapshot listener");
+            this.getCollection().addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot snapshots,
+                                    @Nullable FirebaseFirestoreException e) {
+                    for (DocumentChange dc : snapshots.getDocumentChanges()) {
+                        if (dc.getType() == DocumentChange.Type.ADDED) {
+                            Log.d(TAG,"New thing: " + dc.getDocument().getData());
+
+                            QueryDocumentSnapshot doc = dc.getDocument();
+                            T obj = doc.toObject(typeParamClass);
+                            itemsMap.put(doc.getId(), obj);
+                            Log.d(TAG, doc.getId() + " => " + doc.getData());
                         }
-                    });
+                    }
+                    Log.d(TAG, "\n\n" + getFirestoreCollectionName() + "Items Map " + itemsMap.toString());
+                }
+            });
         }
 
     }

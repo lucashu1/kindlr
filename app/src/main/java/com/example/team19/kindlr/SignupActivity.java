@@ -67,12 +67,6 @@ public class SignupActivity extends Activity {
         String lastNameStr = lastName.getText().toString();
         String usernameStr = username.getText().toString();
         String passwordStr = password.getText().toString();
-        try{
-            passwordStr = Password.getSaltedHash(passwordStr);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         String cityStr = city.getText().toString();
         String stateStr = state.getSelectedItem().toString();

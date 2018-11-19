@@ -106,14 +106,6 @@
             tools:layout_editor_absoluteY="447dp" />
 
         <Button
-            android:id="@+id/refresh_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Refresh"
-            tools:layout_editor_absoluteX="280dp"
-            tools:layout_editor_absoluteY="447dp" />
-
-        <Button
             android:id="@+id/dislike_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

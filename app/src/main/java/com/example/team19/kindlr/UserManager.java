@@ -30,8 +30,16 @@ public class UserManager extends FirestoreAccessor<User> {
     }
 
     // Add user to UserManager (using inputted fields); return true if successful
-    public boolean addUser(String username, String hashedPassword, String firstName, String lastName,
+    public boolean addUser(String username, String passwordStr, String firstName, String lastName,
                            String city, String state, String phoneNum, String email) {
+
+        String hashedPassword = "";
+        try  {
+            hashedPassword = Password.getSaltedHash(passwordStr);
+
+        } catch (Exception e) {
+            return false;
+        }
         // Check if username is taken
         if (usernameTaken(username))
             return false;
@@ -75,7 +83,7 @@ public class UserManager extends FirestoreAccessor<User> {
     }
 
     // Attempt to login and set currentUser. Return true if successful
-    public boolean attemptLogin(String username, String hashedPassword) throws Exception {
+    public boolean attemptLogin(String username, String hashedPassword) {
         if (!this.getItemsMap().containsKey(username)) {
             Log.d(TAG, "User " + username + " does not exist");
             return false;
@@ -88,7 +96,13 @@ public class UserManager extends FirestoreAccessor<User> {
 //        if (!u.getHashedPassword().equals(hashedPassword))
 //            return false;
 
-        if(!Password.check(hashedPassword, u.getHashedPassword())){
+        try {
+            if (!Password.check(hashedPassword, u.getHashedPassword())) {
+                return false;
+            }
+        }
+        catch (Exception e) {
+            // If an exception was thrown we can assume that something went wrong.
             return false;
         }
 

@@ -37,8 +37,12 @@ public class ViewNotificationsActivityTest {
 
     @Before
     public void initialize() {
-        UserManager.getUserManager().addUser("bhahntest", "asdf", "Ben", "Hahn", "Los Angeles", "California", "314-555-5555", "");
-        UserManager.getUserManager().addUser("shahntest", "asdf", "Sam", "Hahn", "St. Louis", "Missouri", "314-555-5556", "");
+        UserManager.getUserManager().addUser("bhahntest", "asdf",
+                "Ben", "Hahn", "Los Angeles", "California",
+                "314-555-5555", "bhan@usc.edu");
+        UserManager.getUserManager().addUser("shahntest", "asdf",
+                "Sam", "Hahn", "St. Louis", "Missouri",
+                "314-555-5556", "shahn@usc.edu");
     }
 
     @Test
@@ -75,8 +79,8 @@ public class ViewNotificationsActivityTest {
 
     @After
     public void cleanUp() {
-        UserManager.getUserManager().deleteItem("bhahntest");
-        UserManager.getUserManager().deleteItem("shahntest");
+//        UserManager.getUserManager().deleteItem("bhahntest");
+//        UserManager.getUserManager().deleteItem("shahntest");
 //        TransactionManager.getTransactionManager().deleteExchangeTransaction(txId1);
 //        BookManager.getBookManager().deleteBook(bookId1);
 //        BookManager.getBookManager().deleteBook(bookId2);
