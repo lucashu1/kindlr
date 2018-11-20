@@ -96,8 +96,8 @@
         android:id="@+id/deny"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="9dp"
-        android:layout_marginTop="240dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="236dp"
         android:text="Deny Exchange"
         app:layout_constraintStart_toEndOf="@+id/confirm"
         app:layout_constraintTop_toBottomOf="@+id/book_image" />

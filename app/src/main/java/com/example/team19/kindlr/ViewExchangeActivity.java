@@ -58,7 +58,7 @@ public class ViewExchangeActivity extends Activity {
         if (et.wasRejected()) {
             confirm.setVisibility(View.INVISIBLE);
             deny.setVisibility(View.INVISIBLE);
-            message.setText("THIS TRANSACTION WAS DENIED");
+            message.setText("This transaction has been denied.");
         }
 
         confirm.setOnClickListener(new View.OnClickListener() {
@@ -68,14 +68,13 @@ public class ViewExchangeActivity extends Activity {
                     deny.setVisibility(View.INVISIBLE);
                     String phone = um.getUserByUsername(username).getPhoneNum();
                     String email = um.getUserByUsername(username).getEmail();
-                    message.setText("BOTH USERS ACCEPTED THIS TRANSACTION! GET IN CONTACT " +
-                            "WITH " + name + ": " + phone + " or " + email);
+                    message.setText("You have both accepted this transaction! Get in contact " +
+                            "with " + name + ": " + phone + " or " + email);
                 } else { //just current user accepted, waiting on other user's response
                     et.acceptTransaction();
                     confirm.setVisibility(View.INVISIBLE);
                     deny.setVisibility(View.INVISIBLE);
-                    message.setText("YOU HAVE ACCEPTED THIS TRANSACTION! PLEASE WAIT FOR OTHER USER" +
-                            " TO RESPOND, THEY WILL CONTACT YOU IF THEY ACCEPT.");
+                    message.setText("You have accepted this exchange! The other user will contact you if they accept.");
                 }
             }
         });
@@ -84,7 +83,7 @@ public class ViewExchangeActivity extends Activity {
             public void onClick(View v) {
                 confirm.setVisibility(View.INVISIBLE);
                 deny.setVisibility(View.INVISIBLE);
-                message.setText("THIS TRANSACTION WAS DENIED");
+                message.setText("This transaction has been denied.");
                 et.rejectTransaction();
             }
         });
