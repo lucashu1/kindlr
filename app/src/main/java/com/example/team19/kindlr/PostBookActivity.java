@@ -75,20 +75,7 @@ public class PostBookActivity extends AppCompatActivity {
         //Set to default image if user does not provide link
         if (imageURL.equals("") || imageURL == null) imageURL = "https://png.pngtree.com/element_pic/17/07/27/bd157c7c747dc708790aa64b43c3da35.jpg";
 
-        int pageCountInt = 0;
-        try {
-            pageCountInt = Integer.parseInt(pagecount.getText().toString());
-        } catch (NumberFormatException e) {
-            pageCountInt = -1;
-        }
-
-        if (pageCountInt < 0) {
-            return false;
-        }
-
-
         boolean isInvalid = false;
-        title.setError(null);
         if(titleStr.isEmpty())
         {
             title.setError(getString(R.string.error_field_required));
@@ -109,6 +96,15 @@ public class PostBookActivity extends AppCompatActivity {
             focusView = author;
             isInvalid = true;
         }
+        else
+        {
+            if(authorStr.matches(".*\\d+.*"))
+            {
+                author.setError("Not a valid name");
+                focusView = author;
+                isInvalid = true;
+            }
+        }
 
         if(genreStr.isEmpty())
         {
@@ -117,11 +113,24 @@ public class PostBookActivity extends AppCompatActivity {
             isInvalid = true;
         }
 
+        int pageCountInt = 0;
         if(numPages.isEmpty())
         {
             pagecount.setError(getString(R.string.error_field_required));
             focusView = pagecount;
             isInvalid = true;
+        }
+        else
+        {
+            try {
+                pageCountInt = Integer.parseInt(pagecount.getText().toString());
+            } catch (NumberFormatException e) {
+                pageCountInt = -1;
+            }
+
+            if (pageCountInt < 0) {
+                return false;
+            }
         }
 
         if(isInvalid)

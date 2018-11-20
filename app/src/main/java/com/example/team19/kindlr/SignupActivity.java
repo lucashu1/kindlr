@@ -82,12 +82,30 @@ public class SignupActivity extends Activity {
             focusView = firstName;
             isEmpty = true;
         }
+        else
+        {
+            if(firstNameStr.matches(".*\\d+.*"))
+            {
+                firstName.setError("Not a valid name");
+                focusView = firstName;
+                isEmpty = true;
+            }
+        }
 
         if(lastNameStr.isEmpty())
         {
             lastName.setError(getString(R.string.error_field_required));
             focusView = lastName;
             isEmpty = true;
+        }
+        else
+        {
+            if(lastNameStr.matches(".*\\d+.*"))
+            {
+                lastName.setError("Not a valid name");
+                focusView = lastName;
+                isEmpty = true;
+            }
         }
 
         if(usernameStr.isEmpty())
@@ -117,12 +135,29 @@ public class SignupActivity extends Activity {
             focusView = phone;
             isEmpty = true;
         }
+        else
+        {
+            if (phoneStr.matches(".*[a-z].*")) {
+                phone.setError("No letters allowed");
+                focusView = phone;
+                isEmpty = true;
+            }
+        }
 
         if(emailStr.isEmpty())
         {
             email.setError(getString(R.string.error_field_required));
             focusView = email;
             isEmpty = true;
+        }
+        else
+        {
+            if(emailStr.indexOf('@') == -1)
+            {
+                email.setError("Not a valid email");
+                focusView = email;
+                isEmpty = true;
+            }
         }
 
         if(isEmpty)
