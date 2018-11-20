@@ -2,6 +2,7 @@ package com.example.team19.kindlr;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -46,9 +47,9 @@ public class PostBookActivity extends AppCompatActivity {
                 if (success) {
                     navigateBack();
                 }
-                else {
-                    ErrorHelper.displayError("Error", "Invalid input", PostBookActivity.this);
-                }
+//                else {
+//                    ErrorHelper.displayError("Error", "Invalid input", PostBookActivity.this);
+//                }
             }
         });
 
@@ -67,6 +68,9 @@ public class PostBookActivity extends AppCompatActivity {
         String authorStr = author.getText().toString();
         String genreStr = genre.getText().toString();
         String imageURL = imageurl.getText().toString();
+        String numPages = pagecount.getText().toString();
+
+        View focusView = null;
 
         //Set to default image if user does not provide link
         if (imageURL.equals("") || imageURL == null) imageURL = "https://png.pngtree.com/element_pic/17/07/27/bd157c7c747dc708790aa64b43c3da35.jpg";
@@ -82,7 +86,47 @@ public class PostBookActivity extends AppCompatActivity {
             return false;
         }
 
-        if (titleStr.isEmpty() || isbnStr.isEmpty() || authorStr.isEmpty() || genreStr.isEmpty()) {
+
+        boolean isInvalid = false;
+        title.setError(null);
+        if(titleStr.isEmpty())
+        {
+            title.setError(getString(R.string.error_field_required));
+            focusView = title;
+            isInvalid = true;
+        }
+
+        if(isbnStr.isEmpty())
+        {
+            isbn.setError(getString(R.string.error_field_required));
+            focusView = isbn;
+            isInvalid = true;
+        }
+
+        if(authorStr.isEmpty())
+        {
+            author.setError(getString(R.string.error_field_required));
+            focusView = author;
+            isInvalid = true;
+        }
+
+        if(genreStr.isEmpty())
+        {
+            genre.setError(getString(R.string.error_field_required));
+            focusView = genre;
+            isInvalid = true;
+        }
+
+        if(numPages.isEmpty())
+        {
+            pagecount.setError(getString(R.string.error_field_required));
+            focusView = pagecount;
+            isInvalid = true;
+        }
+
+        if(isInvalid)
+        {
+            focusView.requestFocus();
             return false;
         }
 

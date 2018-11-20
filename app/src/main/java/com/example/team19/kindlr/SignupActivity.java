@@ -73,14 +73,62 @@ public class SignupActivity extends Activity {
         String phoneStr = phone.getText().toString();
         String emailStr = email.getText().toString();
 
-        if (firstNameStr.isEmpty() || lastNameStr.isEmpty() || usernameStr.isEmpty() ||
-                passwordStr.isEmpty() || cityStr.isEmpty() || stateStr.isEmpty() ||
-                phoneStr.isEmpty() || emailStr.isEmpty()) {
-            ErrorHelper.displayError("Invalid", "Incomplete details", this);
-            Log.d("Signup","empty error");
+        View focusView = null;
+
+        boolean isEmpty = false;
+        if(firstNameStr.isEmpty())
+        {
+            firstName.setError(getString(R.string.error_field_required));
+            focusView = firstName;
+            isEmpty = true;
+        }
+
+        if(lastNameStr.isEmpty())
+        {
+            lastName.setError(getString(R.string.error_field_required));
+            focusView = lastName;
+            isEmpty = true;
+        }
+
+        if(usernameStr.isEmpty())
+        {
+            username.setError(getString(R.string.error_field_required));
+            focusView = username;
+            isEmpty = true;
+        }
+
+        if(passwordStr.isEmpty())
+        {
+            password.setError(getString(R.string.error_field_required));
+            focusView = password;
+            isEmpty = true;
+        }
+
+        if(cityStr.isEmpty())
+        {
+            city.setError(getString(R.string.error_field_required));
+            focusView = city;
+            isEmpty = true;
+        }
+
+        if(phoneStr.isEmpty())
+        {
+            phone.setError(getString(R.string.error_field_required));
+            focusView = phone;
+            isEmpty = true;
+        }
+
+        if(emailStr.isEmpty())
+        {
+            email.setError(getString(R.string.error_field_required));
+            focusView = email;
+            isEmpty = true;
+        }
+
+        if(isEmpty)
+        {
+            focusView.requestFocus();
             return;
-
-
         }
 
         //check if phone number is valid
