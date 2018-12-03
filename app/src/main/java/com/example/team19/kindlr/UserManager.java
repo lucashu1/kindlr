@@ -147,15 +147,18 @@ public class UserManager extends FirestoreAccessor<User> {
         // Rating must be an integer between 0-5 (inclusive)
     public boolean rateUser(String username, int rating) {
         if (doesUserExist(username)) {
+            Log.d(TAG, "Tried to call rateUser on a user that doesn't exist in map: " + username);
             return false;
         }
 
         if (rating < 0 || rating > 5) {
+            Log.d(TAG, "Tried to call rateUser using an invalid rating. Rating must be int b/w 0-5 inclusive.");
             return false;
         }
 
         this.getItemsMap().get(username).addRating(rating);
         this.updateChildFromMap(username);
+        Log.d(TAG, "Added rating of " + rating + " to user: " + username);
         return true;
     }
 }
