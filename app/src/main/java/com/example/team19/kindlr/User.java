@@ -138,4 +138,9 @@ public class User implements Serializable {
     public void dislikeBook(String bookID) {
         dislikedBooks.add(bookID);
     }
+
+    public void addRating(int rating) {
+        this.totalRating += rating;
+        this.numRatingsReceived++;
+    }
 }

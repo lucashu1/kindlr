@@ -142,4 +142,20 @@ public class UserManager extends FirestoreAccessor<User> {
         this.updateChildFromMap(username);
         return true;
     }
+
+    // Rate a user, update his/her rating. Return true if successful
+        // Rating must be an integer between 0-5 (inclusive)
+    public boolean rateUser(String username, int rating) {
+        if (doesUserExist(username)) {
+            return false;
+        }
+
+        if (rating < 0 || rating > 5) {
+            return false;
+        }
+
+        this.getItemsMap().get(username).addRating(rating);
+        this.updateChildFromMap(username);
+        return true;
+    }
 }
