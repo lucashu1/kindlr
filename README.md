@@ -15,3 +15,9 @@ Moved from Firebase database to Firestore: no longer need to click refresh in or
 Password hashing: Passwords are not visibly stored, which helps make our app more secure and keeps our users' information safe.
 For sale transaction: Two users can have a transaction for books that are for sale, and the logic of the transaction can go through compleely.
 Better UI: Added a more consistent color for UI, with buttons and search fields for a better and more modern look for users.
+
+Sprint 3:
+General UI Improvements: e.g. redo button placement in main swiping screen.
+User ratings (functionality): Give option to input user ratings (after successful exchange).
+User ratings (display): See user rating from your profile page.
+Profile page: View your liked/posted books from your profile page.
