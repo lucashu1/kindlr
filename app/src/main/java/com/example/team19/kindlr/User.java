@@ -144,6 +144,8 @@ public class User implements Serializable {
         this.numRatingsReceived++;
     }
 
+    // Get comma-separated books that this user has liked
+        // E.g. "Harry Potter, Software Engineering, Go Dog Go"
     public String getLikedBooksString() {
         String s = "";
         for (int i = 0; i < likedBooks.size() - 1; i++) {
@@ -159,6 +161,8 @@ public class User implements Serializable {
         return s;
     }
 
+    // Return comma-separated books that this user has posted
+        // E.g. "Harry Potter, Software Engineering, Go Dog Go"
     public String getPostedBooksString() {
         String s = "";
         ArrayList<Book> ownedBooks = BookManager.getBookManager().getBooksOwnedByUser(this.username);
