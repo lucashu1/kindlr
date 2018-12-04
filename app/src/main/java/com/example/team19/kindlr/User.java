@@ -1,5 +1,7 @@
 package com.example.team19.kindlr;
 
+import android.text.TextUtils;
+
 import com.google.firebase.firestore.Exclude;
 
 import java.io.Serializable;
@@ -147,34 +149,28 @@ public class User implements Serializable {
     // Get comma-separated books that this user has liked
         // E.g. "Harry Potter, Software Engineering, Go Dog Go"
     public String getLikedBooksString() {
-        String s = "";
+        ArrayList<String> bookTitles = new ArrayList<>();
+
         for (int i = 0; i < likedBooks.size() - 1; i++) {
             String bookID = likedBooks.get(i);
             String bookTitle = BookManager.getBookManager().getItemByID(bookID).getBookName();
-            s += (bookTitle + ", ");
+            bookTitles.add(bookTitle);
         }
 
-        String lastBookID = likedBooks.get(likedBooks.size() - 1);
-        String lastBookTitle = BookManager.getBookManager().getItemByID(lastBookID).getBookName();
-        s += lastBookTitle;
-
-        return s;
+        return TextUtils.join(",", bookTitles);
     }
 
     // Return comma-separated books that this user has posted
         // E.g. "Harry Potter, Software Engineering, Go Dog Go"
     public String getPostedBooksString() {
-        String s = "";
         ArrayList<Book> ownedBooks = BookManager.getBookManager().getBooksOwnedByUser(this.username);
+        ArrayList<String> postedStrs = new ArrayList<>();
 
         for (int i = 0; i < ownedBooks.size() - 1; i++) {
             String bookTitle = ownedBooks.get(i).getBookName();
-            s += (bookTitle + ", ");
+            postedStrs.add(bookTitle);
         }
 
-        String lastBookTitle = ownedBooks.get(ownedBooks.size() - 1).getBookName();
-        s += lastBookTitle;
-
-        return s;
+        return TextUtils.join(",", postedStrs);
     }
 }
