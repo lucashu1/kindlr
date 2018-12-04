@@ -143,4 +143,19 @@ public class User implements Serializable {
         this.totalRating += rating;
         this.numRatingsReceived++;
     }
+
+    public String getLikedBooksString() {
+        String s = "";
+        for (int i = 0; i < likedBooks.size() - 1; i++) {
+            String bookID = likedBooks.get(i);
+            String bookTitle = BookManager.getBookManager().getItemByID(bookID).getBookName();
+            s += (bookTitle + ", ");
+        }
+
+        String lastBookID = likedBooks.get(likedBooks.size() - 1);
+        String lastBookTitle = BookManager.getBookManager().getItemByID(lastBookID).getBookName();
+        s += lastBookTitle;
+
+        return s;
+    }
 }
