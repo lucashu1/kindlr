@@ -158,4 +158,19 @@ public class User implements Serializable {
 
         return s;
     }
+
+    public String getPostedBookString() {
+        String s = "";
+        ArrayList<Book> ownedBooks = BookManager.getBookManager().getBooksOwnedByUser(this.username);
+
+        for (int i = 0; i < ownedBooks.size() - 1; i++) {
+            String bookTitle = ownedBooks.get(i).getBookName();
+            s += (bookTitle + ", ");
+        }
+
+        String lastBookTitle = ownedBooks.get(ownedBooks.size() - 1).getBookName();
+        s += lastBookTitle;
+
+        return s;
+    }
 }

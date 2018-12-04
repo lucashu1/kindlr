@@ -36,6 +36,17 @@ public class BookManager extends FirestoreAccessor<Book> {
         return getItemByID(bookID).getOwner();
     }
 
+    // Return arraylist of books owned by a certain username
+    public ArrayList<Book> getBooksOwnedByUser(String username) {
+        ArrayList<Book> ownedBooks = new ArrayList<Book>();
+        for (Book b : this.getItemsMap().values()) {
+            if (b.getOwner().equals(username)) {
+                ownedBooks.add(b);
+            }
+        }
+        return ownedBooks;
+    }
+
     public List<Book> getFilteredBooks(BookFilter bookFilter, User forUser) {
         Log.d(TAG, "Getting filtered books");
         List<Book> filteredBooks = new ArrayList();
