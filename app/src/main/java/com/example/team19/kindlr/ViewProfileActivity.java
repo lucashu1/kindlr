@@ -66,30 +66,32 @@ public class ViewProfileActivity extends Activity {
     }
 
     private void populateFields() {
+        User currentUser = UserManager.getUserManager().getCurrentUser();
         TextView firstNameView = (TextView)findViewById(R.id.first_name_view);
-        firstNameView.setText("First Name: " + UserManager.getUserManager().getCurrentUser().getFirstName());
-
-        TextView lastNameView = (TextView)findViewById(R.id.last_name_view);
-        lastNameView.setText(("Last Name: " + UserManager.getUserManager().getCurrentUser().getLastName()));
+        firstNameView.setText("Name: " + currentUser.getFirstName() + " " + currentUser.getLastName());
 
         TextView usernameView = (TextView)findViewById(R.id.username_view);
         usernameView.setText("Username: "+ UserManager.getUserManager().getCurrentUser().getUsername());
 
-        TextView passwordView = (TextView)findViewById(R.id.password_view);
-//        passwordView.setText("Password :" + displayUser.getHashedPassword());
-        passwordView.setText("Password :" + "Confidential");
-
         TextView cityView = (TextView)findViewById(R.id.city_view);
-        cityView.setText("City: " + UserManager.getUserManager().getCurrentUser().getCity());
-
-        TextView stateView = (TextView)findViewById(R.id.state_view);
-        stateView.setText("State: "+ UserManager.getUserManager().getCurrentUser().getState());
+        cityView.setText("Location: " + currentUser.getCity() + ", " + currentUser.getState());
 
         TextView phoneView = (TextView)findViewById(R.id.phone_view);
         phoneView.setText("Phone: " + UserManager.getUserManager().getCurrentUser().getPhoneNum());
 
         TextView emailView = (TextView)findViewById(R.id.email_view);
         emailView.setText("Email: " + UserManager.getUserManager().getCurrentUser().getEmail());
+
+        TextView ratingView = (TextView)findViewById(R.id.rating_view);
+        ratingView.setText("Rating: " + UserManager.getUserManager().getCurrentUser().getRating());
+
+
+        TextView likedBooksView = (TextView)findViewById(R.id.liked_books_view);
+        likedBooksView.setText("Liked Books: " + currentUser.getLikedBooksString());
+
+
+        TextView postedBooksView = (TextView)findViewById(R.id.posted_books_view);
+        postedBooksView.setText("Posted Books: " + currentUser.getPostedBooksString());
     }
 
     public void navigateToPostBook(boolean isForSale) {
