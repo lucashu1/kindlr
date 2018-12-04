@@ -146,7 +146,7 @@ public class UserManager extends FirestoreAccessor<User> {
     // Rate a user, update his/her rating. Return true if successful
         // Rating must be an integer between 0-5 (inclusive)
     public boolean rateUser(String username, int rating) {
-        if (doesUserExist(username)) {
+        if (!doesUserExist(username)) {
             Log.d(TAG, "Tried to call rateUser on a user that doesn't exist in map: " + username);
             return false;
         }

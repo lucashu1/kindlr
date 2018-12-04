@@ -3,6 +3,8 @@ package com.example.team19.kindlr;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ImageView;
 import android.widget.Button;
@@ -40,6 +42,11 @@ public class ViewExchangeActivity extends Activity {
         final Button confirm = (Button) findViewById(R.id.confirm);
         final Button deny = (Button) findViewById(R.id.deny);
         final TextView message = (TextView) findViewById(R.id.message);
+        final TextView rate = (TextView) findViewById(R.id.rate);
+        final Spinner ratespinner = (Spinner) findViewById(R.id.ratespinner);
+        ratespinner.setVisibility(View.INVISIBLE);
+        final Button submit_rating = (Button) findViewById(R.id.submit_rating);
+        submit_rating.setVisibility(View.INVISIBLE);
 
         Picasso.get().load(image).resize(500,500).centerCrop().into(imageIV);
         nameTV.setText("Name: " + name);
@@ -70,6 +77,9 @@ public class ViewExchangeActivity extends Activity {
                     String email = um.getUserByUsername(username).getEmail();
                     message.setText("You have both accepted this transaction! Get in contact " +
                             "with " + name + ": " + phone + " or " + email);
+                    rate.setText("Leave a rating for " + name + ":");
+                    ratespinner.setVisibility(View.VISIBLE);
+                    submit_rating.setVisibility(View.VISIBLE);
                 } else { //just current user accepted, waiting on other user's response
                     et.acceptTransaction();
                     confirm.setVisibility(View.INVISIBLE);
@@ -85,6 +95,15 @@ public class ViewExchangeActivity extends Activity {
                 deny.setVisibility(View.INVISIBLE);
                 message.setText("This transaction has been denied.");
                 et.rejectTransaction();
+            }
+        });
+
+        submit_rating.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                um.rateUser(username, Integer.parseInt(ratespinner.getSelectedItem().toString()));
+                rate.setText("Thank you for leaving a rating!");
+                ratespinner.setVisibility(View.INVISIBLE);
+                submit_rating.setVisibility(View.INVISIBLE);
             }
         });
     }
