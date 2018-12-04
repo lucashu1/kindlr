@@ -15,14 +15,14 @@
 
         <Button
             android:id="@+id/profile_button"
-            android:layout_width="wrap_content"
+            android:layout_width="146dp"
             android:layout_height="wrap_content"
-            android:text="Profile"
             android:layout_weight="1"
-            tools:layout_editor_absoluteX="280dp"
-            tools:layout_editor_absoluteY="447dp"
             android:background="@drawable/shape_capsule"
-            android:textColor="@drawable/text_selector"/>
+            android:text="Profile"
+            android:textColor="@drawable/text_selector"
+            tools:layout_editor_absoluteX="280dp"
+            tools:layout_editor_absoluteY="447dp" />
 
         <Button
             android:id="@+id/notifications"
@@ -115,27 +115,28 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/like_button"
-            android:layout_width="wrap_content"
+            android:layout_width="220dp"
             android:layout_height="wrap_content"
-            android:text="@string/like_book_button"
-            tools:layout_editor_absoluteX="280dp"
-            tools:layout_editor_absoluteY="447dp"
             android:background="@drawable/shape_capsule"
-            android:textColor="@drawable/text_selector"/>
+            android:text="@string/like_book_button"
+            android:textColor="@drawable/text_selector"
+            tools:layout_editor_absoluteX="280dp"
+            tools:layout_editor_absoluteY="447dp" />
 
         <Button
             android:id="@+id/dislike_button"
-            android:layout_width="wrap_content"
+            android:layout_width="216dp"
             android:layout_height="wrap_content"
-            android:text="@string/dislike_book_button"
             android:layout_alignParentBottom="true"
             android:background="@drawable/shape_capsule"
-            android:textColor="@drawable/text_selector"/>
+            android:text="@string/dislike_book_button"
+            android:textColor="@drawable/text_selector" />
+
 
     </LinearLayout>
 
